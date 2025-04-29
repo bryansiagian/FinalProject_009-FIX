@@ -7,11 +7,11 @@
           class="sidebar-brand d-flex align-items-center justify-content-center"
           href="{{ route('admin.dashboard') }}"
         >
-          <div class="sidebar-brand-icon rotate-n-15">
-
+          <div class="sidebar-brand-icon">
+            <i class="fas fa-box"></i> <!-- Contoh icon untuk Harmonis Plastik -->
           </div>
           <div class="sidebar-brand-text mx-3">
-            <i class="fas fa-store mr-2"></i>ADMIN <br> HARMONIS PLASTIK</div>
+            ADMIN <br> HARMONIS PLASTIK</div>
         </a>
 
         <!-- Divider -->
@@ -20,7 +20,7 @@
         <!-- Nav Item - Dashboard -->
          <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.dashboard') }}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <i class="fas fa-chart-line fa-fw"></i>
                 <span>Dashboard</span></a>
         </li>
 
@@ -40,7 +40,7 @@
             aria-expanded="true"
             aria-controls="collapseTwo"
           >
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fas fa-database fa-fw"></i>
             <span>ADMIN CRUD</span>
           </a>
           <div
@@ -51,20 +51,20 @@
           >
             <div class="bg-light py-2 collapse-inner rounded">
               <h6 class="collapse-header">Komponen :</h6>
-              <a class="collapse-item" href="{{ route('admin.orders.index') }}">
-                <i class="fas fa-fw fa-table mr-2"></i>Kelola Pesanan</a>
-              <a class="collapse-item" href="{{route('admin.testimonials.index')}}">
-                <i class="fas fa-bullhorn mr-2"></i>Testimoni</a>
-              <a class="collapse-item" href="{{route('admin.products.index')}}">
-                <i class="fas fa-images mr-2"></i>Produk</a>
-              <a class="collapse-item" href="{{ route('admin.pengumuman.index') }}">
-                <i class="fas fa-bullhorn mr-2"></i>Pengumuman</a>
-              <a class="collapse-item" href="{{ route('admin.galeri.index') }}">
-                <i class="fas fa-images mr-2"></i>Galeri</a>
-              <a class="collapse-item" href="{{ route('admin.tentang-kami.index') }}">
-                <i class="fas fa-newspaper mr-2"></i>Tentang Kami</a>
-              <a class="collapse-item" href="{{ route('admin.kontak.index') }}">
-                <i class="fas fa-phone mr-2"></i>Kontak</a>
+                <a class="collapse-item" href="{{ route('admin.orders.index') }}">
+                    <i class="fas fa-shopping-cart fa-fw mr-2"></i>Kelola Pesanan</a>
+                <a class="collapse-item" href="{{route('admin.products.index')}}">
+                    <i class="fas fa-box mr-2"></i>Produk</a>
+                <a class="collapse-item" href="{{ route('admin.pengumuman.index') }}">
+                    <i class="fas fa-bullhorn mr-2"></i>Pengumuman</a>
+                <a class="collapse-item" href="{{ route('admin.galeri.index') }}">
+                    <i class="fas fa-images mr-2"></i>Galeri</a>
+                <a class="collapse-item" href="{{route('admin.testimonials.index')}}">
+                    <i class="fas fa-comment-dots mr-2"></i>Testimoni</a>
+                <a class="collapse-item" href="{{ route('admin.tentang-kami.index') }}">
+                    <i class="fas fa-file-alt mr-2"></i>Tentang Kami</a>
+                <a class="collapse-item" href="{{ route('admin.kontak.index') }}">
+                    <i class="fas fa-phone mr-2"></i>Kontak</a>
             </div>
           </div>
         </li>

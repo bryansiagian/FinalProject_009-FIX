@@ -61,7 +61,7 @@ class PengumumanController extends Controller
 
     public function showPengumumanPublic()
     {
-        $pengumumen = Pengumuman::all(); // Ambil SEMUA pengumuman dari database
+        $pengumumen = Pengumuman::orderBy('created_at', 'desc')->get(); // Ambil SEMUA pengumuman dari database
         return view('pengumuman.index', compact('pengumumen')); // Kirim ke view pengumuman.index
     }
 

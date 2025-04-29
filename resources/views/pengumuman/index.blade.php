@@ -39,7 +39,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $pengumuman->judul }}</h5>
                                 <p class="card-text">{!! $pengumuman->isi !!}</p>
-                                <p class="card-text tanggal">Tanggal: {{ $pengumuman->tanggal_publikasi }}</p>
+                                <p class="card-text tanggal">Tanggal: {{ $pengumuman->tanggal_publikasi->format('Y-m-d') }}</p>
                             </div>
                         </div>
                     </div>

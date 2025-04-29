@@ -12,6 +12,7 @@ use App\Http\Controllers\TentangKamiController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\KontakController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -72,7 +73,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     // Admin Routes (Gunakan Route::resource untuk yang Sesuai)
-    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::post('/orders/{order}/verify', [AdminController::class, 'verifyOrder'])->name('admin.orders.verify');
     Route::post('/orders/{order}/complete', [AdminController::class, 'completeOrder'])->name('admin.orders.complete');
 

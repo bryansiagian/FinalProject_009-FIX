@@ -35,9 +35,6 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Daftar Pengumuman</h1>
-
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
@@ -80,7 +77,7 @@
                                                         Tidak ada gambar
                                                     @endif
                                                 </td>
-                                                <td>{{ $pengumuman->tanggal_publikasi }}</td>
+                                                <td>{{ $pengumuman->tanggal_publikasi->format('Y-m-d') }}</td>
                                                 <td class="text-center">
                                                     <div class="d-flex justify-content-center">
                                                         <a href="{{ route('admin.pengumuman.show', $pengumuman->id) }}" class="btn btn-sm btn-info btn-action mr-1">

@@ -15,4 +15,8 @@ class Pengumuman extends Model
         'gambar', // Tambahkan 'gambar' ke sini
         'tanggal_publikasi',
     ];
+
+    protected $casts = [
+        'tanggal_publikasi' => 'datetime', // Atau 'timestamp' jika tipe data kolom Anda adalah timestamp
+    ];
 }
