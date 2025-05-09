@@ -27,9 +27,18 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('galeri.public') ? 'active' : '' }}" href="{{ route('galeri.public') }}">GALERI</a>
                 </li>
+                 {{-- Tambahkan kelas 'active' jika route saat ini adalah 'tentang-kami.public' --}}
+                 <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('tentang-kami.public') ? 'active' : '' }}" href="{{ route('tentang-kami.public') }}">Tentang Kami</a>
+                </li>
+                 {{-- Tambahkan kelas 'active' jika route saat ini adalah 'kontak.public' --}}
+                 <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('kontak.public') ? 'active' : '' }}" href="{{ route('kontak.public') }}">Kontak</a>
+                </li>
+
 
                 {{-- Dropdown "Lainnya" - Parent link aktif jika salah satu child aktif --}}
-                <li class="nav-item dropdown">
+                {{-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle
                         {{ request()->routeIs('tentang-kami.public') ||
                            request()->routeIs('kontak.public') ||
@@ -37,13 +46,13 @@
                        href="#" id="navbarDropdownMore" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Lainnya
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMore">
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMore"> --}}
                         {{-- Item dropdown juga bisa ditambahkan 'active' jika diperlukan, tapi biasanya cukup parent-nya --}}
-                        <li><a class="dropdown-item {{ request()->routeIs('tentang-kami.public') ? 'active' : '' }}" href="{{ route('tentang-kami.public') }}">Tentang Kami</a></li>
-                        <li><a class="dropdown-item {{ request()->routeIs('kontak.public') ? 'active' : '' }}" href="{{ route('kontak.public') }}">Kontak</a></li>
+                        {{-- <li><a class="dropdown-item {{ request()->routeIs('tentang-kami.public') ? 'active' : '' }}" href="{{ route('tentang-kami.public') }}">Tentang Kami</a></li>
+                        <li><a class="dropdown-item {{ request()->routeIs('kontak.public') ? 'active' : '' }}" href="{{ route('kontak.public') }}">Kontak</a></li> --}}
                         {{-- <li><a class="dropdown-item {{ request()->routeIs('testimonial.index') ? 'active' : '' }}" href="{{ route('testimonial.index') }}">Testimoni</a></li> --}}
-                    </ul>
-                </li>
+                    {{-- </ul>
+                </li> --}}
 
                  {{-- Authentication Links --}}
                  @guest
@@ -51,13 +60,6 @@
                         {{-- Tambahkan kelas 'active' jika route saat ini adalah 'login' --}}
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('login') ? 'active' : '' }}" href="{{ route('login') }}">Login</a>
-                        </li>
-                    @endif
-
-                    @if (Route::has('register'))
-                         {{-- Tambahkan kelas 'active' jika route saat ini adalah 'register' --}}
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('register') ? 'active' : '' }}" href="{{ route('register') }}">Register</a>
                         </li>
                     @endif
                 @else

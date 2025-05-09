@@ -77,7 +77,7 @@
                                     <!-- Modal Pilihan Pengiriman -->
                                     {{-- @include('layouts.modal.order') --}}
                                 @else
-                                    <a href="{{ route('login') }}" class="btn btn-sm btn-outline-primary">Login</a>
+                                    {{-- <a href="{{ route('login') }}" class="btn btn-sm btn-outline-primary">Login</a> --}}
                                 @endauth
                             </div>
                         </div>

@@ -23,9 +23,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#galeri">GALERI</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#tentangkami">TENTANG KAMI</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#kontak">KONTAK</a>
+                </li>
 
                 {{-- Dropdown "Lainnya" - Parent link aktif jika salah satu child aktif --}}
-                <li class="nav-item dropdown">
+                {{-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMore" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Lainnya
                     </a>
@@ -33,19 +39,13 @@
                         <li><a class="dropdown-item" href="#tentangkami">Tentang Kami</a></li>
                         <li><a class="dropdown-item" href="#kontak">Kontak</a></li>
                     </ul>
-                </li>
+                </li> --}}
 
                 {{-- Authentication Links --}}
                 @guest
                     @if (Route::has('login'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">Login</a>
-                        </li>
-                    @endif
-
-                    @if (Route::has('register'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">Register</a>
                         </li>
                     @endif
                 @else

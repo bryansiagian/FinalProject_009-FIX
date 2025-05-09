@@ -49,11 +49,6 @@
                                                 <td>
                                                     <div class="d-flex justify-content-center"> <!-- Membuat tombol berada di tengah -->
                                                         <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary btn-sm mr-2">Lihat Detail</a>
-                                                        <form action="{{ route('orders.destroy', $order) }}" method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus pesanan ini?')">Hapus</button>
-                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>

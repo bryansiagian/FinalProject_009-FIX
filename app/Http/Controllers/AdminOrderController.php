@@ -10,10 +10,31 @@ class AdminOrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::with('user')->orderBy('created_at', 'desc')->paginate(10); // Eager load relasi user
-        return view('admin.orders.index', compact('orders'));
+        $orders = Order::with('user')->latest();
+
+        // Filter berdasarkan status
+        if ($request->has('status') && $request->status != '') {
+            $orders->where('status', $request->status);
+        }
+
+        // Filter berdasarkan tanggal pembuatan pesanan (created_at)
+        if ($request->has('tanggal_pesanan') && $request->tanggal_pesanan != '') {
+            $orders->whereDate('created_at', $request->tanggal_pesanan);
+        }
+
+        // Filter berdasarkan pelanggan
+        if ($request->has('pelanggan') && $request->pelanggan != '') {
+            $orders->whereHas('user', function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->pelanggan . '%');
+            });
+        }
+
+        $orders = $orders->paginate(10);
+        $totalHargaSeluruhPesanan = Order::sum('total_amount');
+
+        return view('admin.orders.index', compact('orders', 'totalHargaSeluruhPesanan'));
     }
 
     /**

@@ -43,6 +43,7 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Daftar Pesanan</h6>
                                 </div>
                                 <div class="card-body">
+
                                     @if(session('success'))
                                         <div class="alert alert-success">
                                             {{ session('success') }}
@@ -58,6 +59,53 @@
                                             </ul>
                                         </div>
                                     @endif
+
+                                    <!-- Filter Form -->
+                                    <form action="{{ route('admin.orders.index') }}" method="GET">
+                                        <div class="form-row align-items-center mb-3">
+                                            <div class="col-auto">
+                                                <label class="mr-2">Status:</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <select class="form-control" name="status">
+                                                    <option value="">Semua Status</option>
+                                                    <option value="Pending" {{ request('status') == 'Pending' ? 'selected' : '' }}>Pending</option>
+                                                    <option value="Diproses" {{ request('status') == 'Diproses' ? 'selected' : '' }}>Diproses</option>
+                                                    <option value="Dikirim" {{ request('status') == 'Dikirim' ? 'selected' : '' }}>Dikirim</option>
+                                                    <option value="Selesai" {{ request('status') == 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                                                    <option value="Dibatalkan" {{ request('status') == 'Dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <label class="ml-2 mr-2">Tanggal Pesanan:</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="date" class="form-control" name="tanggal_pesanan" value="{{ request('tanggal_pesanan') }}">
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <label class="ml-2 mr-2">Pelanggan:</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" name="pelanggan" placeholder="Cari nama pelanggan" value="{{ request('pelanggan') }}">
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <button type="submit" class="btn btn-primary">Filter</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- End Filter Form -->
+
+                                    <!-- Total Harga Alert -->
+                                    <div class="alert alert-primary alert-heading d-flex align-items-center" role="alert">
+                                        <i class="fas fa-info-circle mr-2"></i>
+                                        <div>
+                                            Total Nilai Pesanan: <strong>Rp {{ number_format($totalHargaSeluruhPesanan, 0, ',', '.') }}</strong>
+                                        </div>
+                                    </div>
+                                    <!-- End Total Harga Alert -->
 
                                     <div class="table-responsive">
                                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
