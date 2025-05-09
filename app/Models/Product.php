@@ -16,4 +16,9 @@ class Product extends Model
         'stock',
         'image',
     ];
+
+    public function testimonials()
+    {
+        return $this->hasMany(Testimonial::class);
+    }
 }

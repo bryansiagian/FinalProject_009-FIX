@@ -41,7 +41,7 @@
                         {{-- Item dropdown juga bisa ditambahkan 'active' jika diperlukan, tapi biasanya cukup parent-nya --}}
                         <li><a class="dropdown-item {{ request()->routeIs('tentang-kami.public') ? 'active' : '' }}" href="{{ route('tentang-kami.public') }}">Tentang Kami</a></li>
                         <li><a class="dropdown-item {{ request()->routeIs('kontak.public') ? 'active' : '' }}" href="{{ route('kontak.public') }}">Kontak</a></li>
-                        <li><a class="dropdown-item {{ request()->routeIs('testimonial.index') ? 'active' : '' }}" href="{{ route('testimonial.index') }}">Testimoni</a></li>
+                        {{-- <li><a class="dropdown-item {{ request()->routeIs('testimonial.index') ? 'active' : '' }}" href="{{ route('testimonial.index') }}">Testimoni</a></li> --}}
                     </ul>
                 </li>
 

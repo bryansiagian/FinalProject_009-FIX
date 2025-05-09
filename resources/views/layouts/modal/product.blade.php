@@ -15,7 +15,6 @@
                         <p>{{ $product->description }}</p>
                         <p>Harga: Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                         <p>Stock: {{ $product->stock }}</p>
-                        <!-- Tambahkan informasi produk lainnya di sini -->
 
                         @auth
                             <form action="{{ route('cart.store', $product->id) }}" method="POST">
@@ -32,9 +31,54 @@
                         @else
                             <a href="{{ route('login') }}" class="btn btn-outline-primary">Login untuk Memesan</a>
                         @endauth
-
                     </div>
                 </div>
+
+                <hr>
+
+                <h4>Testimoni Pelanggan</h4>
+                @if ($product->testimonials->isNotEmpty())
+                    @foreach ($product->testimonials as $testimonial)
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $testimonial->user->name }}</h5>
+                                <p class="card-text">{{ $testimonial->content }}</p>
+                                @if ($testimonial->rating)
+                                    <p class="card-text">Rating: {{ $testimonial->rating }} / 5</p>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <p>Belum ada testimoni untuk produk ini.</p>
+                @endif
+
+                @auth
+                    <h4>Berikan Testimoni Anda</h4>
+                    <form action="{{ route('testimonial.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+                        <div class="form-group">
+                            <label for="content">Testimoni:</label>
+                            <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rating">Rating (opsional):</label>
+                            <select class="form-control" id="rating" name="rating">
+                                <option value="">Pilih Rating</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary">Kirim Testimoni</button>
+                    </form>
+                @endauth
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>

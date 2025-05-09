@@ -14,11 +14,16 @@ class Testimonial extends Model
         'content',
         'rating',
         'is_approved',
+        'product_id', // Tambahkan ini
     ];
 
-    // Relationship ke User
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 }

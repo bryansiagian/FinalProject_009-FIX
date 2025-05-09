@@ -11,6 +11,7 @@ class TestimonialController extends Controller
     public function index()
     {
         $testimonials = Testimonial::with('user')
+            ->whereNull('product_id') // Tambahkan kondisi ini
             ->latest()
             ->paginate(10); // Ambil 10 testimoni per halaman, yang sudah disetujui
 
@@ -31,17 +32,20 @@ class TestimonialController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'content' => 'required|string|max:500', // Contoh validasi
-            'rating' => 'nullable|integer|min:1|max:5', // Contoh validasi rating
+            'content' => 'required|string|max:500',
+            'rating' => 'nullable|integer|min:1|max:5',
+            'product_id' => 'required|exists:products,id', // Validasi product_id
         ]);
 
         Testimonial::create([
-            'user_id' => Auth::id(), // Menggunakan user yang sedang login
+            'user_id' => Auth::id(),
             'content' => $request->content,
             'rating' => $request->rating,
+            'product_id' => $request->product_id, // Simpan product_id
         ]);
 
-        return redirect()->route('testimonial.index')->with('success', 'Testimoni Anda berhasil dikirim!'); // Redirect ke halaman profil
+        // Redirect kembali ke halaman detail produk
+        return redirect()->route('products.index', $request->product_id)->with('success', 'Testimoni Anda berhasil dikirim!');
     }
 
     public function editTestimonial(Testimonial $testimonial)

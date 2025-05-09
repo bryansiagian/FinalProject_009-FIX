@@ -13,6 +13,7 @@ use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\KontakController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,9 +26,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
 
 // **Route Publik (Guest/Pelanggan)**
 Route::get('/products', [ProductController::class, 'showFront'])->name('products.index');

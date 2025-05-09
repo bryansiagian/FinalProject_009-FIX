@@ -32,8 +32,9 @@ class ProductController extends Controller
         // 5. Ambil produk (misalnya diurutkan berdasarkan nama atau tanggal dibuat)
         // Ganti Product::all() dengan hasil query builder
         $products = $query->orderBy('created_at', 'desc')->get(); // Contoh: urutkan berdasarkan terbaru
-        // Atau jika ingin pagination:
-        // $products = $query->orderBy('created_at', 'desc')->paginate(12); // Tampilkan 12 produk per halaman
+        foreach ($products as $product) {
+            $product->load('testimonials.user');
+        }
 
         // 6. Kirim data produk yang sudah difilter ke view
         // Pastikan view 'products.index' adalah view yang menampilkan daftar produk untuk pelanggan
@@ -45,6 +46,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        $product->load('testimonials.user'); // Eager load testimonials dan user yang membuat
         return view('products.show', compact('product'));
     }
 
