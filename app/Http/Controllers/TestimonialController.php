@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Testimonial;
+use App\Models\Order; // Import model Order
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,7 +12,7 @@ class TestimonialController extends Controller
     public function index()
     {
         $testimonials = Testimonial::with('user')
-            ->whereNull('product_id') // Tambahkan kondisi ini
+            ->whereNull('product_id') // Tambahkan kondisi ini (ini untuk testimoni umum, bukan testimoni produk)
             ->latest()
             ->paginate(10); // Ambil 10 testimoni per halaman, yang sudah disetujui
 
@@ -37,15 +38,39 @@ class TestimonialController extends Controller
             'product_id' => 'required|exists:products,id', // Validasi product_id
         ]);
 
+        // Ambil user yang login
+        $user = Auth::user();
+
+        // Validasi apakah user sudah membeli produk ini
+        $hasPurchased = Order::where('user_id', $user->id)
+            ->whereHas('orderItems', function ($query) use ($request) {
+                $query->where('product_id', $request->product_id);
+            })
+            ->where('status', 'completed') // Atau sesuaikan dengan status order Anda
+            ->exists();
+
+        if (!$hasPurchased) {
+            return back()->withErrors(['message' => 'Anda belum membeli produk ini. Anda tidak bisa memberikan testimoni.'])->withInput();
+        }
+
+        // Validasi apakah user sudah memberikan testimoni untuk produk ini
+        $hasExistingTestimonial = Testimonial::where('user_id', $user->id)
+            ->where('product_id', $request->product_id)
+            ->exists();
+
+        if ($hasExistingTestimonial) {
+            return back()->withErrors(['message' => 'Anda sudah memberikan testimoni untuk produk ini.'])->withInput();
+        }
+
         Testimonial::create([
-            'user_id' => Auth::id(),
+            'user_id' => $user->id, // Gunakan $user->id
             'content' => $request->content,
             'rating' => $request->rating,
             'product_id' => $request->product_id, // Simpan product_id
         ]);
 
         // Redirect kembali ke halaman detail produk
-        return redirect()->route('products.index', $request->product_id)->with('success', 'Testimoni Anda berhasil dikirim!');
+        return redirect()->route('products.index', $request->product_id)->with('success', 'Testimoni Anda berhasil dikirim!'); // Ubah ke route yang benar
     }
 
     public function editTestimonial(Testimonial $testimonial)
@@ -76,7 +101,7 @@ class TestimonialController extends Controller
             'rating' => $request->rating,
         ]);
 
-        return redirect()->route('profile.index')->with('success', 'Testimoni Anda berhasil diperbarui!');
+        return redirect()->route('products.index')->with('success', 'Testimoni Anda berhasil diperbarui!');
     }
 
     // Menghapus testimoni
@@ -89,7 +114,7 @@ class TestimonialController extends Controller
 
         $testimonial->delete();
 
-        return redirect()->route('profile.index')->with('success', 'Testimoni Anda berhasil dihapus!');
+        return redirect()->route('products.index')->with('success', 'Testimoni Anda berhasil dihapus!');
     }
 
     public function testimonials()

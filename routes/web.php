@@ -67,7 +67,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/testimonial/{testimonial}', [TestimonialController::class, 'updateTestimonial'])->name('testimonial.update');
     Route::delete('/testimonial/{testimonial}', [TestimonialController::class, 'destroyTestimonial'])->name('testimonial.destroy');
 
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index'); //Ini sudah benar
 });
 
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
