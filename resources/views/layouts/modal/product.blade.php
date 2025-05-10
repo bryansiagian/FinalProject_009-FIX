@@ -40,6 +40,48 @@
 
                 <h4>Testimoni Pelanggan</h4>
 
+                @php
+                    // Dapatkan testimoni terkait produk ini, dengan eager load relasi 'user'
+                    $testimonials = $product->testimonials()->with('user')->get();
+                @endphp
+
+                @if ($testimonials->isNotEmpty())
+                    @foreach ($testimonials as $testimoni)
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title">{{ $testimoni->user->name }}</h5> <!-- Tampilkan nama user -->
+
+                                    @auth
+                                        @if(auth()->id() == $testimoni->user_id)
+                                            <!-- Hanya tampilkan dropdown jika ini testimoni user yang login -->
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton{{ $testimoni->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v"></i> <!-- Ikon titik tiga (Font Awesome) -->
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton{{ $testimoni->id }}">
+                                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editTestimonialModal" data-testimonial="{{ json_encode($testimoni) }}">Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('delete-testimonial-form-{{ $testimoni->id }}').submit();">Hapus</a></li>
+                                                </ul>
+                                                <form id="delete-testimonial-form-{{ $testimoni->id }}" action="{{ route('testimonial.destroy', $testimoni->id) }}" method="POST" style="display: none;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                </form>
+                                            </div>
+                                        @endif
+                                    @endauth
+                                </div>
+                                <p class="card-text">{{ $testimoni->content }}</p>
+                                @if ($testimoni->rating)
+                                    <p class="card-text">Rating: {{ $testimoni->rating }} / 5</p>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <p>Belum ada testimoni untuk produk ini.</p>
+                @endif
+
                 @auth
                     @php
                         $hasPurchased = App\Models\Order::where('user_id', auth()->id())
@@ -53,41 +95,6 @@
                             ->where('product_id', $product->id)
                             ->first(); // Ambil testimoni user yang login
                     @endphp
-
-                    @if ($product->testimonials->isNotEmpty())
-                        @foreach ($product->testimonials as $testimoni)
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h5 class="card-title">{{ $testimoni->user->name }}</h5> <!-- Tampilkan nama user -->
-
-                                        @if(auth()->id() == $testimoni->user_id)
-                                            <!-- Hanya tampilkan dropdown jika ini testimoni user yang login -->
-                                            <div class="dropdown">
-                                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton{{ $testimoni->id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i> <!-- Ikon titik tiga (Font Awesome) -->
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton{{ $testimoni->id }}">
-                                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editTestimonialModal">Edit</a></li> <!-- Target ke modal yang sama -->
-                                                    <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('delete-testimonial-form-{{ $testimoni->id }}').submit();">Hapus</a></li>
-                                                </ul>
-                                                <form id="delete-testimonial-form-{{ $testimoni->id }}" action="{{ route('testimonial.destroy', $testimoni->id) }}" method="POST" style="display: none;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form>
-                                            </div>
-                                        @endif
-                                    </div>
-                                    <p class="card-text">{{ $testimoni->content }}</p>
-                                    @if ($testimoni->rating)
-                                        <p class="card-text">Rating: {{ $testimoni->rating }} / 5</p>
-                                    @endif
-                                </div>
-                            </div>
-                        @endforeach
-                    @else
-                        <p>Belum ada testimoni untuk produk ini.</p>
-                    @endif
 
                     @if($hasPurchased)
                         @if(!$testimonial)
@@ -133,7 +140,7 @@
                     @endif
 
                 @else
-                    <p>Silakan login untuk memberikan testimoni.</p>
+                    <p>Silakan melakukan <a href="{{ route('login') }}">pemesanan</a> untuk memberikan testimoni.</p>
                 @endauth
             </div>
             <div class="modal-footer">
@@ -152,32 +159,48 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                @if($testimonial)
-                <form action="{{ route('testimonial.update', $testimonial->id) }}" method="POST">
+                <form id="editTestimonialForm" method="POST">
                     @csrf
                     @method('PUT')
 
                     <div class="form-group">
                         <label for="content">Testimoni:</label>
-                        <textarea class="form-control" id="content" name="content" rows="3" required>{{ old('content', $testimonial->content) }}</textarea>
+                        <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="rating">Rating (opsional):</label>
                         <select class="form-control" id="rating" name="rating">
                             <option value="">Pilih Rating</option>
-                            <option value="1" {{ $testimonial->rating == 1 ? 'selected' : '' }}>1</option>
-                            <option value="2" {{ $testimonial->rating == 2 ? 'selected' : '' }}>2</option>
-                            <option value="3" {{ $testimonial->rating == 3 ? 'selected' : '' }}>3</option>
-                            <option value="4" {{ $testimonial->rating == 4 ? 'selected' : '' }}>4</option>
-                            <option value="5" {{ $testimonial->rating == 5 ? 'selected' : '' }}>5</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
                         </select>
                     </div>
                     <br>
                     <button type="submit" class="btn btn-primary">Update Testimoni</button>
                 </form>
-                @endif
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    $('#editTestimonialModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var testimonial = button.data('testimonial'); // Extract info from data-* attributes
+
+        var modal = $(this);
+
+        if (testimonial) {
+            modal.find('#content').val(testimonial.content);
+            modal.find('#rating').val(testimonial.rating);
+
+            // Set the form action dynamically
+            var form = modal.find('#editTestimonialForm');
+            form.attr('action', '/testimonial/' + testimonial.id); // Pastikan route ini benar
+        }
+    });
+</script>
