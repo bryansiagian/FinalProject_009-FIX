@@ -137,6 +137,7 @@
 </section>
 
 <!-- Pengumuman Section-->
+<!-- Pengumuman Section-->
 <section class="page-section bg-white" id="pengumuman">
     <div class="container">
         <div class="text-center">
@@ -154,7 +155,7 @@
             @if(count($pengumumen) > 0)
                 @foreach ($pengumumen->take(3) as $pengumuman) <!-- Menampilkan hanya 3 pengumuman pertama -->
                     <div class="col-md-4 mb-4">
-                        <div class="card pengumuman-card">
+                        <div class="card pengumuman-card" data-bs-toggle="modal" data-bs-target="#pengumumanModal{{ $pengumuman->id }}" style="cursor: pointer;">
                             @if($pengumuman->gambar)
                                 <img src="{{ asset('storage/pengumuman/' . $pengumuman->gambar) }}" class="card-img-top" alt="{{ $pengumuman->judul }}"
                                      style="height: 275px; object-fit: cover;">
@@ -164,11 +165,14 @@
                             @endif
                             <div class="card-body">
                                 <h5 class="card-title">{{ $pengumuman->judul }}</h5>
-                                <p class="card-text">{!! $pengumuman->isi !!}</p>
+                                <p class="card-text">{!! Str::limit($pengumuman->isi, 100) !!}</p> <!-- Batasi tampilan awal -->
                                 <p class="card-text tanggal">Tanggal: {{ $pengumuman->tanggal_publikasi->format('Y-m-d') }}</p>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Modal Pengumuman -->
+                    @include('layouts.modal.pengumuman')
                 @endforeach
             @else
                 <div class="col-12 text-center">
