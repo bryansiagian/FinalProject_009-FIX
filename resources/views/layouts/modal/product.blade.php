@@ -165,18 +165,18 @@
 
                     <div class="form-group">
                         <label for="content">Testimoni:</label>
-                        <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+                        <textarea class="form-control" id="edit_content" name="content" rows="3" required>{{ old('content') }}</textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="rating">Rating (opsional):</label>
-                        <select class="form-control" id="rating" name="rating">
+                        <select class="form-control" id="edit_rating" name="rating">
                             <option value="">Pilih Rating</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
+                            <option value="1" {{ old('rating') == 1 ? 'selected' : '' }}>1</option>
+                            <option value="2" {{ old('rating') == 2 ? 'selected' : '' }}>2</option>
+                            <option value="3" {{ old('rating') == 3 ? 'selected' : '' }}>3</option>
+                            <option value="4" {{ old('rating') == 4 ? 'selected' : '' }}>4</option>
+                            <option value="5" {{ old('rating') == 5 ? 'selected' : '' }}>5</option>
                         </select>
                     </div>
                     <br>
@@ -187,20 +187,23 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $('#editTestimonialModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // Button that triggered the modal
-        var testimonial = button.data('testimonial'); // Extract info from data-* attributes
+$('#editTestimonialModal').on('show.bs.modal', function (event) {
+    console.log("Modal edit dibuka!"); // Tambahkan ini
 
-        var modal = $(this);
+    var button = $(event.relatedTarget);
+    var testimonial = button.data('testimonial');
+    var modal = $(this);
 
-        if (testimonial) {
-            modal.find('#content').val(testimonial.content);
-            modal.find('#rating').val(testimonial.rating);
+    if (testimonial) {
 
-            // Set the form action dynamically
-            var form = modal.find('#editTestimonialForm');
-            form.attr('action', '/testimonial/' + testimonial.id); // Pastikan route ini benar
-        }
-    });
+        var form = modal.find('#editTestimonialForm');
+        var updateUrl = '{{ route("testimonial.update", ["testimonial" => ":id"]) }}'.replace(':id', testimonial.id);
+        form.attr('action', updateUrl);
+
+        console.log("URL Update: ", updateUrl); // Debugging
+
+    }
+});
 </script>

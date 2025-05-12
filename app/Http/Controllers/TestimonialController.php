@@ -88,7 +88,7 @@ class TestimonialController extends Controller
     {
         // Pastikan user yang login adalah pemilik testimoni
         if ($testimonial->user_id !== Auth::id()) {
-            abort(403, 'Anda tidak memiliki izin untuk mengedit testimoni ini.'); // Atau redirect ke halaman lain
+            abort(403, 'Anda tidak memiliki izin untuk mengedit testimoni ini.');
         }
 
         $request->validate([
