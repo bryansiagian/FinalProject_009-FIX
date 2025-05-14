@@ -13,31 +13,27 @@ class ProductController extends Controller
     /**
      * Display a listing of the products (for guest/customers).
      */
-    public function showFront(Request $request) // 1. Tambahkan Request $request
+    public function showFront(Request $request)
     {
-        // 2. Ambil keyword pencarian dari request
         $searchTerm = $request->input('search');
+        $category = $request->input('category'); // Ambil nilai kategori dari request
 
-        // 3. Mulai query builder
         $query = Product::query();
 
-        // 4. Jika ada keyword pencarian, tambahkan kondisi WHERE
         if ($searchTerm) {
-            // Cari produk yang namanya mengandung $searchTerm (case-insensitive tergantung konfigurasi DB)
             $query->where('name', 'LIKE', '%' . $searchTerm . '%');
-            // Jika ingin mencari di deskripsi juga, uncomment baris di bawah dan sesuaikan:
-            // $query->orWhere('description', 'LIKE', '%' . $searchTerm . '%');
         }
 
-        // 5. Ambil produk (misalnya diurutkan berdasarkan nama atau tanggal dibuat)
-        // Ganti Product::all() dengan hasil query builder
-        $products = $query->orderBy('created_at', 'desc')->get(); // Contoh: urutkan berdasarkan terbaru
+        // Tambahkan filter kategori jika ada
+        if ($category) {
+            $query->where('category', $category);
+        }
+
+        $products = $query->orderBy('created_at', 'desc')->get();
         foreach ($products as $product) {
             $product->load('testimonials.user');
         }
 
-        // 6. Kirim data produk yang sudah difilter ke view
-        // Pastikan view 'products.index' adalah view yang menampilkan daftar produk untuk pelanggan
         return view('products.index', compact('products'));
     }
 
@@ -46,7 +42,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $product->load('testimonials.user'); // Eager load testimonials dan user yang membuat
+        $product->load('testimonials.user');
         return view('products.show', compact('product'));
     }
 
@@ -66,7 +62,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.products.create');
+        // Daftar kategori yang valid (sesuai dengan enum di migration)
+        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall'];
+        return view('admin.products.create', compact('categories')); // Kirim data kategori ke view
     }
 
     /**
@@ -74,12 +72,16 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // Daftar kategori yang valid (sesuai dengan enum di migration)
+        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall'];
+
         $request->validate([
             'name' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
-            'stock' => 'required|integer|min:0', // Tambahkan validasi stock
+            'stock' => 'required|integer|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'category' => 'nullable|in:' . implode(',', $categories), // Validasi kategori
         ]);
 
         $data = $request->all();
@@ -102,7 +104,9 @@ class ProductController extends Controller
      */
     public function edit(Product $products)
     {
-        return view('admin.products.edit', compact('products'));
+        // Daftar kategori yang valid (sesuai dengan enum di migration)
+        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall'];
+        return view('admin.products.edit', compact('products', 'categories')); // Kirim data produk dan kategori ke view
     }
 
     /**
@@ -110,18 +114,22 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $products)
     {
+        // Daftar kategori yang valid (sesuai dengan enum di migration)
+        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall'];
+
         $request->validate([
             'name' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
-             'stock' => 'required|integer|min:0', // Tambahkan validasi stock
+            'stock' => 'required|integer|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'category' => 'nullable|in:' . implode(',', $categories), // Validasi kategori
         ]);
 
         $data = $request->all();
 
         if ($request->hasFile('image')) {
-            Storage::disk('public')->delete($products->image); // Hapus kondisi if
+            Storage::disk('public')->delete($products->image);
 
             $image = $request->file('image');
             $imageName = time() . '_' . $image->getClientOriginalName();

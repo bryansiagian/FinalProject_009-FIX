@@ -102,6 +102,16 @@
                                             @enderror
                                         </div>
 
+                                        <div class="mb-3">
+                                            <label for="category">Kategori</label>
+                                            <select class="form-control" id="category" name="category">
+                                                <option value="">Pilih Kategori</option>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category }}">{{ $category }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
                                         <button type="submit" class="btn btn-primary">
                                             <i class="fas fa-save mr-2"></i>Simpan
                                         </button>

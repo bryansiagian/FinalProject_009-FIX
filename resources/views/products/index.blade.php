@@ -30,6 +30,34 @@
             </div>
         </div>
 
+        {{-- Filter Kategori --}}
+        <div class="row mb-3 justify-content-center">
+            <div class="col-md-4">
+                <form action="{{ route('products.index') }}" method="GET">
+                    <div class="input-group">
+                        <select class="form-select" name="category" aria-label="Pilih Kategori" onchange="this.form.submit()">
+                            <option value="">Semua Kategori</option>
+                            <option value="kantongan" {{ request('category') == 'kantongan' ? 'selected' : '' }}>Kantongan</option>
+                            <option value="gelas" {{ request('category') == 'gelas' ? 'selected' : '' }}>Gelas</option>
+                            <option value="sendok" {{ request('category') == 'sendok' ? 'selected' : '' }}>Sendok</option>
+                            <option value="mika" {{ request('category') == 'mika' ? 'selected' : '' }}>Mika</option>
+                            <option value="kotak" {{ request('category') == 'kotak' ? 'selected' : '' }}>Kotak</option>
+                            <option value="klip" {{ request('category') == 'klip' ? 'selected' : '' }}>Klip</option>
+                            <option value="pe" {{ request('category') == 'pe' ? 'selected' : '' }}>PE</option>
+                            <option value="pp" {{ request('category') == 'pp' ? 'selected' : '' }}>PP</option>
+                            <option value="kertas" {{ request('category') == 'kertas' ? 'selected' : '' }}>Kertas</option>
+                            <option value="botol" {{ request('category') == 'botol' ? 'selected' : '' }}>Botol</option>
+                            <option value="lakban" {{ request('category') == 'lakban' ? 'selected' : '' }}>Lakban</option>
+                            <option value="tali" {{ request('category') == 'tali' ? 'selected' : '' }}>Tali</option>
+                            <option value="karet" {{ request('category') == 'karet' ? 'selected' : '' }}>Karet</option>
+                            <option value="thinwall" {{ request('category') == 'thinwall' ? 'selected' : '' }}>Thinwall</option>
+                        </select>
+                    </div>
+                    <input type="hidden" name="search" value="{{ request('search') }}">
+                </form>
+            </div>
+        </div>
+
         @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -119,4 +147,3 @@
 </script>
 </body>
 </html>
-

@@ -70,6 +70,7 @@
                                                     <th>Gambar</th>
                                                     <th>Harga</th>
                                                     <th>Stok</th>
+                                                    <th>Kategori</th> <!-- Kolom Kategori -->
                                                     <th class="text-center">Aksi</th>
                                                 </tr>
                                             </thead>
@@ -87,6 +88,7 @@
                                                         </td>
                                                         <td>Rp. {{ number_format($item->price, 0, ',', '.') }}</td>
                                                         <td>{{ $item->stock }}</td>
+                                                        <td>{{ $item->category }}</td> <!-- Tampilkan Kategori -->
                                                         <td class="text-center">
                                                             <div class="d-flex justify-content-center">
                                                                 <a href="{{ route('admin.products.edit', ['products' => $item->id]) }}" class="btn btn-sm btn-warning btn-action mr-1">
