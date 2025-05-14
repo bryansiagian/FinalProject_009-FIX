@@ -16,10 +16,10 @@
    Halaman Kontak (kontak.index)
    ========================================================================== */
 
-/* #kontak {
+#kontak {
     background: linear-gradient(to bottom, #ffffff, #f8f9fa);
     padding: 5rem 0;
-} */
+}
 
 .contact-card {
     border: none;
@@ -72,10 +72,10 @@
    Halaman Tentang Kami (tentang-kami.index)
    ========================================================================== */
 
-/* #tentangkami {
+#tentangkami {
     background: linear-gradient(to bottom, #f8f9fa, #ffffff);
     padding: 5rem 0;
-} */
+}
 
 .about-card {
     border: none;
@@ -118,10 +118,10 @@
    Halaman Pengumuman (pengumuman.index)
    ========================================================================== */
 
-/* #pengumuman {
+#pengumuman {
     background: linear-gradient(to bottom, #f8f9fa, #ffffff);
     padding: 5rem 0;
-} */
+}
 
 .pengumuman-card {
     border: none;
@@ -224,10 +224,10 @@
    Halaman Galeri (galeri.index)
    ========================================================================== */
 
-/* #galeri {
+#galeri {
     background: linear-gradient(to bottom, #ffffff, #f8f9fa);
     padding: 5rem 0;
-} */
+}
 
 .galeri-card {
     border: none;
@@ -266,10 +266,10 @@
    Halaman Testimoni (testimonial.index)
    ========================================================================== */
 
-/* #testimonials {
+#testimonials {
     background: linear-gradient(to bottom, #ffffff, #f8f9fa);
     padding: 5rem 0;
-} */
+}
 
 .testimonial-card {
     border: none;
@@ -681,5 +681,3 @@
   }
 
 /* ==========================================================================
-
-
