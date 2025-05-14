@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Foreign key ke tabel users
+            $table->unsignedBigInteger('product_id')->nullable(); // Foreign Key ke tabel products
             $table->text('content'); // Isi testimoni
             $table->integer('rating')->nullable(); // Rating (opsional, misalnya skala 1-5)
-            $table->boolean('is_approved')->default(false); // Status persetujuan (opsional, untuk moderasi)
             $table->timestamps();
+
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

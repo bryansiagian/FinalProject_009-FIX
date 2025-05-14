@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('telepon')->nullable();
             $table->string('email')->nullable();
             $table->text('peta')->nullable(); // Kode embed peta
-            $table->boolean('is_active')->default(false); // Menandai record yang aktif
+            $table->unsignedBigInteger('user_id')->nullable(); // Tambahkan foreign key
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL'); //Definisikan foreign key
             $table->timestamps();
         });
     }

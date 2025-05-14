@@ -10,11 +10,10 @@ class TentangKami extends Model
     use HasFactory;
 
     protected $table = 'tentang_kami';
-    protected $fillable = ['nama_toko', 'alamat', 'sejarah', 'deskripsi', 'is_active'];
+    protected $fillable = ['nama_toko', 'alamat', 'sejarah', 'deskripsi', 'user_id']; // Hapus is_active dan tambahkan user_id
 
-    // Mendapatkan record yang aktif
-    public static function getActive()
+    public function user()
     {
-        return self::where('is_active', true)->first();
+        return $this->belongsTo(User::class);
     }
 }

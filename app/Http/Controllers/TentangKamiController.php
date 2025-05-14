@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TentangKami;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TentangKamiController extends Controller
 {
@@ -34,15 +35,12 @@ class TentangKamiController extends Controller
             'alamat' => 'nullable',
             'sejarah' => 'nullable',
             'deskripsi' => 'nullable',
-            'is_active' => 'sometimes|boolean', // 'sometimes' karena bisa tidak ada di form
         ]);
 
-        // Deactivate all other active records
-        if ($request->is_active) {
-            TentangKami::where('is_active', true)->update(['is_active' => false]);
-        }
+        $data = $request->all();
+        $data['user_id'] = Auth::id(); // Dapatkan ID user yang login
 
-        TentangKami::create($request->all());
+        TentangKami::create($data);
 
         return redirect()->route('admin.tentang-kami.index')
             ->with('success', 'Informasi Tentang Kami berhasil ditambahkan.');
@@ -74,15 +72,12 @@ class TentangKamiController extends Controller
             'alamat' => 'nullable',
             'sejarah' => 'nullable',
             'deskripsi' => 'nullable',
-            'is_active' => 'sometimes|boolean', // 'sometimes' karena bisa tidak ada di form
         ]);
 
-        // Deactivate all other active records
-        if ($request->is_active) {
-            TentangKami::where('is_active', true)->where('id', '!=', $tentang_kami->id)->update(['is_active' => false]);
-        }
+        $data = $request->all();
+        $data['user_id'] = Auth::id(); // Dapatkan ID user yang login
 
-        $tentang_kami->update($request->all());
+        $tentang_kami->update($data);
 
         return redirect()->route('admin.tentang-kami.index')
             ->with('success', 'Informasi Tentang Kami berhasil diperbarui.');
@@ -103,7 +98,7 @@ class TentangKamiController extends Controller
      */
     public function showFront()
     {
-        $tentang_kami = TentangKami::getActive(); // Ambil yang aktif
+        $tentang_kami = TentangKami::first(); // Ambil yang pertama
         return view('tentang-kami.index', compact('tentang_kami')); // Tampilkan di halaman depan
     }
 }

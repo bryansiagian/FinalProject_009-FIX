@@ -166,7 +166,8 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $pengumuman->judul }}</h5>
                                 <p class="card-text">{!! Str::limit($pengumuman->isi, 100) !!}</p> <!-- Batasi tampilan awal -->
-                                <p class="card-text tanggal">Tanggal: {{ $pengumuman->tanggal_publikasi->format('Y-m-d') }}</p>
+                                <p>Dibuat pada: {{ $pengumuman->created_at->format('d M Y H:i') }}</p>
+                                <p>Terakhir diperbarui: {{ $pengumuman->updated_at->format('d M Y H:i') }}</p>
                             </div>
                         </div>
                     </div>

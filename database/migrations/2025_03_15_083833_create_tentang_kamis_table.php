@@ -17,7 +17,8 @@ return new class extends Migration
             $table->text('alamat')->nullable();
             $table->text('sejarah')->nullable();
             $table->text('deskripsi')->nullable();
-            $table->boolean('is_active')->default(false); // Menandai record yang aktif
+            $table->unsignedBigInteger('user_id')->nullable(); // Tambahkan foreign key
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL'); //Definisikan foreign key
             $table->timestamps();
         });
     }

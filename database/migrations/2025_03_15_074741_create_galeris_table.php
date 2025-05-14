@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('nama_gambar'); //Nama file gambar
             $table->string('path'); // Path ke file gambar (di dalam storage)
             $table->text('deskripsi')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable(); // Tambahkan foreign key
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL'); //Definisikan foreign key
             $table->timestamps();
         });
     }

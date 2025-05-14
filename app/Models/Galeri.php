@@ -15,5 +15,11 @@ class Galeri extends Model
         'nama_gambar',
         'path',
         'deskripsi',
+        'user_id', // Tambahkan user_id ke fillable
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

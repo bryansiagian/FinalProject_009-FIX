@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Pengumuman;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; // Import Auth facade
+use Illuminate\Support\Facades\Storage; // Import Storage facade
+
 
 class PengumumanController extends Controller
 {
@@ -12,7 +15,7 @@ class PengumumanController extends Controller
      */
     public function index()
     {
-        $pengumumen = Pengumuman::all(); // Ambil semua pengumuman dari database
+        $pengumumen = Pengumuman::all();
         return view('admin.pengumuman.index', compact('pengumumen'));
     }
 
@@ -32,8 +35,7 @@ class PengumumanController extends Controller
         $request->validate([
             'judul' => 'required',
             'isi' => 'required',
-            'tanggal_publikasi' => 'nullable|date',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi gambar
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $data = $request->all();
@@ -41,9 +43,11 @@ class PengumumanController extends Controller
         if ($request->hasFile('gambar')) {
             $gambar = $request->file('gambar');
             $namaGambar = time() . '.' . $gambar->getClientOriginalExtension();
-            $path = $gambar->storeAs('public/pengumuman', $namaGambar); // Simpan gambar di storage/app/public/pengumuman
-            $data['gambar'] = $namaGambar; // Simpan nama file saja ke database
+            $path = $gambar->storeAs('public/pengumuman', $namaGambar);
+            $data['gambar'] = $namaGambar;
         }
+
+        $data['user_id'] = Auth::id();
 
         Pengumuman::create($data);
 
@@ -61,8 +65,8 @@ class PengumumanController extends Controller
 
     public function showPengumumanPublic()
     {
-        $pengumumen = Pengumuman::orderBy('created_at', 'desc')->get(); // Ambil SEMUA pengumuman dari database
-        return view('pengumuman.index', compact('pengumumen')); // Kirim ke view pengumuman.index
+        $pengumumen = Pengumuman::orderBy('created_at', 'desc')->get();
+        return view('pengumuman.index', compact('pengumumen'));
     }
 
     /**
@@ -81,23 +85,23 @@ class PengumumanController extends Controller
         $request->validate([
             'judul' => 'required',
             'isi' => 'required',
-            'tanggal_publikasi' => 'nullable|date',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi gambar
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $data = $request->all();
 
         if ($request->hasFile('gambar')) {
-            // Hapus gambar lama jika ada
             if ($pengumuman->gambar) {
                 Storage::delete('public/pengumuman/' . $pengumuman->gambar);
             }
 
             $gambar = $request->file('gambar');
             $namaGambar = time() . '.' . $gambar->getClientOriginalExtension();
-            $path = $gambar->storeAs('public/pengumuman', $namaGambar); // Simpan gambar di storage/app/public/pengumuman
+            $path = $gambar->storeAs('public/pengumuman', $namaGambar);
             $data['gambar'] = $namaGambar;
         }
+
+        $data['user_id'] = Auth::id();
 
         $pengumuman->update($data);
 
@@ -110,6 +114,10 @@ class PengumumanController extends Controller
      */
     public function destroy(Pengumuman $pengumuman)
     {
+        //Hapus gambar sebelum menghapus pengumuman
+        if ($pengumuman->gambar) {
+            Storage::delete('public/pengumuman/' . $pengumuman->gambar);
+        }
         $pengumuman->delete();
 
         return redirect()->route('admin.pengumuman.index')

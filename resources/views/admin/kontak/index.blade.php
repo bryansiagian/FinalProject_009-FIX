@@ -121,13 +121,6 @@
                                                             </div>
                                                         </td>
                                                         <td class="text-center">
-                                                            @if($kontak->is_active)
-                                                                <span class="badge bg-success">Ya</span>
-                                                            @else
-                                                                <span class="badge bg-secondary">Tidak</span>
-                                                            @endif
-                                                        </td>
-                                                        <td class="text-center">
                                                             <div class="d-flex justify-content-center">
                                                                 <a href="{{ route('admin.kontak.edit', $kontak->id) }}" class="btn btn-sm btn-warning btn-action mr-1">
                                                                     <i class="fas fa-edit mr-2"></i>Edit

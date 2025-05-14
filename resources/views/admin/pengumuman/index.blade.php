@@ -61,6 +61,7 @@
                                             <th>Isi</th>
                                             <th>Gambar</th>
                                             <th>Tanggal Publikasi</th>
+                                            <th>Tanggal Diedit</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
@@ -77,7 +78,8 @@
                                                         Tidak ada gambar
                                                     @endif
                                                 </td>
-                                                <td>{{ $pengumuman->tanggal_publikasi->format('Y-m-d') }}</td>
+                                                <td>{{ $pengumuman->created_at->format('d M Y H:i') }}</td>
+                                                <td>{{ $pengumuman->updated_at->format('d M Y H:i') }}</td>
                                                 <td class="text-center">
                                                     <div class="d-flex justify-content-center">
                                                         <a href="{{ route('admin.pengumuman.show', $pengumuman->id) }}" class="btn btn-sm btn-info btn-action mr-1">

@@ -68,7 +68,6 @@
                                                     <th>Alamat</th>
                                                     <th>Sejarah</th>
                                                     <th>Deskripsi</th>
-                                                    <th>Aktif</th>
                                                     <th class="text-center">Aksi</th>
                                                 </tr>
                                             </thead>
@@ -79,13 +78,6 @@
                                                         <td>{{ $tentangKami->alamat }}</td>
                                                         <td>{{ $tentangKami->sejarah }}</td>
                                                         <td>{{ $tentangKami->deskripsi }}</td>
-                                                        <td class="text-center">
-                                                            @if($tentangKami->is_active)
-                                                                <span class="badge bg-success">Ya</span>
-                                                            @else
-                                                                <span class="badge bg-secondary">Tidak</span>
-                                                            @endif
-                                                        </td>
                                                         <td class="text-center">
                                                             <div class="d-flex justify-content-center">
                                                                 <a href="{{ route('admin.tentang-kami.edit', $tentangKami->id) }}" class="btn btn-sm btn-warning btn-action mr-1">

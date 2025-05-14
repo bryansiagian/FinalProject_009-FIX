@@ -23,7 +23,7 @@ class User extends Authenticatable
         'password',
         'shipping_address',
         'phone_number',
-        'is_admin',
+        'role', // Tambahkan 'role' ke daftar fillable
     ];
 
     /**
@@ -45,4 +45,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // Tambahkan method untuk memeriksa peran
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
 }

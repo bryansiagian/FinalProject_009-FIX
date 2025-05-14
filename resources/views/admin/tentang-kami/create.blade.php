@@ -53,15 +53,6 @@
                                     <textarea class="form-control" id="deskripsi" name="deskripsi" rows="5">{{ old('deskripsi') }}</textarea>
                                 </div>
 
-                                 <div class="mb-3">
-                                    <label for="is_active" class="form-label">Status</label>
-                                    <select class="form-control" id="is_active" name="is_active">
-                                        <option value="1" {{ old('is_active') == 1 ? 'selected' : '' }}>Aktif</option>
-                                        <option value="0" {{ old('is_active') == 0 ? 'selected' : '' }}>Tidak Aktif</option>
-                                    </select>
-                                </div>
-
-
                                 <button type="submit" class="btn btn-primary">Simpan</button>
                                 <a href="{{ route('admin.tentang-kami.index') }}" class="btn btn-secondary">Batal</a>
                             </form>

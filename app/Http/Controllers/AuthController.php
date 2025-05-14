@@ -22,8 +22,8 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'shipping_address' => 'required|string|max:255', // Tambahkan validasi
-            'phone_number' => 'required|string|max:20', // Tambahkan validasi
+            'shipping_address' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:20',
         ]);
 
         if ($validator->fails()) {
@@ -34,8 +34,8 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'shipping_address' => $request->shipping_address, // Tambahkan ini
-            'phone_number' => $request->phone_number, // Tambahkan ini
+            'shipping_address' => $request->shipping_address,
+            'phone_number' => $request->phone_number,
         ]);
 
         Auth::login($user);
@@ -61,7 +61,7 @@ class AuthController extends Controller
 
             $user = Auth::user(); // Dapatkan user yang login
 
-            if ($user->is_admin) {
+            if ($user->isAdmin()) {  // Gunakan method isAdmin()
                 return redirect()->route('admin.dashboard')->with('success', 'Login berhasil sebagai admin!');
             } else {
                 return redirect()->route('welcome')->with('success', 'Login berhasil!');

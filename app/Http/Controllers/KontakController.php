@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kontak;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KontakController extends Controller
 {
@@ -34,15 +35,12 @@ class KontakController extends Controller
             'telepon' => 'nullable',
             'email' => 'nullable|email',
             'peta' => 'nullable',
-            'is_active' => 'sometimes|boolean',
         ]);
 
-        // Deactivate all other active records
-        if ($request->is_active) {
-            Kontak::where('is_active', true)->update(['is_active' => false]);
-        }
+        $data = $request->all();
+        $data['user_id'] = Auth::id(); // Dapatkan ID user yang login
 
-        Kontak::create($request->all());
+        Kontak::create($data);
 
         return redirect()->route('admin.kontak.index')
             ->with('success', 'Informasi Kontak berhasil ditambahkan.');
@@ -74,15 +72,12 @@ class KontakController extends Controller
             'telepon' => 'nullable',
             'email' => 'nullable|email',
             'peta' => 'nullable',
-            'is_active' => 'sometimes|boolean',
         ]);
 
-         // Deactivate all other active records
-        if ($request->is_active) {
-            Kontak::where('is_active', true)->where('id', '!=', $kontak->id)->update(['is_active' => false]);
-        }
+        $data = $request->all();
+        $data['user_id'] = Auth::id(); // Dapatkan ID user yang login
 
-        $kontak->update($request->all());
+        $kontak->update($data);
 
         return redirect()->route('admin.kontak.index')
             ->with('success', 'Informasi Kontak berhasil diperbarui.');
@@ -104,7 +99,7 @@ class KontakController extends Controller
      */
     public function showFront()
     {
-        $kontak = Kontak::getActive(); // Ambil yang aktif
+        $kontak = Kontak::first(); // Ambil yang pertama
         return view('kontak.index', compact('kontak')); // Tampilkan di halaman depan
     }
 }

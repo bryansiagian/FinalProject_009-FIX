@@ -10,11 +10,10 @@ class Kontak extends Model
     use HasFactory;
 
     protected $table = 'kontak';
-    protected $fillable = ['alamat', 'telepon', 'email', 'peta', 'is_active'];
+    protected $fillable = ['alamat', 'telepon', 'email', 'peta', 'user_id']; // Hapus is_active dan tambahkan user_id
 
-    // Mendapatkan record yang aktif
-    public static function getActive()
+    public function user()
     {
-        return self::where('is_active', true)->first();
+        return $this->belongsTo(User::class);
     }
 }

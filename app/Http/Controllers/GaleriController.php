@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Galeri;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth; // Tambahkan import Auth
 
 class GaleriController extends Controller
 {
@@ -43,6 +44,7 @@ class GaleriController extends Controller
             'nama_gambar' => $namaGambar,
             'path' => $path,
             'deskripsi' => $request->deskripsi,
+            'user_id' => Auth::id(), // Dapatkan ID user yang login
         ]);
 
         return redirect()->route('admin.galeri.index') // Route admin
@@ -67,6 +69,12 @@ class GaleriController extends Controller
             'deskripsi' => 'nullable',
         ]);
 
+        $data = [
+            'nama_gambar' => $request->nama_gambar,
+            'deskripsi' => $request->deskripsi,
+            'user_id' => Auth::id(), // Dapatkan ID user yang login
+        ];
+
         if ($request->hasFile('gambar')) {
             // Hapus gambar lama
             Storage::disk('public')->delete($galeri->path);
@@ -75,17 +83,12 @@ class GaleriController extends Controller
             $namaGambar = time() . '_' . $gambar->getClientOriginalName();
             $path = $gambar->storeAs('gambar', $namaGambar, 'public');
 
-            $galeri->update([
-                'nama_gambar' => $namaGambar,
-                'path' => $path,
-                'deskripsi' => $request->deskripsi,
-            ]);
-        } else {
-            $galeri->update([
-                'nama_gambar' => $request->nama_gambar,
-                'deskripsi' => $request->deskripsi,
-            ]);
+            $data['path'] = $path;
+            $data['nama_gambar'] = $namaGambar;
+
         }
+
+        $galeri->update($data);
 
         return redirect()->route('admin.galeri.index') // Route admin
             ->with('success', 'Gambar berhasil diperbarui.');

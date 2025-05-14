@@ -87,14 +87,6 @@
                                             @enderror
                                         </div>
 
-                                        <div class="mb-3">
-                                            <label for="tanggal_publikasi" class="form-label">Tanggal Publikasi:</label>
-                                            <input type="date" class="form-control @error('tanggal_publikasi') is-invalid @enderror" id="tanggal_publikasi" name="tanggal_publikasi" value="{{ old('tanggal_publikasi') }}">
-                                            @error('tanggal_publikasi')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
                                         <button type="submit" class="btn btn-primary">
                                             <i class="fas fa-save mr-2"></i>Simpan
                                         </button>

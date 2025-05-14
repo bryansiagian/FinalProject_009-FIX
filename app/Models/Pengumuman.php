@@ -12,11 +12,12 @@ class Pengumuman extends Model
     protected $fillable = [
         'judul',
         'isi',
-        'gambar', // Tambahkan 'gambar' ke sini
-        'tanggal_publikasi',
+        'gambar',
+        'user_id', // Ditambahkan
     ];
 
-    protected $casts = [
-        'tanggal_publikasi' => 'datetime', // Atau 'timestamp' jika tipe data kolom Anda adalah timestamp
-    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -17,7 +17,9 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->is_admin) {
+        $user = Auth::user(); // Tambahkan ini (pastikan ini ada)
+
+        if (Auth::check() && $user->isAdmin()) { // Pastikan ini menggunakan $user yang didefinisikan sebelumnya
             return $next($request);
         }
 

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', ['admin', 'customer'])->default('customer');
             $table->text('shipping_address')->nullable();  // Hapus after
             $table->string('phone_number', 20)->nullable(); // Hapus after
             $table->rememberToken();

@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('judul');
             $table->text('isi');
-            $table->string('gambar')->nullable(); // Kolom untuk menyimpan nama file gambar
-            $table->timestamp('tanggal_publikasi')->nullable();
+            $table->string('gambar')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable(); // Pastikan ini ada
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL');
             $table->timestamps();
         });
     }
