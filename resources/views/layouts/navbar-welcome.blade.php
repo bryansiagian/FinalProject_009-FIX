@@ -49,32 +49,33 @@
                         </li>
                     @endif
                 @else
-                    {{-- User Dropdown --}}
-                    <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ Auth::user()->name }}
-                        </a>
 
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('orders.index') }}">Riwayat Pesanan</a>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">
-                                Logout
-                            </a>
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </div>
-                    </li>
+                    {{-- Riwayat Pesanan --}}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('cart.index')}}">KERANJANG</a>
+                        <a class="nav-link {{ request()->routeIs('orders.index') ? 'active' : '' }}" href="{{ route('orders.index') }}">Riwayat Pesanan</a>
                     </li>
 
-                    @if(Auth::check() && Auth::user()->is_admin)
+                    {{-- Keranjang --}}
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('cart.index') ? 'active' : '' }}" href="{{ route('cart.index')}}">KERANJANG</a>
+                    </li>
+
+                    {{-- Logout --}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                         document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </li>
+
+                    {{-- Dashboard Admin --}}
+                    @if(Auth::check() && Auth::user()->is_admin) {{-- Pastikan method is_admin ada atau sesuaikan kondisinya --}}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
+                            <a class="nav-link {{ request()->routeIs('admin.dashboard*') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
                         </li>
                     @endif
                 @endguest

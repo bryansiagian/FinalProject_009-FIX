@@ -37,25 +37,8 @@
                 </li>
 
 
-                {{-- Dropdown "Lainnya" - Parent link aktif jika salah satu child aktif --}}
-                {{-- <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle
-                        {{ request()->routeIs('tentang-kami.public') ||
-                           request()->routeIs('kontak.public') ||
-                           request()->routeIs('testimonial.index') ? 'active' : '' }}"
-                       href="#" id="navbarDropdownMore" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Lainnya
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMore"> --}}
-                        {{-- Item dropdown juga bisa ditambahkan 'active' jika diperlukan, tapi biasanya cukup parent-nya --}}
-                        {{-- <li><a class="dropdown-item {{ request()->routeIs('tentang-kami.public') ? 'active' : '' }}" href="{{ route('tentang-kami.public') }}">Tentang Kami</a></li>
-                        <li><a class="dropdown-item {{ request()->routeIs('kontak.public') ? 'active' : '' }}" href="{{ route('kontak.public') }}">Kontak</a></li> --}}
-                        {{-- <li><a class="dropdown-item {{ request()->routeIs('testimonial.index') ? 'active' : '' }}" href="{{ route('testimonial.index') }}">Testimoni</a></li> --}}
-                    {{-- </ul>
-                </li> --}}
-
-                 {{-- Authentication Links --}}
-                 @guest
+                {{-- Authentication Links --}}
+                @guest
                     @if (Route::has('login'))
                         {{-- Tambahkan kelas 'active' jika route saat ini adalah 'login' --}}
                         <li class="nav-item">
@@ -63,36 +46,33 @@
                         </li>
                     @endif
                 @else
-                    {{-- User Dropdown - Parent biasanya tidak perlu 'active', tapi item di dalamnya bisa --}}
-                    <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ Auth::user()->name }}
-                        </a>
 
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            {{-- Tambahkan kelas 'active' jika route saat ini adalah 'orders.index' --}}
-                            <a class="dropdown-item {{ request()->routeIs('orders.index') ? 'active' : '' }}" href="{{ route('orders.index') }}">Riwayat Pesanan</a>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">
-                                Logout
-                            </a>
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </div>
+                    {{-- Riwayat Pesanan --}}
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('orders.index') ? 'active' : '' }}" href="{{ route('orders.index') }}">Riwayat Pesanan</a>
                     </li>
-                     {{-- Tambahkan kelas 'active' jika route saat ini adalah 'cart.index' --}}
+
+                    {{-- Keranjang --}}
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('cart.index') ? 'active' : '' }}" href="{{ route('cart.index')}}">KERANJANG</a>
                     </li>
 
-                    {{-- Tambahkan kelas 'active' jika route saat ini adalah 'admin.dashboard' (atau admin.* jika perlu lebih luas) --}}
+                    {{-- Logout --}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                         document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </li>
+
+                    {{-- Dashboard Admin --}}
                     @if(Auth::check() && Auth::user()->is_admin) {{-- Pastikan method is_admin ada atau sesuaikan kondisinya --}}
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.dashboard*') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
-                            {{-- Menggunakan 'admin.dashboard*' akan membuatnya aktif jika URL dimulai dengan route 'admin.dashboard', berguna jika ada sub-halaman dashboard --}}
                         </li>
                     @endif
                 @endguest

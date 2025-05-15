@@ -63,7 +63,7 @@ class ProductController extends Controller
     public function create()
     {
         // Daftar kategori yang valid (sesuai dengan enum di migration)
-        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall'];
+        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall', 'Sedotan'];
         return view('admin.products.create', compact('categories')); // Kirim data kategori ke view
     }
 
@@ -73,7 +73,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         // Daftar kategori yang valid (sesuai dengan enum di migration)
-        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall'];
+        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall', 'Sedotan'];
 
         $request->validate([
             'name' => 'required',
@@ -105,7 +105,7 @@ class ProductController extends Controller
     public function edit(Product $products)
     {
         // Daftar kategori yang valid (sesuai dengan enum di migration)
-        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall'];
+        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall', 'Sedotan'];
         return view('admin.products.edit', compact('products', 'categories')); // Kirim data produk dan kategori ke view
     }
 
@@ -115,7 +115,7 @@ class ProductController extends Controller
     public function update(Request $request, Product $products)
     {
         // Daftar kategori yang valid (sesuai dengan enum di migration)
-        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall'];
+        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall', 'Sedotan'];
 
         $request->validate([
             'name' => 'required',

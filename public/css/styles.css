@@ -11376,7 +11376,7 @@ header.masthead::after {
     background: linear-gradient(
         to bottom,
         rgba(244, 215, 161, 0) 0%,
-        #f0f0f0 100%
+        #777777 100%
     );
 }
 

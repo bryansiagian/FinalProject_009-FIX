@@ -137,7 +137,6 @@
 </section>
 
 <!-- Pengumuman Section-->
-<!-- Pengumuman Section-->
 <section class="page-section bg-white" id="pengumuman">
     <div class="container">
         <div class="text-center">
@@ -198,19 +197,21 @@
             @forelse($galeri->take(6) as $gambar) <!-- Menampilkan hanya 6 gambar pertama -->
                 <div class="col-md-4 mb-4">
                     <div class="card galeri-card">
-                        <img src="{{ asset('storage/' . $gambar->path) }}" class="card-img-top" alt="{{ $gambar->nama_gambar }}">
-                        <div class="card-body">
-                            <p class="card-text">{{ $gambar->deskripsi }}</p>
-                        </div>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#galeriModal{{ $gambar->id }}">
+                            <img src="{{ asset('storage/' . $gambar->path) }}" class="card-img-top" alt="{{ $gambar->nama_gambar }}">
+                        </a>
                     </div>
                 </div>
+
+                <!-- Modal Galeri -->
+                @include('layouts.modal.galeri')
             @empty
                 <div class="col-md-12">
                     <p class="text-muted text-center">Belum ada gambar di galeri.</p>
                 </div>
             @endforelse
         </div>
-          <div class="text-center">
+        <div class="text-center">
             <a href="{{ route('galeri.public') }}" class="btn btn-primary">Lihat Semua Gambar</a>
         </div>
     </div>
