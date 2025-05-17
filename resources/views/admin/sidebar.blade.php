@@ -41,7 +41,7 @@
             aria-controls="collapseTwo"
           >
             <i class="fas fa-database fa-fw"></i>
-            <span>ADMIN CRUD</span>
+            <span>CRUD</span>
           </a>
           <div
             id="collapseTwo"
@@ -50,7 +50,6 @@
             data-parent="#accordionSidebar"
           >
             <div class="bg-light py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Komponen :</h6>
                 <a class="collapse-item" href="{{ route('admin.orders.index') }}">
                     <i class="fas fa-shopping-cart fa-fw mr-2"></i>Kelola Pesanan</a>
                 <a class="collapse-item" href="{{route('admin.products.index')}}">

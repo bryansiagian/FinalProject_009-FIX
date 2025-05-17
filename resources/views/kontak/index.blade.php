@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     @include('layouts.head')
+    <!-- AOS CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 </head>
 <body id="page-top">
 <!-- Navigation-->
@@ -11,18 +13,18 @@
 @include('layouts.header')
 
 <!-- Kontak Section -->
-<section class="page-section" id="kontak">
+<section class="page-section" id="kontak" data-aos="fade-up">
     <div class="container">
         <div class="text-center">
             <h2 class="section-heading text-uppercase">Kontak Kami</h2>
             <h3 class="section-subheading text-muted">Hubungi kami untuk informasi lebih lanjut.</h3>
         </div>
         <div class="row justify-content-center">
-            <div class="col-lg-8">
+            <div class="col-lg-8" data-aos="fade-down" data-aos-delay="100">
                 <div class="card contact-card">
                     <div class="contact-card-body">
                         <div class="row">
-                            <div class="col-md-6 contact-info">
+                            <div class="col-md-6 contact-info" data-aos="fade-right" data-aos-delay="200">
                                 <h3>Informasi Kontak</h3>
                                 @if($kontak)
                                     <p><strong>Alamat:</strong> {!! $kontak->alamat !!}</p>
@@ -51,7 +53,7 @@
                                 </form> --}}
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6" data-aos="fade-left" data-aos-delay="200">
                                 <h3>Peta</h3>
                                 <!-- Ganti dengan kode embed Google Maps Anda -->
                                 @if($kontak)
@@ -92,6 +94,15 @@
                 behavior: 'smooth'
             });
         }
+    });
+</script>
+
+<!-- AOS JS -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 500,
+        once: true,
     });
 </script>
 </body>

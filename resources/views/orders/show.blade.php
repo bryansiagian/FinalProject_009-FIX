@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     @include('layouts.head')
+    <!-- AOS CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 </head>
 <body id="page-top">
 <!-- Navigation-->
@@ -11,20 +13,20 @@
 @include('layouts.header')
 
 <!-- Order Detail Section -->
-<section class="page-section" id="order-detail">
+<section class="page-section" id="order-detail" data-aos="fade-up">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-8" data-aos="fade-down" data-aos-delay="100">
                 <div class="card order-card">
                     <div class="card-header">Detail Pesanan #{{ $order->id }}</div>
 
                     <div class="card-body">
 
                         @if(session('success'))
-                            <div class="alert alert-success">{{ session('success') }}</div>
+                            <div class="alert alert-success" data-aos="fade-left" data-aos-delay="200">{{ session('success') }}</div>
                         @endif
 
-                        <div class="order-info">
+                        <div class="order-info" data-aos="fade-right" data-aos-delay="300">
                             <p><strong>Tanggal Pesanan:</strong> {{ $order->created_at }}</p>
                             <p><strong>Total:</strong> Rp {{ number_format($order->total_amount, 0, ',', '.') }}</p>
                             <p><strong>Metode Pembayaran:</strong> {{ $order->payment_method }}</p>
@@ -33,9 +35,9 @@
                             <p><strong>Status:</strong> {{ $order->status }}</p> <!-- Tambahkan status order -->
                         </div>
 
-                        <h3 class="mt-4">Produk yang Dipesan:</h3>
+                        <h3 class="mt-4" data-aos="fade-up" data-aos-delay="400">Produk yang Dipesan:</h3>
 
-                        <table class="order-items-table">
+                        <table class="order-items-table" data-aos="zoom-in" data-aos-delay="500">
                             <thead>
                             <tr>
                                 <th>Nama Produk</th>
@@ -47,7 +49,7 @@
                             </thead>
                             <tbody>
                             @foreach ($order->orderItems as $orderItem)
-                                <tr>
+                                <tr data-aos="slide-up" data-aos-delay="{{ 100 * $loop->index }}">
                                     <td>{{ $orderItem->product->name }}</td>
                                     <td>{{ $orderItem->quantity }}</td>
                                     <td>Rp {{ number_format($orderItem->price, 0, ',', '.') }}</td>
@@ -67,7 +69,7 @@
                             </tbody>
                         </table>
 
-                        <a href="{{ route('orders.index') }}" class="btn btn-secondary mt-3">Kembali ke Daftar Pesanan</a>
+                        <a href="{{ route('orders.index') }}" class="btn btn-secondary mt-3" data-aos="fade-up" data-aos-delay="600">Kembali ke Daftar Pesanan</a>
 
                     </div>
                 </div>
@@ -94,9 +96,9 @@
                         @endphp
 
                         @if ($testimonial)
-                            <p>Anda sudah memberikan testimoni untuk produk ini.</p>
+                            <p data-aos="fade-down" data-aos-delay="100">Anda sudah memberikan testimoni untuk produk ini.</p>
                         @else
-                            <form action="{{ route('testimonial.store') }}" method="POST">
+                            <form action="{{ route('testimonial.store') }}" method="POST" data-aos="fade-up" data-aos-delay="200">
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $orderItem->product->id }}">
 
@@ -121,7 +123,7 @@
                             </form>
                         @endif
                     @else
-                        <p>Silakan login untuk memberikan testimoni.</p>
+                        <p data-aos="fade-down" data-aos-delay="100">Silakan login untuk memberikan testimoni.</p>
                     @endauth
                 </div>
             </div>
@@ -136,5 +138,31 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Core theme JS-->
 <script src="{{ asset('js/scripts.js') }}"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const sectionId = 'order-detail';
+        const navbarHeight = document.querySelector('.navbar').offsetHeight;
+
+        const section = document.getElementById(sectionId);
+        if (section) {
+            const scrollPosition = section.offsetTop - navbarHeight;
+
+            window.scrollTo({
+                top: scrollPosition,
+                behavior: 'smooth'
+            });
+        }
+    });
+</script>
+
+<!-- AOS JS -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 500,
+        once: true,
+    });
+</script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<!-- Modal Pilihan Pengiriman -->
+<!-- resources/views/layouts/modal/order.blade.php -->
 <div class="modal fade" id="shippingOptionsModal{{ $product->id }}" tabindex="-1" aria-labelledby="shippingOptionsModalLabel{{ $product->id }}" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -29,7 +29,7 @@
                     </div>
 
                     <div class="mb-3" id="address_field{{ $product->id }}">
-                        <label for="shipping_address" class="form-label">Alamat Pengiriman</label>
+                        <label for="shipping_address{{ $product->id }}" class="form-label">Alamat Pengiriman</label>
                         <textarea class="form-control" id="shipping_address{{ $product->id }}" name="shipping_address" rows="3">{{ Auth::user()?->shipping_address ?? 'Silakan login untuk mengisi alamat' }}</textarea>
                     </div>
 
@@ -46,31 +46,35 @@
 </div>
 
 <script>
+      document.addEventListener("DOMContentLoaded", function() {
     function toggleAddressField(productId) {
-        var addressField = document.getElementById('address_field' + productId);
-        var deliveryRadio = document.getElementById('delivery' + productId);
+                    var addressField = document.getElementById('address_field' + productId);
+                    var deliveryRadio = document.getElementById('delivery' + productId);
 
-        if (deliveryRadio.checked) {
-            addressField.style.display = 'block';
-        } else {
-            addressField.style.display = 'none';
-        }
-    }
+                    if (deliveryRadio.checked) {
+                        addressField.style.display = 'block';
+                    } else {
+                        addressField.style.display = 'none';
+                    }
+                }
 
-    function validateForm(productId) {
-        var deliveryRadio = document.getElementById('delivery' + productId);
-        var shippingAddress = document.getElementById('shipping_address' + productId).value;
+                function validateForm(productId) {
+                    var deliveryRadio = document.getElementById('delivery' + productId);
+                    var shippingAddress = document.getElementById('shipping_address' + productId).value;
 
-        if (deliveryRadio.checked && shippingAddress.trim() === '') {
-            alert('Alamat pengiriman harus diisi jika memilih metode pengiriman Delivery.');
-            return false; // Mencegah form untuk di-submit
-        }
+                    if (deliveryRadio.checked && shippingAddress.trim() === '') {
+                        alert('Alamat pengiriman harus diisi jika memilih metode pengiriman Delivery.');
+                        return false; // Mencegah form untuk di-submit
+                    }
 
-        return true; // Izinkan form untuk di-submit
-    }
+                    return true; // Izinkan form untuk di-submit
+                }
 
-    // Panggil fungsi saat modal ditampilkan untuk menangani tampilan awal
-    document.getElementById('shippingOptionsModal{{ $product->id }}').addEventListener('shown.bs.modal', function () {
-        toggleAddressField('{{ $product->id }}');
-    });
+                // Panggil fungsi saat modal ditampilkan untuk menangani tampilan awal
+                $('.modal').on('shown.bs.modal', function () { // Use class selector
+                    var productId = $(this).attr('id').replace('shippingOptionsModal', '').replace('productModal', ''); // Extract product ID from modal ID
+                    toggleAddressField(productId);
+                });
+
+            });
 </script>

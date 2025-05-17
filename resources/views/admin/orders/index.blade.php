@@ -15,17 +15,14 @@
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-
         <!-- Sidebar -->
         @include('admin.sidebar')
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-
             <!-- Main Content -->
             <div id="content">
-
                 <!-- Topbar -->
                 @include('admin.topbar')
                 <!-- End of Topbar -->
@@ -33,7 +30,7 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                        <!-- Content Row -->
+                    <!-- Content Row -->
                     <div class="row">
 
                         <!-- DataTales Example -->
@@ -43,7 +40,6 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Daftar Pesanan</h6>
                                 </div>
                                 <div class="card-body">
-
                                     @if(session('success'))
                                         <div class="alert alert-success">
                                             {{ session('success') }}
@@ -69,11 +65,10 @@
                                             <div class="col-auto">
                                                 <select class="form-control" name="status">
                                                     <option value="">Semua Status</option>
-                                                    <option value="Pending" {{ request('status') == 'Pending' ? 'selected' : '' }}>Pending</option>
-                                                    <option value="Diproses" {{ request('status') == 'Diproses' ? 'selected' : '' }}>Diproses</option>
-                                                    <option value="Dikirim" {{ request('status') == 'Dikirim' ? 'selected' : '' }}>Dikirim</option>
-                                                    <option value="Selesai" {{ request('status') == 'Selesai' ? 'selected' : '' }}>Selesai</option>
-                                                    <option value="Dibatalkan" {{ request('status') == 'Dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
+                                                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                                    <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>Processing</option>
+                                                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+                                                    <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                                                 </select>
                                             </div>
 
@@ -148,9 +143,11 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
+                                        <div class="d-flex justify-content-center">
+                                            {{ $orders->links() }}
+                                        </div>
+                                        <!-- End Pagination Links -->
                                     </div>
-
-                                    {{ $orders->links() }} <!-- Tampilkan link paginasi -->
                                 </div>
                             </div>
                         </div>
@@ -197,27 +194,23 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="{{ URL::asset('Admin/vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ URL::asset('Admin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ URL::asset('Admin/vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{ URL::asset('Admin/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="{{ URL::asset('Admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+    <script src="{{ URL::asset('Admin/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="{{ URL::asset('Admin/js/sb-admin-2.min.js') }}"></script>
+    <script src="{{ URL::asset('Admin/js/sb-admin-2.min.js')}}"></script>
 
     <!-- Page level plugins -->
-    <script src="{{ URL::asset('Admin/vendor/chart.js/Chart.min.js') }}"></script>
+    <script src="{{ URL::asset('Admin/vendor/chart.js/Chart.min.js')}}"></script>
+    <script src="{{ URL::asset('Admin/js/demo/chart-area-demo.js')}}"></script>
+    <script src="{{ URL::asset('Admin/js/demo/chart-pie-demo.js')}}"></script>
 
     <!-- Page level custom scripts -->
-    <script src="{{ URL::asset('Admin/js/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ URL::asset('Admin/js/demo/chart-pie-demo.js') }}"></script>
-
-    <!-- Page level plugins -->
     <script src="{{ URL::asset('Admin/vendor/datatables/jquery.dataTables.min.js')}}"></script>
     <script src="{{ URL::asset('Admin/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{ URL::asset('Admin/js/demo/datatables-demo.js')}}"></script>
-
 </body>
-
 </html>

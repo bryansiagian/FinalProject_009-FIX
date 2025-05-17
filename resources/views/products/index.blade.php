@@ -2,16 +2,24 @@
 <html lang="en">
 <head>
     @include('layouts.head')
+    <!-- Tambahkan ini di file layouts.head atau langsung di sini -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 </head>
 <body id="page-top">
 <!-- Navigation-->
 @include('layouts.navbar')
 
 <!-- Masthead-->
-@include('layouts.header')
+<header class="masthead" data-aos="fade-down">
+    <div class="container">
+        <div class="masthead-content">
+            <h1 class="masthead-heading text-uppercase">HARMONIS PLASTIK</h1>
+        </div>
+    </div>
+</header>
 
 <!-- Portfolio Grid-->
-<section class="page-section" id="products">
+<section class="page-section" id="products" data-aos="fade-up">
     <div class="container">
         <div class="text-center">
             <h2 class="mt-0 section-heading text-uppercase">Produk Kami</h2>
@@ -21,7 +29,7 @@
         <div class="row mb-4 justify-content-center">
             <div class="col-md-8 col-lg-6">
                 {{-- Pastikan route() mengarah ke route yang memanggil ProductController@showFront --}}
-                <form action="{{ route('products.index') }}" method="GET" class="d-flex">
+                <form action="{{ route('products.index') }}" method="GET" class="d-flex" data-aos="fade-up" data-aos-delay="100">
                     <input type="text" name="search" class="form-control me-2" placeholder="Cari nama produk..." value="{{ request('search') }}" aria-label="Cari Produk">
                     <button class="btn btn-primary" type="submit">
                         <i class="fas fa-search"></i> <span class="d-none d-md-inline">Cari</span>
@@ -32,15 +40,14 @@
 
         {{-- Filter Kategori --}}
         <div class="row mb-3 justify-content-center">
-            <div class="col-md-4">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
                 <form action="{{ route('products.index') }}" method="GET">
                     <div class="input-group">
                         <select class="form-select" name="category" aria-label="Pilih Kategori" onchange="this.form.submit()">
                             <option value="">Semua Kategori</option>
                             <option value="kantongan" {{ request('category') == 'kantongan' ? 'selected' : '' }}>Kantongan</option>
                             <option value="gelas" {{ request('category') == 'gelas' ? 'selected' : '' }}>Gelas</option>
-                            <option value="sendok" {{ request('category') == 'sendok' ? 'selected' : '' }}>Sendok</option>
-                            <option value="mika" {{ request('category') == 'mika' ? 'selected' : '' }}>Mika</option>
+                            <option value="sendok" {{ request('category') == 'sendok' ? 'selected' : '' }}>Mika</option>
                             <option value="kotak" {{ request('category') == 'kotak' ? 'selected' : '' }}>Kotak</option>
                             <option value="klip" {{ request('category') == 'klip' ? 'selected' : '' }}>Klip</option>
                             <option value="pe" {{ request('category') == 'pe' ? 'selected' : '' }}>PE</option>
@@ -59,63 +66,42 @@
         </div>
 
         @if(session('success'))
-            <div class="alert alert-success">
+            <div class="alert alert-success" data-aos="fade-up" data-aos-delay="300">
                 {{ session('success') }}
             </div>
         @endif
 
         @if(session('error'))
-            <div class="alert alert-danger">
+            <div class="alert alert-danger" data-aos="fade-up" data-aos-delay="300">
                 {{ session('error') }}
             </div>
         @endif
 
         <div class="row">
-            @foreach($products as $product)
-                <div class="col-md-3 mb-4">
-                    <div class="card product-card">
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#productModal{{ $product->id }}">
-                            <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
-                        </a>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $product->name }}</h5>
-                            <p class="card-text">{{ Str::limit($product->description, 50) }}</p>
-                            <p class="card-text">Harga: Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+            @php
+                $productRows = $products->chunk(4);
+            @endphp
 
-                            <div class="product-actions d-flex flex-column align-items-start">
-                                @auth
-                                    <!-- Form Tambah ke Keranjang -->
-                                    <form action="{{ route('cart.store', $product->id) }}" method="POST" class="w-100">
-                                        @csrf
-                                        <div class="form-group">
-                                            <label for="quantity">Jumlah:</label>
-                                            <input type="number" class="form-control" id="quantity" name="quantity" value="1" min="1" max="{{ $product->stock }}">
-                                        </div>
-                                        <br>
-                                        <button type="submit" class="btn btn-sm btn-secondary w-100 mb-2">
-                                            <i class="fas fa-shopping-cart"></i> Keranjang
-                                        </button>
-                                    </form>
+            @foreach($productRows as $row)
+                <div class="product-row row" data-aos="fade-up" data-aos-delay="{{ 100 * $loop->index }}">
+                    @foreach($row as $product)
+                        <div class="col-md-3 mb-4 product-item">
+                            <div class="card product-card">
+                                {{-- Mengarahkan ke halaman detail produk --}}
+                                <a href="{{ route('products.show', $product->id) }}">
+                                    <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $product->name }}</h5>
+                                    <p class="card-text">{{ Str::limit($product->description, 50) }}</p>
+                                    <p class="card-text">Harga: Rp {{ number_format($product->price, 0, ',', '.') }}</p>
 
-                                    <!-- Tombol "Beli Sekarang" (Memicu Modal) -->
-                                    <a href="#" class="btn btn-sm btn-primary w-100" data-bs-toggle="modal" data-bs-target="#shippingOptionsModal{{ $product->id }}">
-                                        <i class="fas fa-shopping-basket"></i> Beli Sekarang
-                                    </a>
-
-                                    <!-- Modal Pilihan Pengiriman -->
-                                    {{-- @include('layouts.modal.order') --}}
-                                @else
-                                    {{-- <a href="{{ route('login') }}" class="btn btn-sm btn-outline-primary">Login</a> --}}
-                                @endauth
+                                    {{-- Hapus tombol keranjang dan beli sekarang di sini --}}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
-
-                @include('layouts.modal.order')
-
-                <!-- Modal -->
-                @include('layouts.modal.product')
             @endforeach
         </div>
     </div>
@@ -128,7 +114,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Core theme JS-->
 <script src="{{ asset('js/scripts.js') }}"></script>
-
+<!-- AOS JS -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const sectionId = 'products';
@@ -143,6 +130,12 @@
                 behavior: 'smooth'
             });
         }
+    });
+</script>
+<script>
+    AOS.init({
+        duration: 1000,
+        once: true,
     });
 </script>
 </body>

@@ -7,11 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; // Import Auth facade
 use Illuminate\Support\Facades\Storage; // Import Storage facade
 
-
 class PengumumanController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource for admin.
      */
     public function index()
     {
@@ -56,13 +55,25 @@ class PengumumanController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource for admin.
      */
     public function showAdmin(Pengumuman $pengumuman)
     {
         return view('admin.pengumuman.show', compact('pengumuman'));
     }
 
+    /**
+     * Display the specified resource for public.
+     */
+    public function show(Pengumuman $pengumuman)
+    {
+        return view('pengumuman.show', compact('pengumuman'));
+    }
+
+
+    /**
+     * Display the listing of the resource for public.
+     */
     public function showPengumumanPublic()
     {
         $pengumumen = Pengumuman::orderBy('created_at', 'desc')->get();

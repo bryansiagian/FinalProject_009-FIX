@@ -1,11 +1,11 @@
-<!-- Modal -->
+<!-- resources/views/layouts/modal/product.blade.php -->
 <div class="modal fade" id="productModal{{ $product->id }}" tabindex="-1" aria-labelledby="productModalLabel{{ $product->id }}" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <!-- Tambahkan modal-dialog-centered -->
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="productModalLabel{{ $product->id }}">{{ $product->name }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -21,13 +21,13 @@
                             <form action="{{ route('cart.store', $product->id) }}" method="POST">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="quantity">Jumlah:</label>
-                                    <input type="number" class="form-control" id="quantity" name="quantity" value="1" min="1"
+                                    <label for="quantity-modal-{{ $product->id }}">Jumlah:</label>
+                                    <input type="number" class="form-control" id="quantity-modal-{{ $product->id }}" name="quantity" value="1" min="1"
                                         max="{{ $product->stock }}">
                                 </div>
                                 <br>
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-shopping-cart"></i> Tambah ke Keranjang
+                                                    <i class="fas fa-shopping-cart"></i> Tambah ke Keranjang
                                 </button>
                             </form>
                         @else
@@ -116,13 +116,13 @@
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
 
                                 <div class="form-group">
-                                    <label for="content">Testimoni:</label>
-                                    <textarea class="form-control" id="content" name="content" rows="3" required>{{ old('content') }}</textarea>
+                                    <label for="content-{{ $product->id }}">Testimoni:</label>
+                                    <textarea class="form-control" id="content-{{ $product->id }}" name="content" rows="3" required>{{ old('content') }}</textarea>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="rating">Rating (opsional):</label>
-                                    <select class="form-control" id="rating" name="rating">
+                                    <label for="rating-{{ $product->id }}">Rating (opsional):</label>
+                                    <select class="form-control" id="rating-{{ $product->id }}" name="rating">
                                         <option value="">Pilih Rating</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -149,61 +149,3 @@
         </div>
     </div>
 </div>
-
-<!-- Modal Edit Testimoni (Di luar Loop) -->
-<div class="modal fade" id="editTestimonialModal" tabindex="-1" aria-labelledby="editTestimonialModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editTestimonialModalLabel">Edit Testimoni</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="editTestimonialForm" method="POST">
-                    @csrf
-                    @method('PUT')
-
-                    <div class="form-group">
-                        <label for="content">Testimoni:</label>
-                        <textarea class="form-control" id="edit_content" name="content" rows="3" required>{{ old('content') }}</textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="rating">Rating (opsional):</label>
-                        <select class="form-control" id="edit_rating" name="rating">
-                            <option value="">Pilih Rating</option>
-                            <option value="1" {{ old('rating') == 1 ? 'selected' : '' }}>1</option>
-                            <option value="2" {{ old('rating') == 2 ? 'selected' : '' }}>2</option>
-                            <option value="3" {{ old('rating') == 3 ? 'selected' : '' }}>3</option>
-                            <option value="4" {{ old('rating') == 4 ? 'selected' : '' }}>4</option>
-                            <option value="5" {{ old('rating') == 5 ? 'selected' : '' }}>5</option>
-                        </select>
-                    </div>
-                    <br>
-                    <button type="submit" class="btn btn-primary">Update Testimoni</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$('#editTestimonialModal').on('show.bs.modal', function (event) {
-    console.log("Modal edit dibuka!"); // Tambahkan ini
-
-    var button = $(event.relatedTarget);
-    var testimonial = button.data('testimonial');
-    var modal = $(this);
-
-    if (testimonial) {
-
-        var form = modal.find('#editTestimonialForm');
-        var updateUrl = '{{ route("testimonial.update", ["testimonial" => ":id"]) }}'.replace(':id', testimonial.id);
-        form.attr('action', updateUrl);
-
-        console.log("URL Update: ", updateUrl); // Debugging
-
-    }
-});
-</script>
