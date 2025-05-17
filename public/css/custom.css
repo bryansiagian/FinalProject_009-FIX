@@ -26,13 +26,13 @@
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    /* transition: transform 0.3s ease-in-out; */ /* Hapus properti transform */
+    transition: transform 0.3s ease-in-out; /* Hapus properti transform */
     background-color: #fff;
 }
 
-/*.contact-card:hover {
+.contact-card:hover {
     transform: translateY(-5px);
-}*/
+}
 
 .contact-card-body {
     padding: 2rem;
@@ -82,13 +82,13 @@
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    /* transition: transform 0.3s ease-in-out; */ /* Hapus properti transform */
+    transition: transform 0.3s ease-in-out; /* Hapus properti transform */
     background-color: #fff;
 }
 
-/*.about-card:hover {
+.about-card:hover {
     transform: translateY(-5px);
-}*/
+}
 
 .about-card-body {
     padding: 2rem;
@@ -128,13 +128,13 @@
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    /* transition: transform 0.3s ease-in-out; */ /* Hapus properti transform */
+    transition: transform 0.3s ease-in-out; /* Hapus properti transform */
     background-color: #fff;
 }
 
-/*.pengumuman-card:hover {
+.pengumuman-card:hover {
     transform: translateY(-5px);
-}*/
+}
 
 .pengumuman-card .card-img-top {
     /* transition: transform 0.3s ease-in-out; */ /* Hapus properti transition */
@@ -171,13 +171,13 @@
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    /* transition: transform 0.3s ease-in-out; */ /* Hapus properti transform */
+    transition: transform 0.3s ease-in-out; /* Hapus properti transform */
     background-color: #fff;
 }
 
-/*.product-card:hover {
+.product-card:hover {
     transform: translateY(-5px);
-}*/
+}
 
 .product-card .card-img-top {
     /* transition: transform 0.3s ease-in-out; */ /* Hapus properti transition */
@@ -234,13 +234,13 @@
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    /* transition: transform 0.3s ease-in-out; */ /* Hapus properti transform */
+    transition: transform 0.3s ease-in-out; /* Hapus properti transform */
     background-color: #fff;
 }
 
-/*.galeri-card:hover {
+.galeri-card:hover {
     transform: translateY(-5px);
-}*/
+}
 
 .galeri-card .card-img-top {
     /* transition: transform 0.3s ease-in-out; */ /* Hapus properti transition */

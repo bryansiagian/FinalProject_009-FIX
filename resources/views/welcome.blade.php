@@ -114,6 +114,7 @@
 </section>
 
 <!-- Produk -->
+<!-- Produk -->
 <section class="page-section bg-white" id="products" data-aos="fade-up">
     <div class="container">
         <div class="text-center">
@@ -132,15 +133,17 @@
         <div class="row">
             @foreach($products->take(4) as $index => $product)
                 <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-delay="{{ 100 * $loop->index }}">
-                    <div class="card product-card">
-                        {{-- Arahkan ke halaman detail produk --}}
-                        <a href="{{ route('products.show', $product->id) }}">
-                            <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
-                        </a>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $product->name }}</h5>
-                            <p class="card-text">{{ Str::limit($product->description, 50) }}</p>
-                            <p class="card-text">Harga: Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                    <div class="card-container"> <!-- Bungkus dengan card-container -->
+                        <div class="card product-card">
+                            {{-- Arahkan ke halaman detail produk --}}
+                            <a href="{{ route('products.show', $product->id) }}">
+                                <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $product->name }}</h5>
+                                <p class="card-text">{{ Str::limit($product->description, 50) }}</p>
+                                <p class="card-text">Harga: Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
