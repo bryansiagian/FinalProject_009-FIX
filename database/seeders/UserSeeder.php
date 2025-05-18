@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('admin12345'), // Ganti 'password' dengan password yang lebih aman
             'shipping_address' => '',
             'phone_number' => '',
+            'kode_pos' => '',
             'role' => 'admin',
         ]);
 
@@ -31,6 +32,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('bryan12345'), // Ganti 'password' dengan password yang lebih aman
             'shipping_address' => 'Jl. Pematang Siantar No. 316',
             'phone_number' => '081219208312',
+            'kode_pos' => '22316',
             'role' => 'customer',
         ]);
     }

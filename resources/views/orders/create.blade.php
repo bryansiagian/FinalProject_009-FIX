@@ -30,23 +30,29 @@
                             <div class="mb-3">
                                 <label class="form-label">Metode Pengiriman</label>
                                 @foreach($shippingMethods as $method => $details)
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="shipping_method" id="shipping_method_{{ $method }}" value="{{ $method }}" {{ old('shipping_method') == $method ? 'checked' : ($loop->first ? 'checked' : '') }} onclick="toggleAddressField('{{ $method }}')">
-                                        <label class="form-check-label" for="shipping_method_{{ $method }}">
-                                            {{ $details['name'] }} (Rp {{ number_format($details['cost'], 0, ',', '.') }})
-                                        </label>
-                                    </div>
+                                    @if($details['tersedia'])  <!-- Hanya tampilkan jika tersedia -->
+                                        <div class="form-check">
+                                            <input class="form-check-input @error('shipping_method') is-invalid @enderror" type="radio" name="shipping_method" id="shipping_method_{{ $method }}" value="{{ $method }}"
+                                                {{ old('shipping_method') == $method ? 'checked' : '' }}
+                                                @if($method == 'self_pickup' && !$shippingMethods['delivery']['tersedia']) checked @endif
+                                                onclick="toggleAddressField('{{ $method }}')">
+
+                                            <label class="form-check-label" for="shipping_method_{{ $method }}">
+                                                {{ $details['name'] }} (Rp {{ number_format($details['cost'], 0, ',', '.') }})
+                                            </label>
+                                        </div>
+                                    @endif
                                 @endforeach
                                 @error('shipping_method')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <div class="mb-3" id="address_field" style="{{ old('shipping_method') == 'delivery' ? '' : 'display: none;' }}">
+                            <div class="mb-3" id="address_field" style="{{ (old('shipping_method') == 'delivery' && $shippingMethods['delivery']['tersedia']) ? '' : 'display: none;' }}">
                                 <label for="shipping_address" class="form-label">Alamat Pengiriman</label>
-                                <textarea class="form-control @error('shipping_address') is-invalid @enderror" id="shipping_address" name="shipping_address" rows="3">{{ old('shipping_address', Auth::user()->shipping_address) }}</textarea>
+                                <textarea class="form-control @error('shipping_address') is-invalid @enderror" id="shipping_address" name="shipping_address" rows="3" @if(!$shippingMethods['delivery']['tersedia']) disabled @endif>{{ old('shipping_address', Auth::user()->shipping_address) }}</textarea>
                                 @error('shipping_address')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
@@ -70,10 +76,14 @@
 <script>
     function toggleAddressField(method) {
         var addressField = document.getElementById('address_field');
+        var shippingAddressTextarea = document.getElementById('shipping_address'); // ambil elemen textarea
+
         if (method === 'delivery') {
             addressField.style.display = 'block';
+            shippingAddressTextarea.disabled = false; // aktifkan textarea
         } else {
             addressField.style.display = 'none';
+             shippingAddressTextarea.disabled = true; // non-aktifkan textarea
         }
     }
 
@@ -82,6 +92,9 @@
         var selectedMethod = document.querySelector('input[name="shipping_method"]:checked');
         if (selectedMethod) {
             toggleAddressField(selectedMethod.value);
+        } else {
+            // Jika tidak ada yang dipilih, default ke self pickup dan sembunyikan alamat
+            toggleAddressField('self_pickup'); // Pastikan ini sesuai dengan default Anda
         }
     });
 

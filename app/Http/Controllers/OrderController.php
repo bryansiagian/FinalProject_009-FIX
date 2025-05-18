@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\KodePos; // Import model KodePos
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,14 +22,31 @@ class OrderController extends Controller
             return redirect()->route('products.index')->with('warning', 'Keranjang belanja Anda kosong!');
         }
 
+        // Ambil kode pos user dari tabel users
+        $kode_pos_user = Auth::user()->kode_pos;
+
+        // Cari kode pos di tabel kode_pos
+        $kode_pos = KodePos::where('kode_pos', $kode_pos_user)->first();
+
+        // Tentukan apakah delivery tersedia dan berapa ongkos kirimnya
+        $delivery_tersedia = false;
+        $ongkos_kirim = 0; // Inisialisasi ongkos kirim
+
+        if ($kode_pos) {
+            $delivery_tersedia = true;
+            $ongkos_kirim = $kode_pos->ongkos_kirim; // Ambil ongkos kirim dari database
+        }
+
         $shippingMethods = [
             'delivery' => [
                 'name' => 'Delivery',
-                'cost' => 10000,
+                'cost' => $ongkos_kirim, // Gunakan ongkos kirim yang dinamis
+                'tersedia' => $delivery_tersedia, // Tambahkan flag ketersediaan
             ],
             'self_pickup' => [
                 'name' => 'Self Pick-up',
                 'cost' => 0,
+                'tersedia' => true, // Selalu tersedia
             ],
         ];
 
@@ -45,6 +63,24 @@ class OrderController extends Controller
             'from_product_page' => 'sometimes|accepted', // Validasi untuk menandai pesanan langsung
         ]);
 
+        // Validasi tambahan:  Pastikan delivery hanya dipilih jika tersedia
+        $kode_pos_user = Auth::user()->kode_pos;
+        $kode_pos = KodePos::where('kode_pos', $kode_pos_user)->first();
+
+        $delivery_tersedia = false;
+        $ongkos_kirim = 0;
+
+        if ($kode_pos) {
+            $delivery_tersedia = true;
+            $ongkos_kirim = $kode_pos->ongkos_kirim;
+        }
+
+
+        if ($request->shipping_method == 'delivery' && !$delivery_tersedia) {
+            return back()->withErrors(['shipping_method' => 'Maaf, delivery tidak tersedia untuk kode pos Anda.  Silakan pilih Self Pick-up.'])->withInput();
+        }
+
+
         DB::beginTransaction();
         try {
             $totalAmount = 0;
@@ -53,7 +89,8 @@ class OrderController extends Controller
 
             // Ambil biaya pengiriman
             if ($request->shipping_method == 'delivery') {
-                $shippingCost = config('app.delivery_cost', 15000);
+                // $shippingCost = config('app.delivery_cost', 15000); // Hapus ini!
+                $shippingCost = $ongkos_kirim; // Gunakan ongkos kirim yang dinamis
             }
             $totalAmount += $shippingCost;
 

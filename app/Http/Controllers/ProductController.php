@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\KodePos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -43,7 +45,15 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $product->load('testimonials.user');
-        return view('products.show', compact('product'));
+
+        $user = Auth::user();
+        $kodePosData = null; // Inisialisasi $kodePosData
+
+        if ($user) {
+            $kodePosData = KodePos::where('kode_pos', $user->kode_pos)->first();
+        }
+
+        return view('products.show', compact('product', 'user', 'kodePosData'));
     }
 
     // **Admin Methods**

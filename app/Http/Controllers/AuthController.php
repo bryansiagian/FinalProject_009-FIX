@@ -24,6 +24,7 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'shipping_address' => 'required|string|max:255',
             'phone_number' => 'required|string|max:20',
+            'kode_pos' => 'required|string|max:10', // Validasi kode pos
         ]);
 
         if ($validator->fails()) {
@@ -36,6 +37,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'shipping_address' => $request->shipping_address,
             'phone_number' => $request->phone_number,
+            'kode_pos' => $request->kode_pos, // Simpan kode pos
         ]);
 
         Auth::login($user);

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('role', ['admin', 'customer'])->default('customer');
             $table->text('shipping_address')->nullable();  // Hapus after
             $table->string('phone_number', 20)->nullable(); // Hapus after
+            $table->string('kode_pos', 10)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

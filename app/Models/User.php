@@ -24,6 +24,7 @@ class User extends Authenticatable
         'shipping_address',
         'phone_number',
         'role', // Tambahkan 'role' ke daftar fillable
+        'kode_pos',
     ];
 
     /**

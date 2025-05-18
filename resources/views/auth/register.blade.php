@@ -47,6 +47,15 @@
                                 @enderror
                             </div>
 
+                            <!-- Tambah Kode Pos -->
+                            <div class="form-group">
+                                <label for="kode_pos">Kode Pos</label>
+                                <input type="text" class="form-control @error('kode_pos') is-invalid @enderror" id="kode_pos" name="kode_pos" value="{{ old('kode_pos') }}" required>
+                                @error('kode_pos')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                             <!-- Tambahkan Field Nomor Telepon -->
                             <div class="mb-3">
                                 <label for="phone_number" class="form-label">Nomor Telepon</label>

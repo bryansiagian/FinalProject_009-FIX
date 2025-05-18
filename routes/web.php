@@ -14,6 +14,7 @@ use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\KontakController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\KodePosController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -128,4 +129,12 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::get('/kontak/{kontak}/edit', [KontakController::class, 'edit'])->name('admin.kontak.edit');
     Route::put('/kontak/{kontak}', [KontakController::class, 'update'])->name('admin.kontak.update');
     Route::delete('/kontak/{kontak}', [KontakController::class, 'destroy'])->name('admin.kontak.destroy');
+
+    // **Kode Pos (Admin)**
+    Route::get('kode_pos', [KodePosController::class, 'index'])->name('admin.kode_pos.index');
+    Route::get('kode_pos/create', [KodePosController::class, 'create'])->name('admin.kode_pos.create');
+    Route::post('kode_pos', [KodePosController::class, 'store'])->name('admin.kode_pos.store');
+    Route::get('kode_pos/{kodePos}/edit', [KodePosController::class, 'edit'])->name('admin.kode_pos.edit');
+    Route::put('kode_pos/{kodePos}', [KodePosController::class, 'update'])->name('admin.kode_pos.update');
+    Route::delete('kode_pos/{kode_pos}', [KodePosController::class, 'destroy'])->name('admin.kode_pos.destroy');
 });
