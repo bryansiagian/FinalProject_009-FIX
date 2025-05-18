@@ -73,11 +73,13 @@
                     </li>
 
                     {{-- Dashboard Admin --}}
-                    @if(Auth::check() && Auth::user()->is_admin) {{-- Pastikan method is_admin ada atau sesuaikan kondisinya --}}
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.dashboard*') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
-                        </li>
-                    @endif
+                    @auth
+                        @if(Auth::user()->role === 'admin')
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('admin.dashboard*') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
+                            </li>
+                        @endif
+                    @endauth
                 @endguest
             </ul>
         </div>

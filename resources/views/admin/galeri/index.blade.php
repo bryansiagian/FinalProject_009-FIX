@@ -64,7 +64,6 @@
                                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                             <thead class="thead-light">
                                                 <tr>
-                                                    <th>Nama Gambar</th>
                                                     <th>Gambar</th>
                                                     <th>Deskripsi</th>
                                                     <th class="text-center">Aksi</th>
@@ -73,7 +72,6 @@
                                             <tbody>
                                                 @forelse($galeri as $item)
                                                     <tr>
-                                                        <td>{{ $item->nama_gambar }}</td>
                                                         <td>
                                                             <img src="{{ asset('storage/' . $item->path) }}" alt="{{ $item->nama_gambar }}" style="max-width: 100px;">
                                                         </td>

@@ -28,6 +28,9 @@
                         @if(session('success'))
                             <div class="alert alert-success" data-aos="fade-left" data-aos-delay="200">{{ session('success') }}</div>
                         @endif
+                        @if(session('error'))
+                            <div class="alert alert-danger" data-aos="fade-left" data-aos-delay="200">{{ session('error') }}</div>
+                        @endif
 
                         @if($orders->count() > 0)
                             <div class="table-responsive" data-aos="fade-right" data-aos-delay="300">
@@ -51,6 +54,13 @@
                                                 <td>
                                                     <div class="d-flex justify-content-center"> <!-- Membuat tombol berada di tengah -->
                                                         <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary btn-sm mr-2">Lihat Detail</a>
+                                                        @if($order->status == 'pending')
+                                                            <form action="{{ route('orders.cancel', $order->id) }}" method="POST">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')">Batalkan</button>
+                                                            </form>
+                                                        @endif
                                                     </div>
                                                 </td>
                                             </tr>

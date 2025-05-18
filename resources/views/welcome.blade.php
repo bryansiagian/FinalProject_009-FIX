@@ -92,7 +92,7 @@
     </header>
 
     <!-- Why Choose Us Section -->
-    <section class="page-section" id="why-choose-us" data-aos="fade-up">
+    <section class="page-section bg-light" id="why-choose-us" data-aos="fade-up">
         <div class="container">
             <div class="text-center">
                 <h2 class="section-heading text-uppercase">Mengapa Memilih Kami?</h2>
@@ -141,7 +141,7 @@
 
     <!-- Produk -->
     <!-- Produk -->
-    <section class="page-section bg-white" id="products" data-aos="fade-up">
+    <section class="page-section bg-light" id="products" data-aos="fade-up">
         <div class="container">
             <div class="text-center">
                 <h2 class="mt-0 section-heading text-uppercase">Produk Kami</h2>
@@ -175,7 +175,7 @@
     </section>
 
     <!-- Pengumuman -->
-    <section class="page-section bg-white" id="pengumuman" data-aos="fade-up">
+    <section class="page-section bg-light" id="pengumuman" data-aos="fade-up">
         <div class="container">
             <div class="text-center">
                 <h2 class="mt-0 section-heading text-uppercase">Pengumuman</h2>
@@ -212,7 +212,7 @@
     </section>
 
     <!-- Galeri -->
-    <section class="page-section bg-white" id="galeri" data-aos="fade-up">
+    <section class="page-section bg-light" id="galeri" data-aos="fade-up">
         <div class="container">
             <div class="text-center">
                 <h2 class="mt-0 section-heading text-uppercase">Galeri</h2>
@@ -272,6 +272,48 @@
             </div>
         </div>
     </section>
+
+        <!-- Kode Pos -->
+        <section class="page-section bg-white" id="kodepos" data-aos="fade-up">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="mt-0 section-heading text-uppercase">Kode Pos</h2>
+                    <h3 class="section-subheading text-muted">Daftar kode pos dan ongkos kirim yang berlaku.</h3>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Kode Pos</th>
+                                                <th>Ongkos Kirim</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if($kodepos->isNotEmpty())
+                                                @foreach($kodepos as $item)
+                                                    <tr>
+                                                        <td>{{ $item->kode_pos }}</td>
+                                                        <td>Rp {{ number_format($item->ongkos_kirim, 0, ',', '.') }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
+                                                <tr>
+                                                    <td colspan="2" class="text-center">Tidak ada data kode pos.</td>
+                                                </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
     <!-- Kontak -->
     <section class="page-section bg-white" id="kontak" data-aos="fade-up">

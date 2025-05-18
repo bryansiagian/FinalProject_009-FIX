@@ -60,6 +60,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index'); // Daftar pesanan (Riwayat Pesanan)
     Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+    Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 
     // Testimonial Routes (Pelanggan)
     Route::get('/testimonial/create', [TestimonialController::class, 'create'])->name('testimonial.create');

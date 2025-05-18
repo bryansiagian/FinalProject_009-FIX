@@ -200,4 +200,34 @@ class OrderController extends Controller
         $order->delete();
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dihapus!');
     }
+
+    public function cancel(Request $request, $id)
+{
+    $order = Order::findOrFail($id);
+
+    // Pastikan user yang login adalah pemilik pesanan
+    if (Auth::id() !== $order->user_id) {
+        abort(403, 'Unauthorized action.');
+    }
+
+    // Pastikan status pesanan adalah "pending"
+    if ($order->status !== 'pending') {
+        return redirect()->route('orders.index')->with('error', 'Pesanan ini tidak dapat dibatalkan.');
+    }
+
+    // Batalkan pesanan
+    $order->status = 'cancelled';
+
+    // Kembalikan stok produk yang dipesan
+    foreach ($order->orderItems as $item) {
+        $product = Product::find($item->product_id);
+        if ($product) {
+            $product->increment('stock', $item->quantity);
+        }
+    }
+
+    $order->save();
+
+    return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dibatalkan.');
+}
 }

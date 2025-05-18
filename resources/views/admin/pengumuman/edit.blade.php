@@ -73,10 +73,18 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="gambar" class="form-label">Gambar:</label>
-                                            <input type="file" class="form-control @error('gambar') is-invalid @enderror" id="gambar" name="gambar">
+                                            <label for="gambar" class="form-label">Gambar</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="gambar" name="gambar" aria-describedby="inputGroupFileAddon01">
+                                                    <label class="custom-file-label" for="gambar">Choose file</label>
+                                                </div>
+                                            </div>
                                             @error('gambar')
-                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                             @if($pengumuman->gambar)
                                                 <img src="{{ asset('storage/pengumuman/' . $pengumuman->gambar) }}" alt="Gambar" width="100" style="margin-top: 10px;">
@@ -152,6 +160,15 @@
     <!-- Page level custom scripts -->
     <script src="{{ URL::asset('Admin/js/demo/chart-area-demo.js')}}"></script>
     <script src="{{ URL::asset('Admin/js/demo/chart-pie-demo.js')}}"></script>
+
+    <script>
+        // Tambahkan event listener untuk mengubah teks label saat file dipilih
+        document.querySelector('.custom-file-input').addEventListener('change',function(e){
+          var fileName = document.getElementById("gambar").files[0].name;
+          var nextSibling = e.target.nextElementSibling
+          nextSibling.innerText = fileName
+        })
+    </script>
 
 </body>
 

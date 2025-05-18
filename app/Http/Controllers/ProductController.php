@@ -90,7 +90,7 @@ class ProductController extends Controller
             'description' => 'required',
             'price' => 'required|numeric',
             'stock' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'category' => 'nullable|in:' . implode(',', $categories), // Validasi kategori
         ]);
 
@@ -132,7 +132,7 @@ class ProductController extends Controller
             'description' => 'required',
             'price' => 'required|numeric',
             'stock' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'category' => 'nullable|in:' . implode(',', $categories), // Validasi kategori
         ]);
 

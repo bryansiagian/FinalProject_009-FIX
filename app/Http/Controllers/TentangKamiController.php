@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TentangKami;
+use App\Models\KodePos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,7 +15,8 @@ class TentangKamiController extends Controller
     public function index()
     {
         $tentang_kami = TentangKami::all();
-        return view('admin.tentang-kami.index', compact('tentang_kami')); // Tampilkan daftar di halaman admin
+        $kodePos = KodePos::all(); // Ambil semua kode pos
+        return view('admin.tentang-kami.index', compact('tentang_kami', 'kodePos')); // Tampilkan daftar di halaman admin
     }
 
     /**
@@ -98,7 +100,8 @@ class TentangKamiController extends Controller
      */
     public function showFront()
     {
-        $tentang_kami = TentangKami::first(); // Ambil yang pertama
-        return view('tentang-kami.index', compact('tentang_kami')); // Tampilkan di halaman depan
+        $tentang_kami = TentangKami::first();
+        $kodePos = KodePos::all(); // Ambil semua kode pos
+        return view('tentang-kami.index', compact('tentang_kami', 'kodePos')); // Tampilkan di halaman depan
     }
 }

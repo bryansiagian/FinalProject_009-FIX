@@ -9,6 +9,7 @@ use App\Models\Galeri;
 use App\Models\TentangKami;
 use App\Models\Kontak;
 use App\Models\Testimonial;
+use App\Models\KodePos; // Import Model KodePos
 
 class WelcomeController extends Controller
 {
@@ -20,7 +21,8 @@ class WelcomeController extends Controller
         $tentang_kami = TentangKami::first(); // Atau cara Anda mengambil data
         $kontak = Kontak::first();
         $testimonials = Testimonial::latest()->get(); // Ambil semua testimoni terbaru
+        $kodepos = KodePos::all(); //Ambil semua KodePos
 
-        return view('welcome', compact('products', 'pengumumen', 'galeri', 'tentang_kami', 'kontak', 'testimonials'));
+        return view('welcome', compact('products', 'pengumumen', 'galeri', 'tentang_kami', 'kontak', 'testimonials', 'kodepos'));
     }
 }

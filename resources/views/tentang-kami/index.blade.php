@@ -54,6 +54,49 @@
     </div>
 </section>
 
+<!-- Kode Pos Section -->
+<section id="kodepos" class="page-section bg-light">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="mt-0 section-heading text-uppercase">Kode Pos</h2>
+            <p class="mb-4 text-muted">Daftar kode pos dan ongkos kirim yang berlaku.</p>
+            <div class="divider-custom">
+                <div class="divider-line"></div>
+                <div class="divider-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="divider-line"></div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Kode Pos</th>
+                                <th>Ongkos Kirim</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(isset($kodePos) && count($kodePos) > 0)
+                                @foreach($kodePos as $item)
+                                    <tr>
+                                        <td>{{ $item->kode_pos }}</td>
+                                        <td>Rp. {{ number_format($item->ongkos_kirim, 0, ',', '.') }}</td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="2" class="text-center">Tidak ada data kode pos.</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Footer-->
 @include('layouts.footer')
 
