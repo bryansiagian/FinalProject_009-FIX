@@ -45,19 +45,11 @@
                     <div class="input-group">
                         <select class="form-select" name="category" aria-label="Pilih Kategori" onchange="this.form.submit()">
                             <option value="">Semua Kategori</option>
-                            <option value="kantongan" {{ request('category') == 'kantongan' ? 'selected' : '' }}>Kantongan</option>
-                            <option value="gelas" {{ request('category') == 'gelas' ? 'selected' : '' }}>Gelas</option>
-                            <option value="sendok" {{ request('category') == 'sendok' ? 'selected' : '' }}>Mika</option>
-                            <option value="kotak" {{ request('category') == 'kotak' ? 'selected' : '' }}>Kotak</option>
-                            <option value="klip" {{ request('category') == 'klip' ? 'selected' : '' }}>Klip</option>
-                            <option value="pe" {{ request('category') == 'pe' ? 'selected' : '' }}>PE</option>
-                            <option value="pp" {{ request('category') == 'pp' ? 'selected' : '' }}>PP</option>
-                            <option value="kertas" {{ request('category') == 'kertas' ? 'selected' : '' }}>Kertas</option>
-                            <option value="botol" {{ request('category') == 'botol' ? 'selected' : '' }}>Botol</option>
-                            <option value="lakban" {{ request('category') == 'lakban' ? 'selected' : '' }}>Lakban</option>
-                            <option value="tali" {{ request('category') == 'tali' ? 'selected' : '' }}>Tali</option>
-                            <option value="karet" {{ request('category') == 'karet' ? 'selected' : '' }}>Karet</option>
-                            <option value="thinwall" {{ request('category') == 'thinwall' ? 'selected' : '' }}>Thinwall</option>
+                            @foreach($categories as $kategori)
+                                <option value="{{ strtolower($kategori) }}" {{ request('category') == strtolower($kategori) ? 'selected' : '' }}>
+                                    {{ ucfirst($kategori) }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                     <input type="hidden" name="search" value="{{ request('search') }}">

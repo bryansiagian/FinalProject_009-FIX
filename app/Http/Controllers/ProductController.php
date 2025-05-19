@@ -16,29 +16,30 @@ class ProductController extends Controller
      * Display a listing of the products (for guest/customers).
      */
     public function showFront(Request $request)
-    {
-        $searchTerm = $request->input('search');
-        $category = $request->input('category'); // Ambil nilai kategori dari request
+{
+    $searchTerm = $request->input('search');
+    $category = $request->input('category');
 
-        $query = Product::query();
+    $query = Product::query();
 
-        if ($searchTerm) {
-            $query->where('name', 'LIKE', '%' . $searchTerm . '%');
-        }
-
-        // Tambahkan filter kategori jika ada
-        if ($category) {
-            $query->where('category', $category);
-        }
-
-        $products = $query->orderBy('created_at', 'desc')->get();
-        foreach ($products as $product) {
-            $product->load('testimonials.user');
-        }
-
-        return view('products.index', compact('products'));
+    if ($searchTerm) {
+        $query->where('name', 'LIKE', '%' . $searchTerm . '%');
     }
 
+    if ($category) {
+        $query->where('category', $category);
+    }
+
+    $products = $query->orderBy('created_at', 'desc')->get();
+    foreach ($products as $product) {
+        $product->load('testimonials.user');
+    }
+
+    // Daftar kategori yang valid
+    $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall', 'Sedotan', 'Tisu', 'Lidi', 'HD', 'Wrapping'];
+
+    return view('products.index', compact('products', 'categories'));
+}
     /**
      * Display the specified product (for guest/customers).
      */
@@ -73,7 +74,7 @@ class ProductController extends Controller
     public function create()
     {
         // Daftar kategori yang valid (sesuai dengan enum di migration)
-        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall', 'Sedotan'];
+        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall', 'Sedotan', 'Tisu', 'Lidi', 'HD', 'Wrapping'];
         return view('admin.products.create', compact('categories')); // Kirim data kategori ke view
     }
 
@@ -83,7 +84,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         // Daftar kategori yang valid (sesuai dengan enum di migration)
-        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall', 'Sedotan'];
+        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall', 'Sedotan', 'Tisu', 'Lidi', 'HD', 'Wrapping'];
 
         $request->validate([
             'name' => 'required',
@@ -115,7 +116,7 @@ class ProductController extends Controller
     public function edit(Product $products)
     {
         // Daftar kategori yang valid (sesuai dengan enum di migration)
-        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall', 'Sedotan'];
+        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall', 'Sedotan', 'Tisu', 'Lidi', 'HD', 'Wrapping'];
         return view('admin.products.edit', compact('products', 'categories')); // Kirim data produk dan kategori ke view
     }
 
@@ -125,7 +126,7 @@ class ProductController extends Controller
     public function update(Request $request, Product $products)
     {
         // Daftar kategori yang valid (sesuai dengan enum di migration)
-        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall', 'Sedotan'];
+        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall', 'Sedotan', 'Tisu', 'Lidi', 'HD', 'Wrapping'];
 
         $request->validate([
             'name' => 'required',
