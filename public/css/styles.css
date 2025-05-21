@@ -11351,7 +11351,7 @@ p {
     }
 }
 header.masthead {
-    position: relative; /* Penting untuk positioning pseudo-element */
+    position: relative;
     padding-top: 0;
     padding-bottom: 0;
     text-align: center;
@@ -11361,9 +11361,9 @@ header.masthead {
     background-attachment: scroll;
     background-position: center center;
     background-size: cover;
-    height: 100vh;
+    min-height: 50vh; /* Tinggi minimum header */
     margin-bottom: 0;
-    overflow: hidden; /* Penting agar pseudo-element tidak keluar dari header */
+    overflow: hidden;
 }
 
 header.masthead::after {
@@ -11372,7 +11372,7 @@ header.masthead::after {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 100px; /* Sesuaikan tinggi gradasi sesuai kebutuhan */
+    height: 100px;
     background: linear-gradient(
         to bottom,
         rgba(244, 215, 161, 0) 0%,
@@ -11381,57 +11381,88 @@ header.masthead::after {
 }
 
 header.masthead::before {
-    content: ""; /* Wajib ada untuk pseudo-element */
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Warna latar belakang transparan */
-    z-index: 1; /* Pastikan di belakang konten header */
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
 }
 
-/* Atur z-index konten header agar di atas lapisan transparansi */
 header.masthead * {
     position: relative;
     z-index: 2;
 }
+
+/* Positioning Content */
+header.masthead .masthead-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh; /* Sama dengan tinggi header */
+    padding: 1rem;
+    box-sizing: border-box; /* Penting untuk menjaga agar padding tidak mempengaruhi tinggi */
+}
+
+/* Text Styles */
 header.masthead .masthead-subheading {
     font-size: 1.5rem;
     font-style: italic;
     line-height: 1.5rem;
-    margin-bottom: 25px;
+    margin-bottom: 1rem;
     font-family: "Roboto Slab", -apple-system, BlinkMacSystemFont, "Segoe UI",
         Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
         "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
+
 header.masthead .masthead-heading {
-    font-size: 3.25rem;
+    font-size: 3rem; /* Ukuran font default */
     font-weight: 700;
-    line-height: 3.25rem;
+    line-height: 3rem;
     color: #f6c445;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
         Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
         "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
+/* Tablet Styles */
 @media (min-width: 768px) {
     header.masthead {
-        padding-top: 17rem;
-        padding-bottom: 12.5rem;
+        min-height: 70vh;
     }
-    header.masthead .masthead-subheading {
-        font-size: 2.25rem;
-        font-style: italic;
-        line-height: 2.25rem;
-        margin-bottom: 2rem;
+    header.masthead .masthead-content {
+        min-height: 70vh;
+    }
+
+    header.masthead .masthead-heading {
+        font-size: 4rem; /* Ukuran font tablet */
+        line-height: 4rem;
+    }
+}
+
+/* Desktop Styles */
+@media (min-width: 992px) {
+    header.masthead {
+        min-height: 100vh;
+    }
+    header.masthead .masthead-content {
+        min-height: 100vh;
     }
     header.masthead .masthead-heading {
-        font-size: 4.5rem;
-        font-weight: 700;
-        line-height: 4.5rem;
-        margin-bottom: 4rem;
+        font-size: 5rem; /* Ukuran font desktop */
+        line-height: 5rem;
+    }
+}
+
+/* Large Desktop Styles */
+@media (min-width: 1200px) {
+    header.masthead .masthead-heading {
+        font-size: 6rem; /* Ukuran font desktop besar */
+        line-height: 6rem;
     }
 }
 #portfolio .portfolio-item {

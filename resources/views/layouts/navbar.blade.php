@@ -81,13 +81,13 @@
             </ul>
         </div>
     </div>
-</nav>
+</nav>  {{-- Tutup tag nav --}}
 
-{{-- Script Scroll Navbar (tidak berubah, tetap di sini) --}}
+{{-- Script Scroll Navbar --}}
 <script>
     window.addEventListener('scroll', function() {
-        const navbar = document.querySelector('#mainNav'); // Target ID #mainNav lebih spesifik
-        if (window.scrollY > 50) { // Sesuaikan nilai 50 jika perlu
+        const navbar = document.querySelector('#mainNav');
+        if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');

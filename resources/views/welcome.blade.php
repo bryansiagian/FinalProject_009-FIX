@@ -27,12 +27,7 @@
     </div>
 
     <!-- Masthead-->
-    <header class="masthead" id="header" data-aos="fade-down">
-        <div class="container">
-            <br><br>
-            <div class="masthead-heading text-uppercase">HARMONIS PLASTIK</div>
-        </div>
-    </header>
+    @include('layouts.header')
 
     <!-- Why Choose Us Section -->
     <section class="page-section bg-light" id="why-choose-us" data-aos="fade-up">
