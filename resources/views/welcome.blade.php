@@ -3,63 +3,6 @@
 <head>
     @include('layouts.head')
     <!-- Tambahkan ini di file layouts.head atau langsung di sini -->
-    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-    <style>
-        /* Style untuk efek hover pada galeri */
-        .galeri-card {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .galeri-card .card-img-top {
-            transition: transform 0.3s ease-in-out;
-            height: 250px; /* Sesuaikan tinggi gambar */
-            object-fit: cover; /* Memastikan gambar memenuhi area */
-        }
-
-        .galeri-card:hover .card-img-top {
-            transform: scale(1.1); /* Efek zoom saat dihover */
-        }
-
-        .galeri-card .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7); /* Latar belakang gelap transparan */
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out; /* Efek fade yang halus */
-            text-align: center;
-        }
-
-        .galeri-card:hover .overlay {
-            opacity: 1; /* Tampilkan overlay saat dihover */
-        }
-
-        .galeri-card .overlay h5 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .galeri-card .overlay p {
-            font-size: 1rem;
-        }
-
-        /* Style untuk alert */
-        .alert-container {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1050; /* Pastikan di atas elemen lain */
-        }
-    </style>
 </head>
 
 <body id="page-top">
