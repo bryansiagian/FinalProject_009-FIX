@@ -2,8 +2,8 @@
    Gaya Umum (Mungkin digunakan di beberapa halaman)
    ========================================================================== */
 
-   .section-heading {
-    font-family: "Montserrat", sans-serif;
+.section-heading {
+    font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     color: #343a40;
 }
@@ -16,17 +16,17 @@
    Halaman Kontak (kontak.index)
    ========================================================================== */
 
-/* #kontak {
+#kontak {
     background: linear-gradient(to bottom, #ffffff, #f8f9fa);
     padding: 5rem 0;
-} */
+}
 
 .contact-card {
     border: none;
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: transform 0.3s ease-in-out; /* Hapus properti transform */
+    transition: transform 0.3s ease-in-out;
     background-color: #fff;
 }
 
@@ -82,7 +82,7 @@
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: transform 0.3s ease-in-out; /* Hapus properti transform */
+    transition: transform 0.3s ease-in-out;
     background-color: #fff;
 }
 
@@ -118,17 +118,17 @@
    Halaman Pengumuman (pengumuman.index)
    ========================================================================== */
 
-/* #pengumuman {
+#pengumuman {
     background: linear-gradient(to bottom, #f8f9fa, #ffffff);
     padding: 5rem 0;
-} */
+}
 
 .pengumuman-card {
     border: none;
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: transform 0.3s ease-in-out; /* Hapus properti transform */
+    transition: transform 0.3s ease-in-out;
     background-color: #fff;
 }
 
@@ -137,14 +137,14 @@
 }
 
 .pengumuman-card .card-img-top {
-    /* transition: transform 0.3s ease-in-out; */ /* Hapus properti transition */
+    transition: transform 0.3s ease-in-out;
     height: 275px;
     object-fit: cover;
 }
 
-/*.pengumuman-card:hover .card-img-top {
+.pengumuman-card:hover .card-img-top {
     transform: scale(1.05);
-}*/
+}
 
 .card-body {
     padding: 2rem;
@@ -166,12 +166,21 @@
     color: #999;
 }
 
+/* ==========================================================================
+   Halaman Produk (product.index)
+   ========================================================================== */
+
+#products {
+    background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+    padding: 5rem 0;
+}
+
 .product-card {
     border: none;
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: transform 0.3s ease-in-out; /* Hapus properti transform */
+    transition: transform 0.3s ease-in-out;
     background-color: #fff;
 }
 
@@ -180,14 +189,14 @@
 }
 
 .product-card .card-img-top {
-    /* transition: transform 0.3s ease-in-out; */ /* Hapus properti transition */
+    transition: transform 0.3s ease-in-out;
     height: 275px;
     object-fit: cover;
 }
 
-/*.product-card:hover .card-img-top {
+.product-card:hover .card-img-top {
     transform: scale(1.05);
-}*/
+}
 
 .card-body {
     padding: 1.5rem;
@@ -224,17 +233,17 @@
    Halaman Galeri (galeri.index)
    ========================================================================== */
 
-/* #galeri {
+#galeri {
     background: linear-gradient(to bottom, #ffffff, #f8f9fa);
     padding: 5rem 0;
-} */
+}
 
 .galeri-card {
     border: none;
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: transform 0.3s ease-in-out; /* Hapus properti transform */
+    transition: transform 0.3s ease-in-out;
     background-color: #fff;
 }
 
@@ -243,14 +252,14 @@
 }
 
 .galeri-card .card-img-top {
-    /* transition: transform 0.3s ease-in-out; */ /* Hapus properti transition */
+    transition: transform 0.3s ease-in-out;
     height: 250px; /* Sesuaikan tinggi gambar */
     object-fit: cover; /* Memastikan gambar memenuhi area */
 }
 
-/*.galeri-card:hover .card-img-top {
+.galeri-card:hover .card-img-top {
     transform: scale(1.05);
-}*/
+}
 
 .card-body {
     padding: 1.5rem;
@@ -266,23 +275,23 @@
    Halaman Testimoni (testimonial.index)
    ========================================================================== */
 
-/* #testimonials {
+#testimonials {
     background: linear-gradient(to bottom, #ffffff, #f8f9fa);
     padding: 5rem 0;
-} */
+}
 
 .testimonial-card {
     border: none;
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    /* transition: transform 0.3s ease-in-out; */ /* Hapus properti transform */
+    transition: transform 0.3s ease-in-out;
     background-color: #fff;
 }
 
-/*.testimonial-card:hover {
+.testimonial-card:hover {
     transform: translateY(-5px);
-}*/
+}
 
 .card-body {
     padding: 1.5rem;
@@ -513,12 +522,11 @@
    Halaman Selamat Datang (welcome.blade.php)
    ========================================================================== */
 
-/* #why-choose-us {
+#why-choose-us {
     background: linear-gradient(to bottom, #f8f9fa, #ffffff);
-} */
+}
 
-.feature-card-container {
-    /* Container untuk flexbox */
+.feature-card-container { /* Container untuk flexbox */
     display: flex;
     flex-direction: column;
     height: 100%; /* Penting: Memastikan tinggi container penuh */
@@ -558,7 +566,7 @@
     line-height: 1.75;
 }
 
-/* ==========================================================================
+  /* ==========================================================================
    Halaman Detail Pesanan (orders.show)
    ========================================================================== */
 
@@ -621,18 +629,18 @@
     display: inline-block;
     width: 100%;
     margin-bottom: 0;
-}
+  }
 
-.custom-file-input {
+  .custom-file-input {
     position: relative;
     z-index: 2;
     width: 100%;
     height: calc(2.25rem + 2px);
     margin: 0;
     opacity: 0; /* Penting: sembunyikan input file asli */
-}
+  }
 
-.custom-file-label {
+  .custom-file-label {
     position: absolute;
     top: 0;
     right: 0;
@@ -651,9 +659,9 @@
     align-items: center;
     justify-content: space-between; /* Menambah ruang antara teks dan ikon */
     cursor: pointer; /* Penting: Ubah cursor menjadi pointer */
-}
+  }
 
-.custom-file-label::after {
+  .custom-file-label::after {
     content: "Browse"; /* Mengubah teks tombol */
     position: absolute;
     top: 0;
@@ -668,125 +676,17 @@
     background-color: #5a6268; /* Warna lebih gelap untuk efek hover */
     border-left: inherit;
     border-radius: 0 0.75rem 0.75rem 0;
-}
+  }
 
-/* Efek hover */
-.custom-file-input:focus ~ .custom-file-label {
+  /* Efek hover */
+  .custom-file-input:focus ~ .custom-file-label {
     border-color: #80bdff;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
+  }
 
-/* Styling tambahan (opsional) */
-.custom-file-label i {
+  /* Styling tambahan (opsional) */
+  .custom-file-label i {
     margin-left: 0.5rem; /* Jarak antara teks dan ikon */
-}
+  }
 
 /* ==========================================================================
-   Halaman Detail Pesanan (orders.show)
-   ========================================================================== */
-
-#order-detail {
-    background: linear-gradient(to bottom, #ffffff, #f8f9fa);
-    padding: 5rem 0;
-}
-
-.order-card {
-    border: none;
-    border-radius: 1.5rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    background-color: #fff;
-}
-
-.order-card .card-header {
-    background-color: #007bff;
-    color: #fff;
-    font-weight: 600;
-    padding: 1.75rem;
-    text-align: left;
-    font-size: 1.5rem;
-    border-bottom: none;
-}
-
-.order-card .card-body {
-    padding: 2.5rem;
-}
-
-.order-info p {
-    color: #495057;
-    line-height: 1.75;
-    margin-bottom: 1rem;
-}
-
-.order-items-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.order-items-table th,
-.order-items-table td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.order-items-table th {
-    font-weight: 600;
-    color: #343a40;
-}
-
-.order-items-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-/* ==========================================================================
-   Hapus style animasi yang mungkin mengganggu tampilan modal
-   ========================================================================== */
-/* Style untuk section products */
-#products {
-    /*opacity: 0; /* Elemen awalnya tidak terlihat */
-    /*animation: fadeIn 1s ease-in-out forwards; /* Animasi fade in saat halaman di load */
-}
-
-/* Style untuk elemen card produk */
-.col-md-3.product-card-animated {
-    /*opacity: 0; /* Elemen awalnya tidak terlihat */
-    /*transform: scale(0.9); /* Elemen awalnya sedikit lebih kecil */
-    /*animation: zoomIn 0.5s ease-in-out forwards; /* Animas zoom in saat halaman di load */
-}
-
-/* Tambahkan delay animasi secara dinamis */
-/*@for $i from 1 through 12 {
-    /* Sesuaikan jumlah produk yang mungkin ditampilkan */
-   /* .col-md-3.product-card-animated:nth-child(#{$i}) {
-        animation-delay: #{0.1 * $i}s; /* Delay bertambah untuk setiap produk */
-    }
-}*/
-
-
-/* Z-Index yang lebih tinggi untuk modal */
-.modal {
-    z-index: 1050 !important;
-}
-
-.modal-backdrop {
-    z-index: 1040 !important;
-    background-color: rgba(0, 0, 0, 0.5) !important; /* Warna dan Opasitas Backdrop */
-}
-
-.modal-content {
-    position: relative;
-    z-index: 1051 !important;
-    background-color: #fff !important; /* Warna Latar Belakang Konten Modal */
-    opacity: 1 !important; /* Pastikan Opasitas Tidak Nol */
-}
-.modal-body {
-    max-height: 70vh; /* Sesuaikan tinggi maksimum */
-    overflow-y: auto; /* Tambahkan scroll jika konten terlalu panjang */
-}
-/* Pastikan tidak ada elemen induk yang memotong modal */
-#page-top, body, html {
-    overflow: visible !important;
-    position: static !important;
-}
-
