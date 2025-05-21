@@ -38,19 +38,9 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3 form-check">
-                                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                <label class="form-check-label" for="remember">Ingat Saya</label>
-                            </div>
-
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
                                     <button type="submit" class="btn btn-primary">Login</button>
-                                </div>
-                                <div>
-                                    @if (Route::has('password.request'))
-                                        <a class="btn btn-link" href="{{ route('password.request') }}">Lupa Password?</a>
-                                    @endif
                                 </div>
                             </div>
 
