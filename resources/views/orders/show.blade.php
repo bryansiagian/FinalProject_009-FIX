@@ -50,7 +50,9 @@
                             <tbody>
                             @foreach ($order->orderItems as $orderItem)
                                 <tr data-aos="slide-up" data-aos-delay="{{ 100 * $loop->index }}">
-                                    <td>{{ $orderItem->product->name }}</td>
+                                    <td>
+                                        <a href="{{ route('products.show', $orderItem->product->id) }}">{{ $orderItem->product->name }}</a>
+                                    </td>
                                     <td>{{ $orderItem->quantity }}</td>
                                     <td>Rp {{ number_format($orderItem->price, 0, ',', '.') }}</td>
                                     <td>Rp {{ number_format($orderItem->quantity * $orderItem->price, 0, ',', '.') }}</td>

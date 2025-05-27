@@ -79,8 +79,8 @@
 
     <!-- Produk -->
     <!-- Produk -->
-    <section class="page-section bg-light" id="products" data-aos="fade-up">
-        <div class="container">
+    <section class="page-section bg-light" id="products">
+        <div class="container" data-aos="fade-up">
             <div class="text-center">
                 <h2 class="mt-0 section-heading text-uppercase">Produk Kami</h2>
                 <h3 class="section-subheading text-muted">Produk-produk plastik berkualitas tinggi untuk kebutuhan Anda.</h3>
@@ -113,8 +113,8 @@
     </section>
 
     <!-- Pengumuman -->
-    <section class="page-section bg-light" id="pengumuman" data-aos="fade-up">
-        <div class="container">
+    <section class="page-section bg-light" id="pengumuman">
+        <div class="container" data-aos="fade-up">
             <div class="text-center">
                 <h2 class="mt-0 section-heading text-uppercase">Pengumuman</h2>
                 <h3 class="section-subheading text-muted">Informasi terbaru dari kami.</h3>
@@ -150,8 +150,8 @@
     </section>
 
     <!-- Galeri -->
-    <section class="page-section bg-light" id="galeri" data-aos="fade-up">
-        <div class="container">
+    <section class="page-section bg-light" id="galeri" >
+        <div class="container" data-aos="fade-up">
             <div class="text-center">
                 <h2 class="mt-0 section-heading text-uppercase">Galeri</h2>
                 <p class="text-muted">Koleksi gambar kami.</p>
@@ -176,8 +176,8 @@
     </section>
 
     <!-- Tentang Kami -->
-    <section id="tentangkami" class="page-section bg-white" data-aos="fade-up">
-        <div class="container">
+    <section id="tentangkami" class="page-section bg-white" >
+        <div class="container" data-aos="fade-up">
             <div class="text-center">
                 <h2 class="mt-0 section-heading text-uppercase">Tentang Kami</h2>
                 <p class="mb-4 text-muted">Kenali lebih dekat siapa kami dan apa yang kami perjuangkan.</p>
@@ -212,8 +212,8 @@
     </section>
 
         <!-- Kode Pos -->
-        <section class="page-section bg-white" id="kodepos" data-aos="fade-up">
-            <div class="container">
+        <section class="page-section bg-white" id="kodepos">
+            <div class="container" data-aos="fade-up">
                 <div class="text-center">
                     <h2 class="mt-0 section-heading text-uppercase">Kode Pos</h2>
                     <h3 class="section-subheading text-muted">Daftar kode pos dan ongkos kirim yang berlaku.</h3>
@@ -254,8 +254,8 @@
         </section>
 
     <!-- Kontak -->
-    <section class="page-section bg-white" id="kontak" data-aos="fade-up">
-        <div class="container">
+    <section class="page-section bg-white" id="kontak">
+        <div class="container" data-aos="fade-up">
             <div class="text-center">
                 <h2 class="section-heading text-uppercase">Kontak Kami</h2>
                 <h3 class="section-subheading text-muted">Hubungi kami untuk informasi lebih lanjut.</h3>
@@ -290,7 +290,7 @@
             </div>
         </div>
     </section>
-
+    
     <!-- Footer -->
     @include('admin.footer')
 

@@ -74,7 +74,7 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <h5 class="card-title">{{ $testimoni->user->name }}</h5> <!-- Tampilkan nama user -->
 
-                                            @auth
+                                            {{-- @auth
                                                 @if(auth()->id() == $testimoni->user_id)
                                                     <!-- Hanya tampilkan dropdown jika ini testimoni user yang login -->
                                                     <div class="dropdown">
@@ -93,7 +93,7 @@
                                                         </ul>
                                                     </div>
                                                 @endif
-                                            @endauth
+                                            @endauth --}}
                                         </div>
                                         <p class="card-text">{{ $testimoni->content }}</p>
                                         @if ($testimoni->rating)
@@ -232,7 +232,7 @@
     </div>
 
     <!-- Modal Edit Testimoni -->
-    <div class="modal fade" id="editTestimonialModal" tabindex="-1" aria-labelledby="editTestimonialModalLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="editTestimonialModal" tabindex="-1" aria-labelledby="editTestimonialModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -266,7 +266,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
 </section>
 
