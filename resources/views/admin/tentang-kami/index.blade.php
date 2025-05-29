@@ -152,7 +152,7 @@
                 <div class="modal-body">Apakah Anda yakin ingin menghapus informasi ini?</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-danger" id="confirmDeleteButton">Hapus</a>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Hapus</button>
                 </div>
             </div>
         </div>
@@ -178,12 +178,31 @@
     <script src="{{ URL::asset('Admin/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{ URL::asset('Admin/js/demo/datatables-demo.js')}}"></script>
 
-    <script>
+     <script>
         $(document).ready(function() {
             $('.delete-button').click(function() {
                 var tentangKamiId = $(this).data('tentang-kami-id');
-                var deleteUrl = "{{ route('admin.tentang-kami.destroy', '') }}/" + tentangKamiId;
-                $('#confirmDeleteButton').attr('href', deleteUrl);
+
+                $('#confirmDeleteButton').off('click').on('click', function() {
+                    // Buat form DELETE secara dinamis
+                    var form = $('<form>', {
+                        'action': "{{ route('admin.tentang-kami.destroy', ['tentang_kami' => ':id']) }}".replace(':id', tentangKamiId),
+                        'method': 'POST',
+                        'style': 'display:none' // Sembunyikan form
+                    }).append($('<input>', {
+                        'name': '_method',
+                        'value': 'DELETE',
+                        'type': 'hidden'
+                    })).append($('<input>', {
+                        'name': '_token',
+                        'value': "{{ csrf_token() }}", // Tambahkan CSRF token
+                        'type': 'hidden'
+                    }));
+
+                    // Tambahkan form ke body dan submit
+                    $('body').append(form);
+                    form.submit();
+                });
             });
         });
     </script>

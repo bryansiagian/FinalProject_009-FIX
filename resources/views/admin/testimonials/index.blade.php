@@ -144,7 +144,7 @@
                 <div class="modal-body">Apakah Anda yakin ingin menghapus testimoni ini?</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-danger" id="confirmDeleteButton">Hapus</a>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Hapus</button>
                 </div>
             </div>
         </div>
@@ -176,8 +176,27 @@
         $(document).ready(function() {
             $('.delete-button').click(function() {
                 var testimonialId = $(this).data('testimonial-id');
-                var deleteUrl = "{{ route('admin.testimonials.destroy', '') }}/" + testimonialId;
-                $('#confirmDeleteButton').attr('href', deleteUrl);
+
+                $('#confirmDeleteButton').off('click').on('click', function() {
+                    // Buat form DELETE secara dinamis
+                    var form = $('<form>', {
+                        'action': "{{ route('admin.testimonials.destroy', ['testimonial' => ':id']) }}".replace(':id', testimonialId),
+                        'method': 'POST',
+                        'style': 'display:none' // Sembunyikan form
+                    }).append($('<input>', {
+                        'name': '_method',
+                        'value': 'DELETE',
+                        'type': 'hidden'
+                    })).append($('<input>', {
+                        'name': '_token',
+                        'value': "{{ csrf_token() }}", // Tambahkan CSRF token
+                        'type': 'hidden'
+                    }));
+
+                    // Tambahkan form ke body dan submit
+                    $('body').append(form);
+                    form.submit();
+                });
             });
         });
     </script>

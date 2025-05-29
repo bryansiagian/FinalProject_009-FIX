@@ -105,7 +105,6 @@
                                                     <th>Telepon</th>
                                                     <th>Email</th>
                                                     <th>Peta</th>
-                                                    <th>Aktif</th>
                                                     <th class="text-center">Aksi</th>
                                                 </tr>
                                             </thead>
@@ -198,7 +197,7 @@
                 <div class="modal-body">Apakah Anda yakin ingin menghapus informasi kontak ini?</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-danger" id="confirmDeleteButton">Hapus</a>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Hapus</button>
                 </div>
             </div>
         </div>
@@ -228,8 +227,27 @@
         $(document).ready(function() {
             $('.delete-button').click(function() {
                 var kontakId = $(this).data('kontak-id');
-                var deleteUrl = "{{ route('admin.kontak.destroy', '') }}/" + kontakId;
-                $('#confirmDeleteButton').attr('href', deleteUrl);
+
+                $('#confirmDeleteButton').off('click').on('click', function() {
+                    // Buat form DELETE secara dinamis
+                    var form = $('<form>', {
+                        'action': "{{ route('admin.kontak.destroy', ['kontak' => ':id']) }}".replace(':id', kontakId),
+                        'method': 'POST',
+                        'style': 'display:none' // Sembunyikan form
+                    }).append($('<input>', {
+                        'name': '_method',
+                        'value': 'DELETE',
+                        'type': 'hidden'
+                    })).append($('<input>', {
+                        'name': '_token',
+                        'value': "{{ csrf_token() }}", // Tambahkan CSRF token
+                        'type': 'hidden'
+                    }));
+
+                    // Tambahkan form ke body dan submit
+                    $('body').append(form);
+                    form.submit();
+                });
             });
         });
     </script>

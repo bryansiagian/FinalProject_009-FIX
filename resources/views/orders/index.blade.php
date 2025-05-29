@@ -4,6 +4,7 @@
     @include('layouts.head')
     <!-- AOS CSS -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body id="page-top">
 <!-- Navigation-->
@@ -35,8 +36,8 @@
                         @if($orders->count() > 0)
                             <div class="table-responsive" data-aos="fade-right" data-aos-delay="300">
                                 <table class="table table-striped table-bordered table-hover">
-                                    <thead class="thead-light">  <!-- Tambahkan class thead-light untuk header abu-abu -->
-                                        <tr class="text-center"> <!-- Tambahkan class text-center untuk memusatkan teks di header -->
+                                    <thead class="thead-light">
+                                        <tr class="text-center">
                                             <th>Nomor Pesanan</th>
                                             <th>Tanggal Pesanan</th>
                                             <th>Total</th>
@@ -52,14 +53,16 @@
                                                 <td>Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
                                                 <td>{{ $order->status }}</td>
                                                 <td>
-                                                    <div class="d-flex justify-content-center"> <!-- Membuat tombol berada di tengah -->
-                                                        <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary btn-sm mr-2">Lihat Detail</a>
+                                                    <div class="d-flex justify-content-center align-items-center flex-wrap">
+                                                        <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary btn-sm mr-2 mb-1">
+                                                            <i class="fas fa-eye mr-1"></i> Lihat Detail
+                                                        </a>
                                                         @if($order->status == 'pending')
-                                                            <form action="{{ route('orders.cancel', $order->id) }}" method="POST">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')">Batalkan</button>
-                                                            </form>
+                                                        <button type="button" class="btn btn-danger btn-sm mb-1"
+                                                            onclick="showCancelModal(this)"
+                                                            data-id="{{ $order->id }}">
+                                                            <i class="fas fa-times mr-1"></i> Batalkan
+                                                        </button>
                                                         @endif
                                                     </div>
                                                 </td>
@@ -77,6 +80,30 @@
         </div>
     </div>
 </section>
+
+<!-- Modal Konfirmasi Pembatalan -->
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="cancelModalLabel">Konfirmasi Pembatalan</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin membatalkan pesanan ini?
+            </div>
+            <div class="modal-footer">
+                <form id="cancelForm" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                    <button type="submit" class="btn btn-danger">Ya, Batalkan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- Footer-->
 @include('layouts.footer')
@@ -111,5 +138,21 @@
         once: true,
     });
 </script>
+<script>
+    function showCancelModal(button) {
+        const form = document.getElementById('cancelForm');
+        const orderId = button.getAttribute('data-id');
+
+        // URL dasar langsung ditulis sesuai rute
+        const actionUrl = `/orders/${orderId}/cancel`;
+
+        form.action = actionUrl;
+
+        const cancelModal = new bootstrap.Modal(document.getElementById('cancelModal'));
+        cancelModal.show();
+    }
+</script>
+
+
 </body>
 </html>

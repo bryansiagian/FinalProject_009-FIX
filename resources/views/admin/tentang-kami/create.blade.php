@@ -53,8 +53,12 @@
                                     <textarea class="form-control" id="deskripsi" name="deskripsi" rows="5">{{ old('deskripsi') }}</textarea>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary">Simpan</button>
-                                <a href="{{ route('admin.tentang-kami.index') }}" class="btn btn-secondary">Batal</a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save mr-2"></i>Simpan
+                                </button>
+                                <a href="{{ route('admin.tentang-kami.index') }}" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left mr-2"></i>Batal
+                                </a>
                             </form>
                         </div>
                     </div>

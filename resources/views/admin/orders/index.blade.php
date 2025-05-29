@@ -130,10 +130,6 @@
                                                                 <a href="{{ route('admin.orders.edit', $order->id) }}" class="btn btn-sm btn-warning btn-action mr-1">
                                                                     <i class="fas fa-edit mr-2"></i>Edit
                                                                 </a>
-                                                                 <!-- Tombol Hapus dengan Modal -->
-                                                                 <button type="button" class="btn btn-sm btn-danger btn-action delete-button" data-toggle="modal" data-target="#deleteModal" data-order-id="{{ $order->id }}">
-                                                                    <i class="fas fa-trash-alt mr-2"></i>Hapus
-                                                                </button>
                                                             </div>
                                                         </td>
                                                     </tr>

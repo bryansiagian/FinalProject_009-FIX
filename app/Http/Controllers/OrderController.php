@@ -6,7 +6,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
-use App\Models\KodePos; // Import model KodePos
+use App\Models\KodePos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -201,33 +201,39 @@ class OrderController extends Controller
         return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dihapus!');
     }
 
-    public function cancel(Request $request, $id)
+    public function cancel(Order $order)
 {
-    $order = Order::findOrFail($id);
-
-    // Pastikan user yang login adalah pemilik pesanan
     if (Auth::id() !== $order->user_id) {
         abort(403, 'Unauthorized action.');
     }
 
-    // Pastikan status pesanan adalah "pending"
     if ($order->status !== 'pending') {
         return redirect()->route('orders.index')->with('error', 'Pesanan ini tidak dapat dibatalkan.');
     }
 
-    // Batalkan pesanan
-    $order->status = 'cancelled';
+    DB::beginTransaction();
+    try {
+        // Batalkan pesanan
+        $order->status = 'cancelled';
 
-    // Kembalikan stok produk yang dipesan
-    foreach ($order->orderItems as $item) {
-        $product = Product::find($item->product_id);
-        if ($product) {
-            $product->increment('stock', $item->quantity);
+        // Kembalikan stok produk
+        foreach ($order->orderItems as $item) {
+            $product = Product::find($item->product_id);
+            if ($product) {
+                $product->increment('stock', $item->quantity);
+            }
         }
+
+        $order->save();
+
+        DB::commit();
+        return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dibatalkan.');
+
+    } catch (\Exception $e) {
+        DB::rollback();
+        Log::error('Gagal membatalkan pesanan: ' . $e->getMessage());
+        return redirect()->route('orders.index')->with('error', 'Terjadi kesalahan saat membatalkan pesanan.');
     }
-
-    $order->save();
-
-    return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dibatalkan.');
 }
+
 }

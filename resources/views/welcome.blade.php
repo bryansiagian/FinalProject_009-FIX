@@ -176,7 +176,7 @@
     </section>
 
     <!-- Tentang Kami -->
-    <section id="tentangkami" class="page-section bg-white" >
+    <section id="tentangkami" class="page-section bg-light " >
         <div class="container" data-aos="fade-up">
             <div class="text-center">
                 <h2 class="mt-0 section-heading text-uppercase">Tentang Kami</h2>
@@ -212,11 +212,16 @@
     </section>
 
         <!-- Kode Pos -->
-        <section class="page-section bg-white" id="kodepos">
+        <section class="page-section bg-light" id="kodepos">
             <div class="container" data-aos="fade-up">
                 <div class="text-center">
                     <h2 class="mt-0 section-heading text-uppercase">Kode Pos</h2>
-                    <h3 class="section-subheading text-muted">Daftar kode pos dan ongkos kirim yang berlaku.</h3>
+                    <p class="mb-4 text-muted">Daftar kode pos dan ongkos kirim yang berlaku.</p>
+                    <div class="divider-custom">
+                        <div class="divider-line"></div>
+                        <div class="divider-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="divider-line"></div>
+                    </div>
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
@@ -290,7 +295,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Footer -->
     @include('admin.footer')
 
