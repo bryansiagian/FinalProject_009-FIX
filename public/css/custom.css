@@ -72,10 +72,10 @@
    Halaman Tentang Kami (tentang-kami.index)
    ========================================================================== */
 
-#tentangkami {
+/* #tentangkami {
     background: linear-gradient(to bottom, #f8f9fa, #ffffff);
     padding: 5rem 0;
-}
+} */
 
 .about-card {
     border: none;

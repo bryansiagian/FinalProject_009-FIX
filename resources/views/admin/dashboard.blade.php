@@ -138,7 +138,7 @@
                     <!-- /.container-fluid -->
                 </div>
             <!-- End of Main Content -->
-
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
             <!-- Footer -->
             @include('admin.footer')
 

@@ -88,13 +88,10 @@
                                                         <a class="btn btn-sm btn-warning btn-action mr-1" href="{{ route('admin.pengumuman.edit',$pengumuman->id) }}">
                                                             <i class="fas fa-edit mr-2"></i>Edit
                                                         </a>
-                                                        <form action="{{ route('admin.pengumuman.destroy',$pengumuman->id) }}" method="POST" style="display:inline;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger btn-action" onclick="return confirm('Apakah Anda yakin ingin menghapus pengumuman ini?')">
-                                                                <i class="fas fa-trash-alt mr-2"></i>Hapus
-                                                            </button>
-                                                        </form>
+                                                         <!-- Tombol Hapus dengan Modal -->
+                                                        <button type="button" class="btn btn-sm btn-danger btn-action delete-button" data-toggle="modal" data-target="#deleteModal" data-pengumuman-id="{{ $pengumuman->id }}">
+                                                            <i class="fas fa-trash-alt mr-2"></i>Hapus
+                                                        </button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -146,6 +143,25 @@
         </div>
     </div>
 
+    <!-- Delete Modal-->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Apakah Anda yakin ingin menghapus pengumuman ini?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+                    <a class="btn btn-danger" id="confirmDeleteButton">Hapus</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap core JavaScript-->
     <script src="{{ URL::asset('Admin/vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{ URL::asset('Admin/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
@@ -160,6 +176,16 @@
     <script src="{{ URL::asset('Admin/vendor/datatables/jquery.dataTables.min.js')}}"></script>
     <script src="{{ URL::asset('Admin/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{ URL::asset('Admin/js/demo/datatables-demo.js')}}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.delete-button').click(function() {
+                var pengumumanId = $(this).data('pengumuman-id');
+                var deleteUrl = "{{ route('admin.pengumuman.destroy', '') }}/" + pengumumanId;
+                $('#confirmDeleteButton').attr('href', deleteUrl);
+            });
+        });
+    </script>
 
 </body>
 

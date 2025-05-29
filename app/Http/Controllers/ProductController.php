@@ -16,30 +16,52 @@ class ProductController extends Controller
      * Display a listing of the products (for guest/customers).
      */
     public function showFront(Request $request)
-{
-    $searchTerm = $request->input('search');
-    $category = $request->input('category');
+    {
+        $searchTerm = $request->input('search');
+        $category = $request->input('category');
+        $priceSort = $request->input('price_sort'); // Tambahkan filter harga
+        $alphabeticalSort = $request->input('alphabetical_sort'); // Tambahkan filter abjad
 
-    $query = Product::query();
+        $query = Product::query();
 
-    if ($searchTerm) {
-        $query->where('name', 'LIKE', '%' . $searchTerm . '%');
+        if ($searchTerm) {
+            $query->where('name', 'LIKE', '%' . $searchTerm . '%');
+        }
+
+        if ($category) {
+            $query->where('category', $category);
+        }
+
+        // Filter Harga
+        if ($priceSort === 'asc') {
+            $query->orderBy('price', 'asc');
+        } elseif ($priceSort === 'desc') {
+            $query->orderBy('price', 'desc');
+        }
+
+        // Filter Abjad
+        if ($alphabeticalSort === 'asc') {
+            $query->orderBy('name', 'asc');
+        } elseif ($alphabeticalSort === 'desc') {
+            $query->orderBy('name', 'desc');
+        }
+        else{
+             $query->orderBy('created_at', 'desc');
+        }
+
+
+        $products = $query->get();
+
+        foreach ($products as $product) {
+            $product->load('testimonials.user');
+        }
+
+        // Daftar kategori yang valid
+        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall', 'Sedotan', 'Tisu', 'Lidi', 'HD', 'Wrapping'];
+
+        return view('products.index', compact('products', 'categories'));
     }
 
-    if ($category) {
-        $query->where('category', $category);
-    }
-
-    $products = $query->orderBy('created_at', 'desc')->get();
-    foreach ($products as $product) {
-        $product->load('testimonials.user');
-    }
-
-    // Daftar kategori yang valid
-    $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall', 'Sedotan', 'Tisu', 'Lidi', 'HD', 'Wrapping'];
-
-    return view('products.index', compact('products', 'categories'));
-}
     /**
      * Display the specified product (for guest/customers).
      */

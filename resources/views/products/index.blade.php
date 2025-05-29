@@ -26,34 +26,70 @@
             <h3 class="section-subheading text-muted">Produk-produk plastik berkualitas tinggi untuk kebutuhan Anda.</h3>
         </div>
 
+        {{-- Search and Filter Row --}}
         <div class="row mb-4 justify-content-center">
             <div class="col-md-8 col-lg-6">
-                {{-- Pastikan route() mengarah ke route yang memanggil ProductController@showFront --}}
-                <form action="{{ route('products.index') }}" method="GET" class="d-flex" data-aos="fade-up" data-aos-delay="100">
-                    <input type="text" name="search" class="form-control me-2" placeholder="Cari nama produk..." value="{{ request('search') }}" aria-label="Cari Produk">
-                    <button class="btn btn-primary" type="submit">
-                        <i class="fas fa-search"></i> <span class="d-none d-md-inline">Cari</span>
+                <div class="d-flex align-items-center" data-aos="fade-up" data-aos-delay="100">
+
+                    {{-- Search Form --}}
+                    <form action="{{ route('products.index') }}" method="GET" class="flex-grow-1 me-2">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control" placeholder="Cari nama produk..." value="{{ request('search') }}" aria-label="Cari Produk">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search"></i> <span class="d-none d-md-inline">Cari</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    {{-- Filter Button --}}
+                    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#filterOptions" aria-expanded="false" aria-controls="filterOptions">
+                        Filter <i class="fas fa-filter"></i>
                     </button>
-                </form>
+
+                </div>
             </div>
         </div>
 
-        {{-- Filter Kategori --}}
-        <div class="row mb-3 justify-content-center">
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                <form action="{{ route('products.index') }}" method="GET">
-                    <div class="input-group">
-                        <select class="form-select" name="category" aria-label="Pilih Kategori" onchange="this.form.submit()">
-                            <option value="">Semua Kategori</option>
-                            @foreach($categories as $kategori)
-                                <option value="{{ strtolower($kategori) }}" {{ request('category') == strtolower($kategori) ? 'selected' : '' }}>
-                                    {{ ucfirst($kategori) }}
-                                </option>
-                            @endforeach
-                        </select>
+        {{-- Collapsible Filter Options --}}
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="collapse" id="filterOptions">
+                    <div class="card card-body">
+                        <form action="{{ route('products.index') }}" method="GET" class="row gy-2">
+                            <input type="hidden" name="search" value="{{ request('search') }}">
+
+                            <div class="col-md-6">
+                                <label for="category" class="form-label">Kategori:</label>
+                                <select class="form-select" name="category" id="category" aria-label="Pilih Kategori" onchange="this.form.submit()">
+                                    <option value="">Semua Kategori</option>
+                                    @foreach($categories as $kategori)
+                                        <option value="{{ strtolower($kategori) }}" {{ request('category') == strtolower($kategori) ? 'selected' : '' }}>
+                                            {{ ucfirst($kategori) }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="price_sort" class="form-label">Urutkan Harga:</label>
+                                <select class="form-select" name="price_sort" id="price_sort" aria-label="Urutkan Harga" onchange="this.form.submit()">
+                                    <option value="">Tidak Diurutkan</option>
+                                    <option value="asc" {{ request('price_sort') == 'asc' ? 'selected' : '' }}>Termurah Dulu</option>
+                                    <option value="desc" {{ request('price_sort') == 'desc' ? 'selected' : '' }}>Termahal Dulu</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="alphabetical_sort" class="form-label">Urutkan Abjad:</label>
+                                <select class="form-select" name="alphabetical_sort" id="alphabetical_sort" aria-label="Urutkan Abjad" onchange="this.form.submit()">
+                                    <option value="">Tidak Diurutkan</option>
+                                    <option value="asc" {{ request('alphabetical_sort') == 'asc' ? 'selected' : '' }}>A - Z</option>
+                                    <option value="desc" {{ request('alphabetical_sort') == 'desc' ? 'selected' : '' }}>Z - A</option>
+                                </select>
+                            </div>
+                        </form>
                     </div>
-                    <input type="hidden" name="search" value="{{ request('search') }}">
-                </form>
+                </div>
             </div>
         </div>
 
@@ -118,7 +154,7 @@
             const scrollPosition = section.offsetTop - navbarHeight;
 
             window.scrollTo({
-                top: scrollPosition,
+                top: $scrollPosition,
                 behavior: 'smooth'
             });
         }

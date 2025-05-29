@@ -55,7 +55,7 @@
 </section>
 
 <!-- Kode Pos Section -->
-<section id="kodepos" class="page-section bg-light">
+<section id="kodepos" class="page-section">
     <div class="container">
         <div class="text-center">
             <h2 class="mt-0 section-heading text-uppercase">Kode Pos</h2>

@@ -60,10 +60,6 @@
                                             <th>Tanggal Publikasi</th>
                                             <td>{{ $pengumuman->tanggal_publikasi }}</td>
                                         </tr>
-                                        <tr>
-                                            <th>Aktif</th>
-                                            <td>{{ $pengumuman->aktif ? 'Ya' : 'Tidak' }}</td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
