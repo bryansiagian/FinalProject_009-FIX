@@ -35,5 +35,15 @@ class UserSeeder extends Seeder
             'kode_pos' => '22316',
             'role' => 'customer',
         ]);
+
+        User::create([
+            'name' => 'Tamara Airin Maria',
+            'email' => 'tam@gmail.com',
+            'password' => Hash::make('tam12345678'), // Ganti 'password' dengan password yang lebih aman
+            'shipping_address' => 'Jl. Pematang Siantar No. 316',
+            'phone_number' => '081219208312',
+            'kode_pos' => '22316',
+            'role' => 'customer',
+        ]);
     }
 }
