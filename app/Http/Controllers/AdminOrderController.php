@@ -32,7 +32,9 @@ class AdminOrderController extends Controller
         }
 
         $orders = $orders->paginate(10);
-        $totalHargaSeluruhPesanan = Order::sum('total_amount');
+
+        // Hitung total harga pesanan hanya untuk status 'completed'
+        $totalHargaSeluruhPesanan = Order::where('status', 'completed')->sum('total_amount');
 
         return view('admin.orders.index', compact('orders', 'totalHargaSeluruhPesanan'));
     }
