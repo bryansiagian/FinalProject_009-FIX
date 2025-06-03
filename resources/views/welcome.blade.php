@@ -87,7 +87,7 @@
             </div>
 
             <div class="row">
-                @foreach($products->take(4) as $index => $product)
+                @foreach($products->take(8) as $index => $product)
                     <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-delay="{{ 100 * $loop->index }}">
                         <div class="card-container"> <!-- Bungkus dengan card-container -->
                             <div class="card product-card">
