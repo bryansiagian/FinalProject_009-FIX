@@ -1,33 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    @include('layouts.head')
-    <!-- Tambahkan ini di file layouts.head atau langsung di sini -->
-</head>
+@extends('layouts.app-welcome')
 
-<body id="page-top">
-    <!-- Navigation-->
-    @include('layouts.navbar-welcome')
+@section('title', 'Beranda | Harmonis Plastik')
 
-    <!-- Alert -->
-    <div class="alert-container">
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-    </div>
-
-    <!-- Masthead-->
-    @include('layouts.header')
+@section('content')
 
     <!-- Why Choose Us Section -->
     <section class="page-section bg-light" id="why-choose-us" data-aos="fade-up">
@@ -77,7 +52,6 @@
         </div>
     </section>
 
-    <!-- Produk -->
     <!-- Produk -->
     <section class="page-section bg-light" id="products">
         <div class="container" data-aos="fade-up">
@@ -295,50 +269,45 @@
             </div>
         </div>
     </section>
-
-    <!-- Footer -->
-    @include('admin.footer')
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- AOS JS -->
-    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+@endsection
+@section('scripts')
     <script>
-        AOS.init({
-            duration: 1000,
-            once: true,
-        });
+        $(document).ready(function() {
+            AOS.init({
+                duration: 1000,
+                once: true,
+            });
 
-        window.addEventListener('scroll', function () {
-            const navbar = document.querySelector('#mainNav');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    const navbarHeight = document.querySelector('.navbar').offsetHeight;
-                    window.scrollTo({
-                        top: targetElement.offsetTop - navbarHeight,
-                        behavior: 'smooth'
-                    });
+            window.addEventListener('scroll', function () {
+                const navbar = document.querySelector('#mainNav');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
                 }
             });
-        });
 
-        // Auto close alert after 3 seconds
-        window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove();
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                        window.scrollTo({
+                            top: targetElement.offsetTop - navbarHeight,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
             });
-        }, 3000);
+
+            // Auto close alert after 3 seconds
+            window.setTimeout(function() {
+                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove();
+                });
+            }, 3000);
+        });
     </script>
-</body>
-</html>
+@endsection

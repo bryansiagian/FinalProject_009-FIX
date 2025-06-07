@@ -4,10 +4,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>ADMIN - HARMONIS PLASTIK</title>
+    <title>Admin - HARMONIS PLASTIK</title>
 
-    <link rel="icon" href="{{ asset('path/ke/gambar/favicon.ico') }}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{ asset('path/ke/gambar/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('assets/img/logo.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('assets/img/logo.png') }}" type="image/x-icon">
 
     <!-- Custom fonts for this template-->
     <link href="{{URL::asset('admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">

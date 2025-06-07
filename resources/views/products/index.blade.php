@@ -1,23 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    @include('layouts.head')
-    <!-- Tambahkan ini di file layouts.head atau langsung di sini -->
-    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-</head>
-<body id="page-top">
-<!-- Navigation-->
-@include('layouts.navbar')
+@extends('layouts.app')
 
-<!-- Masthead-->
-<header class="masthead" data-aos="fade-down">
-    <div class="container">
-        <div class="masthead-content">
-            <h1 class="masthead-heading text-uppercase">HARMONIS PLASTIK</h1>
-        </div>
-    </div>
-</header>
+@section('title', 'Produk | Harmonis Plastik')
 
+@section('content')
 <!-- Portfolio Grid-->
 <section class="page-section" id="products" data-aos="fade-up">
     <div class="container">
@@ -134,37 +119,28 @@
         </div>
     </div>
 </section>
+@endsection
 
-<!-- Footer-->
-@include('layouts.footer')
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            const sectionId = 'products';
+            const navbarHeight = document.querySelector('.navbar').offsetHeight;
 
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="{{ asset('js/scripts.js') }}"></script>
-<!-- AOS JS -->
-<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const sectionId = 'products';
-        const navbarHeight = document.querySelector('.navbar').offsetHeight;
+            const section = document.getElementById(sectionId);
+            if (section) {
+                const scrollPosition = section.offsetTop - navbarHeight;
 
-        const section = document.getElementById(sectionId);
-        if (section) {
-            const scrollPosition = section.offsetTop - navbarHeight;
+                window.scrollTo({
+                    top: scrollPosition,
+                    behavior: 'smooth'
+                });
+            }
 
-            window.scrollTo({
-                top: $scrollPosition,
-                behavior: 'smooth'
+            AOS.init({
+                duration: 1000,
+                once: true,
             });
-        }
-    });
-</script>
-<script>
-    AOS.init({
-        duration: 1000,
-        once: true,
-    });
-</script>
-</body>
-</html>
+        });
+    </script>
+@endsection

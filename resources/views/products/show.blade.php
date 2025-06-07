@@ -1,18 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    @include('layouts.head')
+@extends('layouts.app')
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body id="page-top">
-<!-- Navigation-->
-@include('layouts.navbar')
+@section('title', $product->name . ' | Harmonis Plastik')
 
-<!-- Masthead-->
-@include('layouts.header')
+@section('content')
 <!-- Portfolio Grid-->
 <section class="page-section" id="product-detail">
     <div class="container">
@@ -269,21 +259,11 @@
     </div> --}}
 
 </section>
+@endsection
 
-<!-- Footer-->
-@include('layouts.footer')
-
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Core theme JS-->
-<script src="{{ asset('js/scripts.js') }}"></script>
-
+@section('scripts')
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    $(document).ready(function() {
         const sectionId = 'product-detail';
         const navbarHeight = document.querySelector('.navbar').offsetHeight;
 
@@ -309,12 +289,12 @@
             var deliveryRadio = document.getElementById('delivery' + productId);
 
             if (addressField) {
-            if (deliveryRadio.checked) {
-                addressField.style.display = 'block';
-            } else {
-                addressField.style.display = 'none';
+                if (deliveryRadio.checked) {
+                    addressField.style.display = 'block';
+                } else {
+                    addressField.style.display = 'none';
+                }
             }
-        }
         }
 
         // Fungsi untuk validasi form
@@ -330,9 +310,9 @@
             return true; // Izinkan form untuk di-submit
         }
 
-                function updateShippingMethod(method, productId) {
-                    document.getElementById('shipping_method' + productId).value = method;
-                }
+        function updateShippingMethod(method, productId) {
+            document.getElementById('shipping_method' + productId).value = method;
+        }
 
         // Event listener untuk modal yang ditampilkan
         document.addEventListener('shown.bs.modal', function (event) {
@@ -351,6 +331,22 @@
                 toggleAddressField(productId);
             });
         });
+
+        // JavaScript untuk Modal Edit Testimoni
+        $('#editTestimonialModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var testimonial = button.data('testimonial'); // Extract info from data-* attributes
+            console.log(testimonial);
+            var modal = $(this);
+
+            modal.find('#edit_content').val(testimonial.content);
+            modal.find('#edit_rating').val(testimonial.rating);
+
+            // Set action form ke route yang benar
+            var url = '{{ route("testimonial.update", ":id") }}';
+            url = url.replace(':id', testimonial.id);
+            modal.find('#editTestimonialForm').attr('action', url);
+        });
     });
 
     function updateShippingMethod(method, productId) {
@@ -365,23 +361,5 @@
             addressField.style.display = 'block';
         }
     }
-
-    // JavaScript untuk Modal Edit Testimoni
-    $('#editTestimonialModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // Button that triggered the modal
-        var testimonial = button.data('testimonial'); // Extract info from data-* attributes
-        console.log(testimonial);
-        var modal = $(this);
-
-        modal.find('#edit_content').val(testimonial.content);
-        modal.find('#edit_rating').val(testimonial.rating);
-
-        // Set action form ke route yang benar
-        var url = '{{ route("testimonial.update", ":id") }}';
-        url = url.replace(':id', testimonial.id);
-        modal.find('#editTestimonialForm').attr('action', url);
-    });
 </script>
-
-</body>
-</html>
+@endsection
