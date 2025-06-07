@@ -100,7 +100,7 @@ class TentangKamiController extends Controller
      */
     public function showFront()
     {
-        $tentang_kami = TentangKami::first();
+        $tentang_kami = TentangKami::all();
         $kodePos = KodePos::all(); // Ambil semua kode pos
         return view('tentang-kami.index', compact('tentang_kami', 'kodePos')); // Tampilkan di halaman depan
     }

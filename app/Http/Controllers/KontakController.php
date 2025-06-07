@@ -99,7 +99,7 @@ class KontakController extends Controller
      */
     public function showFront()
     {
-        $kontak = Kontak::first(); // Ambil yang pertama
+        $kontak = Kontak::all(); // Ambil yang pertama
         return view('kontak.index', compact('kontak')); // Tampilkan di halaman depan
     }
 }
