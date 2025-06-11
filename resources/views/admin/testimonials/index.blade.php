@@ -49,6 +49,12 @@
                                         </div>
                                     @endif
 
+                                    @if (session('error'))
+                                        <div class="alert alert-danger">
+                                            {{ session('error') }}
+                                        </div>
+                                    @endif
+
                                     @if ($errors->any())
                                         <div class="alert alert-danger">
                                             <ul>
@@ -59,12 +65,36 @@
                                         </div>
                                     @endif
 
+                                    <!-- Form Filter -->
+                                    <form action="{{ route('admin.testimonials.index') }}" method="GET" class="mb-3">
+                                        <div class="form-row align-items-center">
+                                            <div class="col-auto">
+                                                <label class="mr-2">Filter Rating:</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <select class="form-control" name="rating">
+                                                    <option value="">Semua Rating</option>
+                                                    <option value="1" {{ request('rating') == 1 ? 'selected' : '' }}>1</option>
+                                                    <option value="2" {{ request('rating') == 2 ? 'selected' : '' }}>2</option>
+                                                    <option value="3" {{ request('rating') == 3 ? 'selected' : '' }}>3</option>
+                                                    <option value="4" {{ request('rating') == 4 ? 'selected' : '' }}>4</option>
+                                                    <option value="5" {{ request('rating') == 5 ? 'selected' : '' }}>5</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="submit" class="btn btn-primary">Filter</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
                                     <div class="table-responsive">
                                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                             <thead class="thead-light">
                                                 <tr>
                                                     <th>Pengguna</th>
                                                     <th>Testimoni</th>
+                                                    <th>Rating</th> <!-- Tambahkan kolom Rating -->
+                                                    <th>Status</th>
                                                     <th class="text-center">Aksi</th>
                                                 </tr>
                                             </thead>
@@ -73,9 +103,36 @@
                                                     <tr>
                                                         <td>{{ $testimonial->user->name }}</td>
                                                         <td>{{ $testimonial->content }}</td>
+                                                        <td>
+                                                            @if ($testimonial->rating)
+                                                                {{ $testimonial->rating }} / 5
+                                                            @else
+                                                                Tidak Ada Rating
+                                                            @endif
+                                                        </td> <!-- Tampilkan Rating -->
+                                                        <td>{{ $testimonial->status }}</td>
                                                         <td class="text-center">
                                                             <div class="d-flex justify-content-center">
-                                                                <!-- Tombol Hapus dengan Modal -->
+                                                                @if ($testimonial->status === 'pending')
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <form action="{{ route('admin.testimonials.approve', $testimonial->id) }}" method="POST">
+                                                                                @csrf
+                                                                                <button type="submit" class="btn btn-sm btn-success btn-action mr-2">
+                                                                                    <i class="fas fa-check mr-2"></i>Approve
+                                                                                </button>
+                                                                            </form>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <form action="{{ route('admin.testimonials.reject', $testimonial->id) }}" method="POST">
+                                                                                @csrf
+                                                                                <button type="submit" class="btn btn-sm btn-danger btn-action">
+                                                                                    <i class="fas fa-times mr-2"></i>Reject
+                                                                                </button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                @endif
                                                                 <button type="button" class="btn btn-sm btn-danger btn-action delete-button" data-toggle="modal" data-target="#deleteModal" data-testimonial-id="{{ $testimonial->id }}">
                                                                     <i class="fas fa-trash-alt mr-2"></i>Hapus
                                                                 </button>

@@ -21,43 +21,74 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="card checkout-card">
-                    <div class="card-header">Informasi Pengiriman</div>
+                    <div class="card-header">Checkout</div>  <!-- Judul card yang lebih umum -->
 
                     <div class="card-body">
-                        <form action="{{ route('orders.store') }}" method="POST">
-                            @csrf
+                        <div class="row"> <!-- Gunakan row di dalam card-body -->
+                            <div class="col-md-6"> <!-- Informasi Pengiriman: Lebar 6 kolom -->
+                                <h5>Informasi Pengiriman</h5>
+                                <form action="{{ route('orders.store') }}" method="POST">
+                                    @csrf
 
-                            <div class="mb-3">
-                                <label class="form-label">Metode Pengiriman</label>
-                                @foreach($shippingMethods as $method => $details)
-                                    @if($details['tersedia'])  <!-- Hanya tampilkan jika tersedia -->
-                                        <div class="form-check">
-                                            <input class="form-check-input @error('shipping_method') is-invalid @enderror" type="radio" name="shipping_method" id="shipping_method_{{ $method }}" value="{{ $method }}"
-                                                {{ old('shipping_method') == $method ? 'checked' : '' }}
-                                                @if($method == 'self_pickup' && !$shippingMethods['delivery']['tersedia']) checked @endif
-                                                onclick="toggleAddressField('{{ $method }}')">
+                                    <div class="mb-3">
+                                        <label class="form-label">Metode Pengiriman</label>
+                                        @foreach($shippingMethods as $method => $details)
+                                            @if($details['tersedia']) <!-- Hanya tampilkan jika tersedia -->
+                                                <div class="form-check">
+                                                    <input class="form-check-input @error('shipping_method') is-invalid @enderror"
+                                                           type="radio" name="shipping_method"
+                                                           id="shipping_method_{{ $method }}" value="{{ $method }}"
+                                                        {{ old('shipping_method') == $method ? 'checked' : '' }}
+                                                        @if($method == 'self_pickup' && !$shippingMethods['delivery']['tersedia']) checked @endif
+                                                        onclick="toggleAddressField('{{ $method }}')">
 
-                                            <label class="form-check-label" for="shipping_method_{{ $method }}">
-                                                {{ $details['name'] }} (Rp {{ number_format($details['cost'], 0, ',', '.') }})
-                                            </label>
-                                        </div>
-                                    @endif
-                                @endforeach
-                                @error('shipping_method')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                                    <label class="form-check-label" for="shipping_method_{{ $method }}">
+                                                        {{ $details['name'] }} (Rp {{ number_format($details['cost'], 0, ',', '.') }})
+                                                    </label>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                        @error('shipping_method')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="mb-3" id="address_field"
+                                        style="{{ (old('shipping_method') == 'delivery' && $shippingMethods['delivery']['tersedia']) ? '' : 'display: none;' }}">
+                                        <label for="shipping_address" class="form-label">Alamat Pengiriman</label>
+                                        <textarea class="form-control @error('shipping_address') is-invalid @enderror"
+                                                  id="shipping_address" name="shipping_address" rows="3"
+                                                  @if(!$shippingMethods['delivery']['tersedia']) disabled
+                                                  @endif>{{ old('shipping_address', Auth::user()->shipping_address) }}</textarea>
+                                        @error('shipping_address')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Buat Pesanan</button>
+                                </form>
                             </div>
 
-                            <div class="mb-3" id="address_field" style="{{ (old('shipping_method') == 'delivery' && $shippingMethods['delivery']['tersedia']) ? '' : 'display: none;' }}">
-                                <label for="shipping_address" class="form-label">Alamat Pengiriman</label>
-                                <textarea class="form-control @error('shipping_address') is-invalid @enderror" id="shipping_address" name="shipping_address" rows="3" @if(!$shippingMethods['delivery']['tersedia']) disabled @endif>{{ old('shipping_address', Auth::user()->shipping_address) }}</textarea>
-                                @error('shipping_address')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            <div class="col-md-6"> <!-- Rincian Pesanan: Lebar 6 kolom -->
+                                <h5>Rincian Pesanan</h5>
+                                <ul class="list-group list-group-flush">
+                                    @foreach($cartItems as $item)
+                                        <li class="list-group-item">
+                                            {{ $item->product->name }} x {{ $item->quantity }} - Rp {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}
+                                        </li>
+                                    @endforeach
+                                    <li class="list-group-item">
+                                        <strong>Subtotal:</strong> Rp {{ number_format($subtotal, 0, ',', '.') }}
+                                    </li>
+                                    <li class="list-group-item" id="shipping_cost_display" style="display:none;">
+                                        <strong>Biaya Pengiriman:</strong> Rp <span id="shipping_cost_value">0</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Total:</strong> Rp <span id="total_amount">Rp {{ number_format($subtotal, 0, ',', '.') }}</span>
+                                    </li>
+                                </ul>
                             </div>
-
-                            <button type="submit" class="btn btn-primary">Buat Pesanan</button>
-                        </form>
+                        </div> <!-- Akhir row -->
                     </div>
                 </div>
             </div>
@@ -76,14 +107,32 @@
 <script>
     function toggleAddressField(method) {
         var addressField = document.getElementById('address_field');
-        var shippingAddressTextarea = document.getElementById('shipping_address'); // ambil elemen textarea
+        var shippingAddressTextarea = document.getElementById('shipping_address');
+        var shippingCostDisplay = document.getElementById('shipping_cost_display');
+        var shippingCostValue = document.getElementById('shipping_cost_value');
+        var totalAmountDisplay = document.getElementById('total_amount');
+
+        // Ambil subtotal dari PHP
+        var subtotal = {{ $subtotal }}; // Penting: Menggunakan data dari controller
 
         if (method === 'delivery') {
             addressField.style.display = 'block';
-            shippingAddressTextarea.disabled = false; // aktifkan textarea
+            shippingAddressTextarea.disabled = false;
+            shippingCostDisplay.style.display = 'block';
+
+            // Ambil biaya pengiriman dari data shippingMethods (pastikan ini konsisten dengan controller)
+            var shippingCost = {{ isset($shippingMethods['delivery']['cost']) ? $shippingMethods['delivery']['cost'] : 0 }};
+
+            shippingCostValue.textContent = shippingCost.toLocaleString('id-ID'); // Format angka
+            var totalAmount = subtotal + shippingCost;
+            totalAmountDisplay.textContent = 'Rp ' + totalAmount.toLocaleString('id-ID');
+
         } else {
             addressField.style.display = 'none';
-             shippingAddressTextarea.disabled = true; // non-aktifkan textarea
+            shippingAddressTextarea.disabled = true;
+            shippingCostDisplay.style.display = 'none';
+
+            totalAmountDisplay.textContent = 'Rp ' + subtotal.toLocaleString('id-ID'); // Kembalikan ke subtotal
         }
     }
 

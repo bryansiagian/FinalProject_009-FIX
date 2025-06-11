@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TentangKami;
-use App\Models\KodePos;
+use App\Models\WilayahDesa; // Ganti KodePos dengan WilayahDesa
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,8 +15,8 @@ class TentangKamiController extends Controller
     public function index()
     {
         $tentang_kami = TentangKami::all();
-        $kodePos = KodePos::all(); // Ambil semua kode pos
-        return view('admin.tentang-kami.index', compact('tentang_kami', 'kodePos')); // Tampilkan daftar di halaman admin
+        $wilayahDesa = WilayahDesa::all(); // Ambil semua wilayah desa
+        return view('admin.tentang-kami.index', compact('tentang_kami', 'wilayahDesa')); // Tampilkan daftar di halaman admin
     }
 
     /**
@@ -101,7 +101,7 @@ class TentangKamiController extends Controller
     public function showFront()
     {
         $tentang_kami = TentangKami::all();
-        $kodePos = KodePos::all(); // Ambil semua kode pos
-        return view('tentang-kami.index', compact('tentang_kami', 'kodePos')); // Tampilkan di halaman depan
+        $wilayahDesa = WilayahDesa::where('tersedia_delivery', true)->get(); // Ambil hanya wilayah yang tersedia delivery
+        return view('tentang-kami.index', compact('tentang_kami', 'wilayahDesa')); // Tampilkan di halaman depan
     }
 }

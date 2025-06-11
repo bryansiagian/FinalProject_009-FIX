@@ -37,7 +37,7 @@
                         <div class="col-lg-12">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Daftar Kode Pos</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Daftar Wilayah/Desa</h6>
                                 </div>
                                 <div class="card-body">
                                     @if(session('success'))
@@ -56,8 +56,8 @@
                                         </div>
                                     @endif
 
-                                    <a href="{{ route('admin.kode_pos.create') }}" class="btn btn-primary">
-                                        <i class="fas fa-plus mr-2"></i> Tambah Kode Pos
+                                    <a href="{{ route('admin.wilayah-desa.create') }}" class="btn btn-primary">
+                                        <i class="fas fa-plus mr-2"></i> Tambah Wilayah/Desa
                                     </a>
                                     <br><br>
 
@@ -65,26 +65,30 @@
                                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                             <thead class="thead-light">
                                                 <tr>
-                                                    <th>Kode Pos</th>
+                                                    <th>Nama Wilayah</th>
                                                     <th>Ongkos Kirim</th>
+                                                    <th>Tersedia Delivery</th>
+                                                    <th>Kode Pos</th>
                                                     <th class="text-center">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($kodePos as $item)
+                                                @foreach($wilayahDesas as $item)
                                                     <tr>
-                                                        <td>{{ $item->kode_pos }}</td>
+                                                        <td>{{ $item->nama }}</td>
                                                         <td>Rp. {{ number_format($item->ongkos_kirim, 0, ',', '.') }}</td>
+                                                        <td>{{ $item->tersedia_delivery ? 'Ya' : 'Tidak' }}</td>
+                                                        <td>{{ $item->kode_pos }}</td>
                                                         <td class="text-center">
                                                             <div class="d-flex justify-content-center">
-                                                                <a href="{{ route('admin.kode_pos.edit', ['kodePos' => $item->id]) }}" class="btn btn-sm btn-warning btn-action mr-1">
+                                                                <a href="{{ route('admin.wilayah-desa.edit', ['wilayahDesa' => $item->id]) }}" class="btn btn-sm btn-warning btn-action mr-1">
                                                                     <i class="fas fa-edit mr-2"></i>Edit
                                                                 </a>
                                                                 <!-- Tombol Hapus dengan Modal -->
-                                                                <form action="{{ route('admin.kode_pos.destroy', $item->id) }}" method="POST" style="display: inline-block;">
+                                                                <form action="{{ route('admin.wilayah-desa.destroy', $item->id) }}" method="POST" style="display: inline-block;">
                                                                     @csrf
                                                                     @method('DELETE')
-                                                                    <button type="button" class="btn btn-sm btn-danger btn-action delete-button" data-toggle="modal" data-target="#deleteModal" data-kode-pos-id="{{ $item->id }}">
+                                                                    <button type="button" class="btn btn-sm btn-danger btn-action delete-button" data-toggle="modal" data-target="#deleteModal" data-wilayah-desa-id="{{ $item->id }}">
                                                                         <i class="fas fa-trash-alt mr-2"></i>Delete
                                                                     </button>
                                                                 </form>
@@ -150,7 +154,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Apakah Anda yakin ingin menghapus kode pos ini?</div>
+                <div class="modal-body">Apakah Anda yakin ingin menghapus wilayah/desa ini?</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
                     <button class="btn btn-danger" id="confirmDeleteButton" type="button">Hapus</button>
@@ -182,14 +186,14 @@
     <script>
         $(document).ready(function() {
             $('.delete-button').click(function() {
-                var kodePosId = $(this).data('kode-pos-id');
-                $('#confirmDeleteButton').data('kode-pos-id', kodePosId); // Simpan kodePosId di tombol confirm
+                var wilayahDesaId = $(this).data('wilayah-desa-id');
+                $('#confirmDeleteButton').data('wilayah-desa-id', wilayahDesaId); // Simpan wilayahDesaId di tombol confirm
             });
 
             $('#confirmDeleteButton').click(function() {
-                var kodePosId = $(this).data('kode-pos-id');
+                var wilayahDesaId = $(this).data('wilayah-desa-id');
                 // Cari form yang sesuai dan submit
-                $('form[action="' + '{{ route('admin.kode_pos.destroy', '') }}/' + kodePosId + '"]').submit();
+                $('form[action="' + '{{ route('admin.wilayah-desa.destroy', '') }}/' + wilayahDesaId + '"]').submit();
             });
         });
     </script>

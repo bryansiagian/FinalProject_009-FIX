@@ -6,7 +6,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
-use App\Models\KodePos;
+use App\Models\WilayahDesa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,35 +22,44 @@ class OrderController extends Controller
             return redirect()->route('products.index')->with('warning', 'Keranjang belanja Anda kosong!');
         }
 
-        // Ambil kode pos user dari tabel users
-        $kode_pos_user = Auth::user()->kode_pos;
+        $user = Auth::user();
+        $wilayahDesa = $user->wilayahDesa;
 
-        // Cari kode pos di tabel kode_pos
-        $kode_pos = KodePos::where('kode_pos', $kode_pos_user)->first();
-
-        // Tentukan apakah delivery tersedia dan berapa ongkos kirimnya
-        $delivery_tersedia = false;
-        $ongkos_kirim = 0; // Inisialisasi ongkos kirim
-
-        if ($kode_pos) {
-            $delivery_tersedia = true;
-            $ongkos_kirim = $kode_pos->ongkos_kirim; // Ambil ongkos kirim dari database
+        $shippingMethods = [];
+        if ($wilayahDesa) {
+            $shippingMethods = [
+                'delivery' => [
+                    'name' => 'Delivery',
+                    'cost' => $wilayahDesa->ongkos_kirim,
+                    'tersedia' => $wilayahDesa->tersedia_delivery,
+                ],
+                'self_pickup' => [
+                    'name' => 'Self Pick-up',
+                    'cost' => 0,
+                    'tersedia' => true,
+                ],
+            ];
+        } else {
+            // Handle kasus jika user tidak memiliki wilayah desa (misalnya, set self pickup saja)
+            $shippingMethods = [
+                'self_pickup' => [
+                    'name' => 'Self Pick-up',
+                    'cost' => 0,
+                    'tersedia' => true,
+                ],
+            ];
         }
 
-        $shippingMethods = [
-            'delivery' => [
-                'name' => 'Delivery',
-                'cost' => $ongkos_kirim, // Gunakan ongkos kirim yang dinamis
-                'tersedia' => $delivery_tersedia, // Tambahkan flag ketersediaan
-            ],
-            'self_pickup' => [
-                'name' => 'Self Pick-up',
-                'cost' => 0,
-                'tersedia' => true, // Selalu tersedia
-            ],
-        ];
+        // Hitung total harga barang
+        $subtotal = 0;
+        foreach ($cartItems as $item) {
+            $product = Product::find($item->product_id);
+            if ($product) {
+                $subtotal += $product->price * $item->quantity;
+            }
+        }
 
-        return view('orders.create', compact('cartItems', 'shippingMethods'));
+        return view('orders.create', compact('cartItems', 'shippingMethods', 'subtotal'));
     }
 
     public function store(Request $request)
@@ -58,28 +67,17 @@ class OrderController extends Controller
         $request->validate([
             'shipping_method' => 'required|string|in:delivery,self_pickup',
             'shipping_address' => 'required_if:shipping_method,delivery|nullable|string',
-            'product_id' => 'sometimes|required|exists:products,id', // Validasi jika product_id ada
-            'quantity' => 'sometimes|required|integer|min:1', // Validasi jika quantity ada
-            'from_product_page' => 'sometimes|accepted', // Validasi untuk menandai pesanan langsung
+            'product_id' => 'sometimes|required|exists:products,id',
+            'quantity' => 'sometimes|required|integer|min:1',
+            'from_product_page' => 'sometimes|accepted',
         ]);
 
-        // Validasi tambahan:  Pastikan delivery hanya dipilih jika tersedia
-        $kode_pos_user = Auth::user()->kode_pos;
-        $kode_pos = KodePos::where('kode_pos', $kode_pos_user)->first();
+        $user = Auth::user();
+        $wilayahDesa = $user->wilayahDesa;
 
-        $delivery_tersedia = false;
-        $ongkos_kirim = 0;
-
-        if ($kode_pos) {
-            $delivery_tersedia = true;
-            $ongkos_kirim = $kode_pos->ongkos_kirim;
+        if ($request->shipping_method == 'delivery' && (!$wilayahDesa || !$wilayahDesa->tersedia_delivery)) {
+            return back()->withErrors(['shipping_method' => 'Maaf, delivery tidak tersedia untuk wilayah Anda. Silakan pilih Self Pick-up.'])->withInput();
         }
-
-
-        if ($request->shipping_method == 'delivery' && !$delivery_tersedia) {
-            return back()->withErrors(['shipping_method' => 'Maaf, delivery tidak tersedia untuk kode pos Anda.  Silakan pilih Self Pick-up.'])->withInput();
-        }
-
 
         DB::beginTransaction();
         try {
@@ -89,8 +87,7 @@ class OrderController extends Controller
 
             // Ambil biaya pengiriman
             if ($request->shipping_method == 'delivery') {
-                // $shippingCost = config('app.delivery_cost', 15000); // Hapus ini!
-                $shippingCost = $ongkos_kirim; // Gunakan ongkos kirim yang dinamis
+                $shippingCost = $wilayahDesa->ongkos_kirim;
             }
             $totalAmount += $shippingCost;
 
@@ -153,8 +150,8 @@ class OrderController extends Controller
                 'user_id' => Auth::id(),
                 'total_amount' => $totalAmount,
                 'payment_method' => 'cash',
-                'shipping_method' => $request->shipping_method, // Ambil dari form
-                'shipping_address' => $request->shipping_address, // Ambil dari form
+                'shipping_method' => $request->shipping_method,
+                'shipping_address' => $request->shipping_address,
             ]);
 
             // Buat Order Items dan kurangi stok
@@ -186,7 +183,17 @@ class OrderController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        return view('orders.show', compact('order'));
+        $order->load('orderItems.product');
+
+        $user = Auth::user();
+        $wilayahDesa = $user->wilayahDesa;
+
+        $shippingCost = 0;
+        if ($order->shipping_method == 'delivery' && $wilayahDesa) {
+            $shippingCost = $wilayahDesa->ongkos_kirim;
+        }
+
+        return view('orders.show', compact('order', 'shippingCost'));
     }
 
     public function index()
@@ -202,38 +209,37 @@ class OrderController extends Controller
     }
 
     public function cancel(Order $order)
-{
-    if (Auth::id() !== $order->user_id) {
-        abort(403, 'Unauthorized action.');
-    }
-
-    if ($order->status !== 'pending') {
-        return redirect()->route('orders.index')->with('error', 'Pesanan ini tidak dapat dibatalkan.');
-    }
-
-    DB::beginTransaction();
-    try {
-        // Batalkan pesanan
-        $order->status = 'cancelled';
-
-        // Kembalikan stok produk
-        foreach ($order->orderItems as $item) {
-            $product = Product::find($item->product_id);
-            if ($product) {
-                $product->increment('stock', $item->quantity);
-            }
+    {
+        if (Auth::id() !== $order->user_id) {
+            abort(403, 'Unauthorized action.');
         }
 
-        $order->save();
+        if ($order->status !== 'pending') {
+            return redirect()->route('orders.index')->with('error', 'Pesanan ini tidak dapat dibatalkan.');
+        }
 
-        DB::commit();
-        return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dibatalkan.');
+        DB::beginTransaction();
+        try {
+            // Batalkan pesanan
+            $order->status = 'cancelled';
 
-    } catch (\Exception $e) {
-        DB::rollback();
-        Log::error('Gagal membatalkan pesanan: ' . $e->getMessage());
-        return redirect()->route('orders.index')->with('error', 'Terjadi kesalahan saat membatalkan pesanan.');
+            // Kembalikan stok produk
+            foreach ($order->orderItems as $item) {
+                $product = Product::find($item->product_id);
+                if ($product) {
+                    $product->increment('stock', $item->quantity);
+                }
+            }
+
+            $order->save();
+
+            DB::commit();
+            return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dibatalkan.');
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error('Gagal membatalkan pesanan: ' . $e->getMessage());
+            return redirect()->route('orders.index')->with('error', 'Terjadi kesalahan saat membatalkan pesanan.');
+        }
     }
-}
-
 }

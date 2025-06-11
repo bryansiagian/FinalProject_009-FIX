@@ -27,4 +27,17 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    public function processOrderCompletion()
+    {
+        if ($this->status === 'completed') {
+            foreach ($this->orderItems as $item) {
+                $product = $item->product;
+                if ($product) {
+                    // Kurangi stok produk
+                    $product->decrement('stock', $item->quantity);
+                }
+            }
+        }
+    }
 }

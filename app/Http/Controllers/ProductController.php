@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Order;
 use App\Models\KodePos;
+use App\Models\Testimonial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -16,68 +20,75 @@ class ProductController extends Controller
      * Display a listing of the products (for guest/customers).
      */
     public function showFront(Request $request)
-    {
-        $searchTerm = $request->input('search');
-        $category = $request->input('category');
-        $priceSort = $request->input('price_sort'); // Tambahkan filter harga
-        $alphabeticalSort = $request->input('alphabetical_sort'); // Tambahkan filter abjad
+{
+    $searchTerm = $request->input('search');
+    $category = $request->input('category');
+    $priceSort = $request->input('price_sort');
+    $alphabeticalSort = $request->input('alphabetical_sort');
 
-        $query = Product::query();
+    $query = Product::query();
 
-        if ($searchTerm) {
-            $query->where('name', 'LIKE', '%' . $searchTerm . '%');
-        }
-
-        if ($category) {
-            $query->where('category', $category);
-        }
-
-        // Filter Harga
-        if ($priceSort === 'asc') {
-            $query->orderBy('price', 'asc');
-        } elseif ($priceSort === 'desc') {
-            $query->orderBy('price', 'desc');
-        }
-
-        // Filter Abjad
-        if ($alphabeticalSort === 'asc') {
-            $query->orderBy('name', 'asc');
-        } elseif ($alphabeticalSort === 'desc') {
-            $query->orderBy('name', 'desc');
-        }
-        else{
-             $query->orderBy('created_at', 'desc');
-        }
-
-
-        $products = $query->get();
-
-        foreach ($products as $product) {
-            $product->load('testimonials.user');
-        }
-
-        // Daftar kategori yang valid
-        $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall', 'Sedotan', 'Tisu', 'Lidi', 'HD', 'Wrapping'];
-
-        return view('products.index', compact('products', 'categories'));
+    if ($searchTerm) {
+        $query->where('name', 'LIKE', '%' . $searchTerm . '%');
     }
+
+    if ($category) {
+        $query->where('category', $category);
+    }
+
+    if ($priceSort === 'asc') {
+        $query->orderBy('price', 'asc');
+    } elseif ($priceSort === 'desc') {
+        $query->orderBy('price', 'desc');
+    }
+
+    if ($alphabeticalSort === 'asc') {
+        $query->orderBy('name', 'asc');
+    } elseif ($alphabeticalSort === 'desc') {
+        $query->orderBy('name', 'desc');
+    } else {
+        $query->orderBy('created_at', 'desc');
+    }
+
+    $products = $query->select('products.*', DB::raw('(SELECT COALESCE(SUM(order_items.quantity), 0)
+                                                        FROM order_items
+                                                        JOIN orders ON order_items.order_id = orders.id
+                                                        WHERE order_items.product_id = products.id
+                                                        AND orders.status = "completed") as total_purchased'))
+                      ->paginate(12);
+
+    foreach ($products as $product) {
+        $product->load('testimonials.user');
+    }
+
+    $categories = ['Kantongan', 'Gelas', 'Sendok', 'Mika', 'Kotak', 'Klip', 'PE', 'PP', 'Kertas', 'Botol', 'Lakban', 'Tali', 'Karet', 'Thinwall', 'Sedotan', 'Tisu', 'Lidi', 'HD', 'Wrapping'];
+
+    return view('products.index', compact('products', 'categories'));
+}
 
     /**
      * Display the specified product (for guest/customers).
      */
     public function show(Product $product)
     {
+        $totalPurchased = DB::table('order_items')
+            ->join('orders', 'order_items.order_id', '=', 'orders.id')
+            ->where('order_items.product_id', $product->id)
+            ->where('orders.status', 'completed')
+            ->sum('order_items.quantity');
+
         $product->load('testimonials.user');
 
         $user = Auth::user();
-        $kodePosData = null; // Inisialisasi $kodePosData
+        // $kodePosData = null; // Inisialisasi $kodePosData
 
-        if ($user) {
-            $kodePosData = KodePos::where('kode_pos', $user->kode_pos)->first();
-        }
+        // if ($user) {
+        //     $kodePosData = KodePos::where('kode_pos', $user->kode_pos)->first();
+        // }
 
-        return view('products.show', compact('product', 'user', 'kodePosData'));
+        return view('products.show', compact('product', 'user', 'totalPurchased'));
     }
+
 
     // **Admin Methods**
 

@@ -94,9 +94,13 @@
                                                                 <a href="{{ route('admin.products.edit', ['products' => $item->id]) }}" class="btn btn-sm btn-warning btn-action mr-1">
                                                                     <i class="fas fa-edit mr-2"></i>Edit
                                                                 </a>
-                                                                <button type="button" class="btn btn-sm btn-danger btn-action delete-button" data-toggle="modal" data-target="#deleteModal" data-product-id="{{ $item->id }}">
-                                                                    <i class="fas fa-trash-alt mr-2"></i>Delete
-                                                                </button>
+                                                                <form action="{{ route('admin.products.destroy', $item->id) }}" method="POST" style="display: inline-block;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="button" class="btn btn-sm btn-danger btn-action delete-button" data-toggle="modal" data-target="#deleteModal" data-product-id="{{ $item->id }}">
+                                                                        <i class="fas fa-trash-alt mr-2"></i>Delete
+                                                                    </button>
+                                                                </form>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -162,7 +166,7 @@
                 <div class="modal-body">Apakah Anda yakin ingin menghapus produk ini?</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-danger" id="confirmDeleteButton">Hapus</a>
+                    <button class="btn btn-danger" id="confirmDeleteButton" type="button">Hapus</button>
                 </div>
             </div>
         </div>
@@ -179,21 +183,30 @@
     <script src="{{ URL::asset('Admin/js/sb-admin-2.min.js')}}"></script>
 
     <!-- Page level plugins -->
-    <script src="{{ URL::asset('Admin/vendor/chart.js/Chart.min.js')}}"></script>
-    <script src="{{ URL::asset('Admin/js/demo/chart-area-demo.js')}}"></script>
-    <script src="{{ URL::asset('Admin/js/demo/chart-pie-demo.js')}}"></script>
-
-    <!-- Page level custom scripts -->
     <script src="{{ URL::asset('Admin/vendor/datatables/jquery.dataTables.min.js')}}"></script>
     <script src="{{ URL::asset('Admin/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
-    <script src="{{ URL::asset('Admin/js/demo/datatables-demo.js')}}"></script>
 
     <script>
         $(document).ready(function() {
-            $('.delete-button').click(function() {
-                var productId = $(this).data('product-id');
-                var deleteUrl = "{{ route('admin.products.destroy', '') }}/" + productId;
-                $('#confirmDeleteButton').attr('href', deleteUrl);
+            // 1. Inisialisasi DataTables
+            $("#dataTable").DataTable({
+                ordering: false, // Menonaktifkan pengurutan
+                // 2. Setelah DataTables diinisialisasi, ikat delegated event handler
+                initComplete: function() {
+                    // 3. Delegated Event Handler untuk Tombol Delete
+                    $(document).on('click', '.delete-button', function(e) {
+                        e.preventDefault(); // Prevent default button behavior
+                        var productId = $(this).data('product-id');
+                        $('#confirmDeleteButton').data('product-id', productId); // Simpan productId di tombol confirm
+                    });
+
+                    // 4. Handler untuk Tombol Konfirmasi di Modal
+                    $('#confirmDeleteButton').click(function() {
+                        var productId = $(this).data('product-id');
+                        // Cari form yang sesuai dan submit
+                        $('form[action="' + '{{ route('admin.products.destroy', '') }}/' + productId + '"]').submit();
+                    });
+                }
             });
         });
     </script>

@@ -39,14 +39,16 @@
                                         <th>Produk</th>
                                         <th>Harga</th>
                                         <th>Jumlah</th>
-                                        <th>Total</th>
+                                        <th>Subtotal</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($cartItems as $item)
                                         <tr data-aos="slide-up" data-aos-delay="{{ 100 * $loop->index }}">
-                                            <td class="cart-item-name">{{ $item->product->name }}</td>
+                                            <td class="cart-item-name">
+                                                <a href="{{ route('products.show', $item->product->id) }}">{{ $item->product->name }}</a>
+                                            </td>
                                             <td class="cart-item-price">Rp {{ number_format($item->product->price, 0, ',', '.') }}</td>
                                             <td>
                                                 <form action="{{ route('cart.update', $item->id) }}" method="POST">
@@ -59,7 +61,7 @@
                                                     <button type="submit" class="btn btn-success btn-sm btn-update">Update</button>
                                                 </form>
                                             </td>
-                                            <td class="cart-item-total">Rp {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}</td>
+                                            <td class="cart-item-subtotal">Rp {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}</td>
                                             <td>
                                                 <div class="cart-actions">
                                                     <form action="{{ route('cart.destroy', $item->id) }}" method="POST">
@@ -72,8 +74,15 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" style="text-align: right;"><strong>Total Pesanan:</strong></td>
+                                        <td><strong>Rp {{ number_format($total, 0, ',', '.') }}</strong></td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
                             </table>
-                            <hr data-aos="fade-down" data-aos-delay="400">
+                            {{-- <hr data-aos="fade-down" data-aos-delay="400"> --}}
                             <div class="checkout-button" data-aos="fade-up" data-aos-delay="500">
                                 <a href="{{ route('orders.create') }}" class="btn btn-primary">Checkout</a>
                             </div>

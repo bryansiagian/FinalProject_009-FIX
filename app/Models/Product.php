@@ -22,4 +22,9 @@ class Product extends Model
     {
         return $this->hasMany(Testimonial::class);
     }
+
+    public function orderItems() // Tambahkan ini
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }

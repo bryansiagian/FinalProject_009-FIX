@@ -13,7 +13,14 @@ class CartController extends Controller
     public function index()
     {
         $cartItems = Cart::where('user_id', Auth::id())->get();
-        return view('cart.index', compact('cartItems'));
+
+        // Hitung total nilai pesanan
+        $total = 0;
+        foreach ($cartItems as $item) {
+            $total += $item->product->price * $item->quantity;
+        }
+
+        return view('cart.index', compact('cartItems', 'total'));
     }
 
     public function store(Request $request, Product $product)

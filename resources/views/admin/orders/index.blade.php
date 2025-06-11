@@ -127,9 +127,11 @@
                                                                 <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-sm btn-primary btn-action mr-1">
                                                                     <i class="fas fa-eye mr-2"></i>Lihat
                                                                 </a>
-                                                                <a href="{{ route('admin.orders.edit', $order->id) }}" class="btn btn-sm btn-warning btn-action mr-1">
-                                                                    <i class="fas fa-edit mr-2"></i>Edit
-                                                                </a>
+                                                                @if($order->status != 'cancelled')
+                                                                    <a href="{{ route('admin.orders.edit', $order->id) }}" class="btn btn-sm btn-warning btn-action mr-1">
+                                                                        <i class="fas fa-edit mr-2"></i>Edit
+                                                                    </a>
+                                                                @endif
                                                             </div>
                                                         </td>
                                                     </tr>

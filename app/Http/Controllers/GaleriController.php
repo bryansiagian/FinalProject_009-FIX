@@ -6,6 +6,7 @@ use App\Models\Galeri;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth; // Tambahkan import Auth
+use Illuminate\Support\Str;
 
 class GaleriController extends Controller
 {
@@ -31,25 +32,27 @@ class GaleriController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_gambar' => 'required',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi file
-            'deskripsi' => 'nullable',
+            'nama_gambar' => 'required|unique:galeri,nama_gambar|max:255', // Validasi nama gambar (unik, panjang maks)
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'deskripsi' => 'nullable|max:500', // Panjang maks deskripsi
         ]);
 
         $gambar = $request->file('gambar');
-        $namaGambar = time() . '_' . $gambar->getClientOriginalName();
-        $path = $gambar->storeAs('gambar', $namaGambar, 'public'); // Simpan di storage/app/public/gambar
+        $namaFile = Str::slug($request->nama_gambar) . '.' . $gambar->getClientOriginalExtension(); // Nama file yang aman
+        $path = $gambar->storeAs('gambar', $namaFile, 'public'); // Simpan di storage/app/public/gambar
 
         Galeri::create([
-            'nama_gambar' => $namaGambar,
+            'nama_gambar' => $request->nama_gambar, // Gunakan nama yang diinput user
             'path' => $path,
             'deskripsi' => $request->deskripsi,
-            'user_id' => Auth::id(), // Dapatkan ID user yang login
+            'user_id' => Auth::id(),
         ]);
 
-        return redirect()->route('admin.galeri.index') // Route admin
+        return redirect()->route('admin.galeri.index')
             ->with('success', 'Gambar berhasil ditambahkan ke galeri.');
     }
+
+
 
     public function show(Galeri $galeri)
     {
@@ -64,15 +67,15 @@ class GaleriController extends Controller
     public function update(Request $request, Galeri $galeri)
     {
         $request->validate([
-            'nama_gambar' => 'required',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi file
-            'deskripsi' => 'nullable',
+            'nama_gambar' => 'required|unique:galeri,nama_gambar,' . $galeri->id . '|max:255', // Validasi unik, kecuali ID saat ini
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'deskripsi' => 'nullable|max:500', // Panjang maks deskripsi
         ]);
 
         $data = [
-            'nama_gambar' => $request->nama_gambar,
+            'nama_gambar' => $request->nama_gambar, // Gunakan nama yang diinput user
             'deskripsi' => $request->deskripsi,
-            'user_id' => Auth::id(), // Dapatkan ID user yang login
+            'user_id' => Auth::id(),
         ];
 
         if ($request->hasFile('gambar')) {
@@ -80,17 +83,16 @@ class GaleriController extends Controller
             Storage::disk('public')->delete($galeri->path);
 
             $gambar = $request->file('gambar');
-            $namaGambar = time() . '_' . $gambar->getClientOriginalName();
-            $path = $gambar->storeAs('gambar', $namaGambar, 'public');
+            $namaFile = Str::slug($request->nama_gambar) . '.' . $gambar->getClientOriginalExtension(); // Nama file yang aman
+            $path = $gambar->storeAs('gambar', $namaFile, 'public');
 
             $data['path'] = $path;
-            $data['nama_gambar'] = $namaGambar;
 
         }
 
         $galeri->update($data);
 
-        return redirect()->route('admin.galeri.index') // Route admin
+        return redirect()->route('admin.galeri.index')
             ->with('success', 'Gambar berhasil diperbarui.');
     }
 

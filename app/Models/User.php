@@ -24,7 +24,7 @@ class User extends Authenticatable
         'shipping_address',
         'phone_number',
         'role', // Tambahkan 'role' ke daftar fillable
-        'kode_pos',
+        'wilayah_desa_id',
     ];
 
     /**
@@ -51,5 +51,10 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
+    }
+
+    public function wilayahDesa()
+    {
+        return $this->belongsTo(WilayahDesa::class, 'wilayah_desa_id'); // foreign key
     }
 }

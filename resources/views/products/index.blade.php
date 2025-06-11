@@ -96,26 +96,28 @@
             @endphp
 
             @foreach($productRows as $row)
-                <div class="product-row row" data-aos="fade-up" data-aos-delay="{{ 100 * $loop->index }}">
-                    @foreach($row as $product)
-                        <div class="col-md-3 mb-4 product-item">
-                            <div class="card product-card">
-                                {{-- Mengarahkan ke halaman detail produk --}}
-                                <a href="{{ route('products.show', $product->id) }}">
-                                    <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
-                                </a>
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ $product->name }}</h5>
-                                    <p class="card-text">{{ Str::limit($product->description, 50) }}</p>
-                                    <p class="card-text">Harga: Rp {{ number_format($product->price, 0, ',', '.') }}</p>
-
-                                    {{-- Hapus tombol keranjang dan beli sekarang di sini --}}
-                                </div>
+            <div class="product-row row" data-aos="fade-up" data-aos-delay="{{ 100 * $loop->index }}">
+                @foreach($row as $product)
+                    <div class="col-md-3 mb-4 product-item">
+                        <div class="card product-card">
+                            <a href="{{ route('products.show', $product->id) }}">
+                                <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $product->name }}</h5>
+                                <p class="card-text">{{ Str::limit($product->description, 50) }}</p>
+                                <p class="card-text">Harga: Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                                <p class="card-text">Terjual: {{ $product->total_purchased }}</p>
                             </div>
                         </div>
-                    @endforeach
-                </div>
+                    </div>
+                @endforeach
+            </div>
             @endforeach
+        </div>
+
+        <div class="d-flex justify-content-center">
+            {{ $products->links() }}
         </div>
     </div>
 </section>

@@ -7,37 +7,48 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Models\WilayahDesa; // Tambahkan import
 
 class AuthController extends Controller
 {
     // Registration
     public function showRegistrationForm()
     {
-        return view('auth.register');
+        $wilayahDesas = WilayahDesa::all(); // Ambil semua wilayah desa
+        return view('auth.register', compact('wilayahDesas'));
     }
 
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|allowed_domain|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'shipping_address' => 'required|string|max:255',
-            'phone_number' => 'required|string|min:11|max:20',
-            'kode_pos' => 'required|string|max:10', // Validasi kode pos
+            'phone_number' => 'required|string|min:9|max:15|regex:/^[0-9]+$/',
+            'wilayah_desa_id' => 'required|exists:wilayah_desa,id', // Wajib diisi dan harus ada di tabel wilayah_desa
+        ], [
+            'phone_number.min' => 'Nomor telepon minimal 9 digit.',
+            'phone_number.max' => 'Nomor telepon maksimal 15 digit.',
+            'phone_number.regex' => 'Nomor telepon harus berupa angka.',
+            'wilayah_desa_id.required' => 'Wilayah/Desa harus dipilih.',
+            'wilayah_desa_id.exists' => 'Wilayah/Desa tidak valid.',
         ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
+        $phoneNumber = '+62' . $request->phone_number;
+
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'shipping_address' => $request->shipping_address,
-            'phone_number' => $request->phone_number,
-            'kode_pos' => $request->kode_pos, // Simpan kode pos
+            'phone_number' => $phoneNumber,
+            'wilayah_desa_id' => $request->wilayah_desa_id, // Pastikan data ini benar
         ]);
 
         Auth::login($user);
@@ -63,11 +74,12 @@ class AuthController extends Controller
 
             $user = Auth::user(); // Dapatkan user yang login
 
-            if ($user->isAdmin()) {  // Gunakan method isAdmin()
-                return redirect()->route('admin.dashboard')->with('success', 'Login berhasil sebagai admin!');
-            } else {
-                return redirect()->route('welcome')->with('success', 'Login berhasil!');
+            // Contoh penggunaan role (jika ada)
+            if ($user->isAdmin()) {
+                return redirect()->route('admin.dashboard');
             }
+
+            return redirect()->route('welcome')->with('success', 'Login berhasil!');
         }
 
         return back()->withErrors([

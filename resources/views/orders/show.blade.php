@@ -28,6 +28,10 @@
 
                         <div class="order-info" data-aos="fade-right" data-aos-delay="300">
                             <p><strong>Tanggal Pesanan:</strong> {{ $order->created_at }}</p>
+                             <p><strong>Subtotal:</strong> Rp {{ number_format($order->total_amount - $shippingCost, 0, ',', '.') }}</p> <!-- Subtotal -->
+                            @if($order->shipping_method == 'delivery' && $shippingCost > 0)
+                                <p><strong>Biaya Pengiriman:</strong> Rp {{ number_format($shippingCost, 0, ',', '.') }}</p>
+                            @endif
                             <p><strong>Total:</strong> Rp {{ number_format($order->total_amount, 0, ',', '.') }}</p>
                             <p><strong>Metode Pembayaran:</strong> {{ $order->payment_method }}</p>
                             <p><strong>Metode Pengiriman:</strong> {{ $order->shipping_method }}</p>

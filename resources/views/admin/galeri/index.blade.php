@@ -83,10 +83,14 @@
                                                                 <a href="{{ route('admin.galeri.edit', $item->id) }}" class="btn btn-sm btn-warning btn-action mr-1">
                                                                     <i class="fas fa-edit mr-2"></i>Edit
                                                                 </a>
-                                                                 <!-- Tombol Hapus dengan Modal -->
-                                                                 <button type="button" class="btn btn-sm btn-danger btn-action delete-button" data-toggle="modal" data-target="#deleteModal" data-galeri-id="{{ $item->id }}">
-                                                                    <i class="fas fa-trash-alt mr-2"></i>Hapus
-                                                                </button>
+                                                                <!-- Tombol Hapus dengan Modal -->
+                                                                <form action="{{ route('admin.galeri.destroy', $item->id) }}" method="POST" style="display: inline-block;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="button" class="btn btn-sm btn-danger btn-action delete-button" data-toggle="modal" data-target="#deleteModal" data-galeri-id="{{ $item->id }}">
+                                                                        <i class="fas fa-trash-alt mr-2"></i>Hapus
+                                                                    </button>
+                                                                </form>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -156,7 +160,7 @@
                 <div class="modal-body">Apakah Anda yakin ingin menghapus gambar ini?</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-danger" id="confirmDeleteButton">Hapus</a>
+                    <button class="btn btn-danger" id="confirmDeleteButton" type="button">Hapus</button>
                 </div>
             </div>
         </div>
@@ -173,21 +177,31 @@
     <script src="{{ URL::asset('Admin/js/sb-admin-2.min.js')}}"></script>
 
     <!-- Page level plugins -->
-    <script src="{{ URL::asset('Admin/vendor/chart.js/Chart.min.js')}}"></script>
-    <script src="{{ URL::asset('Admin/js/demo/chart-area-demo.js')}}"></script>
-    <script src="{{ URL::asset('Admin/js/demo/chart-pie-demo.js')}}"></script>
-
-    <!-- Page level custom scripts -->
     <script src="{{ URL::asset('Admin/vendor/datatables/jquery.dataTables.min.js')}}"></script>
     <script src="{{ URL::asset('Admin/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
-    <script src="{{ URL::asset('Admin/js/demo/datatables-demo.js')}}"></script>
 
     <script>
         $(document).ready(function() {
-            $('.delete-button').click(function() {
-                var galeriId = $(this).data('galeri-id');
-                var deleteUrl = "{{ route('admin.galeri.destroy', '') }}/" + galeriId;
-                $('#confirmDeleteButton').attr('href', deleteUrl);
+            $("#dataTable").DataTable({
+                ordering: false, // Sesuaikan dengan kebutuhan Anda
+                initComplete: function() {
+                    // Delegated Event Handler untuk Tombol Delete
+                    $(document).on('click', '.delete-button', function(e) {
+                        e.preventDefault(); // Prevent default button behavior
+                        var galeriId = $(this).data('galeri-id');
+                        $('#confirmDeleteButton').data('galeri-id', galeriId); // Simpan galeriId di tombol confirm
+                    });
+
+                    // Handler untuk Tombol Konfirmasi di Modal
+                    $('#confirmDeleteButton').click(function() {
+                        var galeriId = $(this).data('galeri-id');
+                        // Cari form yang sesuai dan submit
+                        $('form[action="' + '{{ route('admin.galeri.destroy', '') }}/' + galeriId + '"]').submit();
+                    });
+                },
+                language: {
+                    "emptyTable": "Tidak ada gambar di galeri."
+                }
             });
         });
     </script>

@@ -13,8 +13,8 @@ class Testimonial extends Model
         'user_id',
         'content',
         'rating',
-        'is_approved',
-        'product_id', // Tambahkan ini
+        'product_id',
+        'status', // Tambahkan ini
     ];
 
     public function user()

@@ -57,6 +57,8 @@
                  <!-- Tambahkan link Kode Pos di sini -->
                 <a class="collapse-item" href="{{ route('admin.kode_pos.index') }}">
                     <i class="fas fa-map-marker mr-2"></i>Kode Pos</a>
+                <a class="collapse-item" href="{{ route('admin.wilayah-desa.index') }}">
+                    <i class="fas fa-map-marker mr-2"></i>Wilayah Desa</a>
                 <a class="collapse-item" href="{{ route('admin.pengumuman.index') }}">
                     <i class="fas fa-bullhorn mr-2"></i>Pengumuman</a>
                 <a class="collapse-item" href="{{ route('admin.galeri.index') }}">

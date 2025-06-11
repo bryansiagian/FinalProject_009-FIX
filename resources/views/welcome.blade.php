@@ -185,53 +185,6 @@
         </div>
     </section>
 
-        <!-- Kode Pos -->
-        <section class="page-section bg-light" id="kodepos">
-            <div class="container" data-aos="fade-up">
-                <div class="text-center">
-                    <h2 class="mt-0 section-heading text-uppercase">Kode Pos</h2>
-                    <p class="mb-4 text-muted">Daftar kode pos dan ongkos kirim yang berlaku.</p>
-                    <div class="divider-custom">
-                        <div class="divider-line"></div>
-                        <div class="divider-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div class="divider-line"></div>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Kode Pos</th>
-                                                <th>Ongkos Kirim</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @if($kodepos->isNotEmpty())
-                                                @foreach($kodepos as $item)
-                                                    <tr>
-                                                        <td>{{ $item->kode_pos }}</td>
-                                                        <td>Rp {{ number_format($item->ongkos_kirim, 0, ',', '.') }}</td>
-                                                    </tr>
-                                                @endforeach
-                                            @else
-                                                <tr>
-                                                    <td colspan="2" class="text-center">Tidak ada data kode pos.</td>
-                                                </tr>
-                                            @endif
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
     <!-- Kontak -->
     <section class="page-section bg-white" id="kontak">
         <div class="container" data-aos="fade-up">

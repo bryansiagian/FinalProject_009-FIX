@@ -15,6 +15,7 @@ use App\Http\Controllers\KontakController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\KodePosController;
+use App\Http\Controllers\WilayahDesaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -112,8 +113,10 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::delete('/pengumuman/{pengumuman}', [PengumumanController::class, 'destroy'])->name('admin.pengumuman.destroy');
 
     // Admin Testimonial Routes
-     Route::get('/testimonials', [TestimonialController::class, 'testimonials'])->name('admin.testimonials.index');
-     Route::delete('/testimonials/{testimonial}', [TestimonialController::class, 'destroyTestimonialAdmin'])->name('admin.testimonials.destroy');
+    Route::get('/testimonials', [TestimonialController::class, 'testimonials'])->name('admin.testimonials.index');
+    Route::delete('/testimonials/{testimonial}', [TestimonialController::class, 'destroyTestimonialAdmin'])->name('admin.testimonials.destroy');
+    Route::post('/admin/testimonials/{testimonial}/approve', [TestimonialController::class, 'approveTestimonial'])->name('admin.testimonials.approve');
+    Route::post('/admin/testimonials/{testimonial}/reject', [TestimonialController::class, 'rejectTestimonial'])->name('admin.testimonials.reject');
 
      // **Tentang Kami (Admin)**
     Route::get('/tentang-kami', [TentangKamiController::class, 'index'])->name('admin.tentang-kami.index');
@@ -138,4 +141,13 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::get('kode_pos/{kodePos}/edit', [KodePosController::class, 'edit'])->name('admin.kode_pos.edit');
     Route::put('kode_pos/{kodePos}', [KodePosController::class, 'update'])->name('admin.kode_pos.update');
     Route::delete('kode_pos/{kode_pos}', [KodePosController::class, 'destroy'])->name('admin.kode_pos.destroy');
+
+    // **Kode Pos (Admin) - GANTI DENGAN WILAYAH DESA**
+    Route::get('/wilayah-desa', [WilayahDesaController::class, 'index'])->name('admin.wilayah-desa.index');
+    Route::get('/wilayah-desa/create', [WilayahDesaController::class, 'create'])->name('admin.wilayah-desa.create');
+    Route::post('/wilayah-desa', [WilayahDesaController::class, 'store'])->name('admin.wilayah-desa.store');
+    Route::get('/wilayah-desa/{wilayahDesa}', [WilayahDesaController::class, 'show'])->name('admin.wilayah-desa.show');
+    Route::get('/wilayah-desa/{wilayahDesa}/edit', [WilayahDesaController::class, 'edit'])->name('admin.wilayah-desa.edit');
+    Route::put('/wilayah-desa/{wilayahDesa}', [WilayahDesaController::class, 'update'])->name('admin.wilayah-desa.update');
+    Route::delete('/wilayah-desa/{wilayahDesa}', [WilayahDesaController::class, 'destroy'])->name('admin.wilayah-desa.destroy');
 });

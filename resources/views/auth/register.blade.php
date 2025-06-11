@@ -47,11 +47,18 @@
                                 @enderror
                             </div>
 
-                            <!-- Tambah Kode Pos -->
-                            <div class="form-group">
-                                <label for="kode_pos">Kode Pos</label>
-                                <input type="text" class="form-control @error('kode_pos') is-invalid @enderror" id="kode_pos" name="kode_pos" value="{{ old('kode_pos') }}" required>
-                                @error('kode_pos')
+                            <!-- Ganti Kode Pos dengan Wilayah/Desa -->
+                            <div class="mb-3">
+                                <label for="wilayah_desa_id" class="form-label">Wilayah/Desa</label>
+                                <select id="wilayah_desa_id" class="form-control @error('wilayah_desa_id') is-invalid @enderror" name="wilayah_desa_id" required>
+                                    <option value="">Pilih Wilayah/Desa</option>
+                                    @foreach($wilayahDesas as $wilayahDesa)
+                                        <option value="{{ $wilayahDesa->id }}" {{ old('wilayah_desa_id') == $wilayahDesa->id ? 'selected' : '' }}>
+                                            {{ $wilayahDesa->nama }} (Kode Pos: {{ $wilayahDesa->kode_pos }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('wilayah_desa_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -59,10 +66,14 @@
                             <!-- Tambahkan Field Nomor Telepon -->
                             <div class="mb-3">
                                 <label for="phone_number" class="form-label">Nomor Telepon</label>
-                                <input id="phone_number" type="text" class="form-control @error('phone_number') is-invalid @enderror" name="phone_number" value="{{ old('phone_number') }}">
-                                @error('phone_number')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                <div class="input-group">
+                                    <span class="input-group-text">+62</span>
+                                    <input id="phone_number" type="text" class="form-control @error('phone_number') is-invalid @enderror" name="phone_number" value="{{ old('phone_number') }}" pattern="[0-9]+" title="Hanya angka yang diperbolehkan" required>
+                                    @error('phone_number')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <small class="form-text text-muted">Masukkan nomor telepon Anda tanpa awalan +62.</small>
                             </div>
 
                             <div class="mb-3">

@@ -88,10 +88,14 @@
                                                         <a class="btn btn-sm btn-warning btn-action mr-1" href="{{ route('admin.pengumuman.edit',$pengumuman->id) }}">
                                                             <i class="fas fa-edit mr-2"></i>Edit
                                                         </a>
-                                                         <!-- Tombol Hapus dengan Modal -->
-                                                        <button type="button" class="btn btn-sm btn-danger btn-action delete-button" data-toggle="modal" data-target="#deleteModal" data-pengumuman-id="{{ $pengumuman->id }}">
-                                                            <i class="fas fa-trash-alt mr-2"></i>Hapus
-                                                        </button>
+                                                        <!-- Tombol Hapus dengan Modal -->
+                                                        <form action="{{ route('admin.pengumuman.destroy', $pengumuman->id) }}" method="POST" style="display: inline-block;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button" class="btn btn-sm btn-danger btn-action delete-button" data-toggle="modal" data-target="#deleteModal" data-pengumuman-id="{{ $pengumuman->id }}">
+                                                                <i class="fas fa-trash-alt mr-2"></i>Hapus
+                                                            </button>
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -156,7 +160,7 @@
                 <div class="modal-body">Apakah Anda yakin ingin menghapus pengumuman ini?</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-danger" id="confirmDeleteButton">Hapus</a>
+                    <button class="btn btn-danger" id="confirmDeleteButton" type="button">Hapus</button>
                 </div>
             </div>
         </div>
@@ -181,8 +185,13 @@
         $(document).ready(function() {
             $('.delete-button').click(function() {
                 var pengumumanId = $(this).data('pengumuman-id');
-                var deleteUrl = "{{ route('admin.pengumuman.destroy', '') }}/" + pengumumanId;
-                $('#confirmDeleteButton').attr('href', deleteUrl);
+                $('#confirmDeleteButton').data('pengumuman-id', pengumumanId); // Simpan pengumumanId di tombol confirm
+            });
+
+            $('#confirmDeleteButton').click(function() {
+                var pengumumanId = $(this).data('pengumuman-id');
+                // Cari form yang sesuai dan submit
+                $('form[action="' + '{{ route('admin.pengumuman.destroy', '') }}/' + pengumumanId + '"]').submit();
             });
         });
     </script>
